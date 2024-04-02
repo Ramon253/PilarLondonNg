@@ -1,0 +1,19 @@
+<header class="w-full h-[15vh] bg-red-500 shadow dark:bg-red-800 md:bg-green-500">
+    <nav>
+        <ul class="list-none">
+            <li class="bg-blue-300 rounded-none px-4 py-2  w-fit text-white hover:scale-110 cursor-pointer transition"><a routerLink='/video'  routerLinkActive="router-link-active" >Videos</a></li>
+        </ul>
+        <button class="p-4 bg-green-600 rounded-xl text-white drop-shadow mx-4 transition hover:bg-green-300  hover:scale-110" (click)="toggleDarkMode()">
+            DarkMode {{(DarkMode())?'on':'off'}}
+        </button>
+    </nav>
+</header>
+<ng-content></ng-content>
+<footer>
+    <div class="w-full h-10 bg-blue-500">
+        <ul>
+            <li><a href="https://imstagram.com">IG</a></li>
+            <li><a href="https://linkedin.com">Linkedin</a></li>
+        </ul>
+    </div>
+</footer>

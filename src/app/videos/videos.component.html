@@ -1,0 +1,13 @@
+<h1>Sube un video</h1>
+<form (submit)="upload(inputUrl, $event)">
+    <label  for="url">Sube el link al video</label>
+    <input class="border p-2 rounded border-black" type="url" id="url" #inputUrl name="url">
+    <button type="submit" class="px-4 py-2 rounded border border-green-500 text-green-500 hover:bg-green-500 hover:text-white hover:scale-110 transition">
+        upload video
+    </button>
+</form>
+<div #videos>
+    <iframe #rick src="https://youtube.com/embed/YGICYKnIm2A?si=Uo2FMUOSuWQSsaPq" class="aspect-video max-w-screen-md w-full mx-auto" frameborder="0"></iframe>
+</div>
+
+
