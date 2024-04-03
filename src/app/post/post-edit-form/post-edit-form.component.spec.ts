@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VideosComponent } from './videos.component';
+import { PostEditFormComponent } from './post-edit-form.component';
 
-describe('VideosComponent', () => {
-  let component: VideosComponent;
-  let fixture: ComponentFixture<VideosComponent>;
+describe('PostEditFormComponent', () => {
+  let component: PostEditFormComponent;
+  let fixture: ComponentFixture<PostEditFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VideosComponent]
+      imports: [PostEditFormComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(VideosComponent);
+    fixture = TestBed.createComponent(PostEditFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
