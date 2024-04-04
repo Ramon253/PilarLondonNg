@@ -1,23 +1,26 @@
 import { ApplicationRef, Component, ElementRef, EnvironmentInjector, ViewChild, Renderer2, signal } from '@angular/core';
-import { YoutubeVideoComponent } from '../youtube-video/youtube-video.component';
+
 import { disableDebugTools } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [YoutubeVideoComponent],
+  imports: [],
   templateUrl: './post.component.html',
   styles: ``
 })
 export class PostComponent {
 
   tytle = signal<string>('mi post')
+  
   constructor(
     private injector : EnvironmentInjector,
     private appRef: ApplicationRef,
     private renderer: Renderer2,
     private el: ElementRef
     ){}
+
+
 
   addVideo(container : HTMLDivElement, url: string){
     const iframe = this.renderer.createElement('iframe');

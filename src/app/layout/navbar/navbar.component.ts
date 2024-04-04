@@ -22,8 +22,9 @@ export class NavbarComponent {
 
   @Output('darkMode') darkMode = new EventEmitter<boolean>(this.DarkMode())
 
-  toggleDarkMode(){
+  toggleDarkMode(button : HTMLButtonElement){
     this.DarkMode.set(!this.DarkMode())
     this.darkMode.emit(this.DarkMode())
+    button.classList.toggle('rotate-[360deg]')
   }
 }

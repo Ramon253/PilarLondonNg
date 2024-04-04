@@ -1,1 +1,28 @@
-<p>post-creation-form works!</p>
+<div class="flex items-center justify-center m-10">
+    <button class="bg-green-500 rounded p-2 text-white hover:bg-white hover:text-green-500 hover:border-2 hover:border-green-500 hover:scale-110 transition" (click)="showForm(formContainer)">
+        Crear post
+    </button>
+
+    <div class="hidden rounded w-screen h-screen items-center justify-center bg-opacity-20 bg-gray-700 flex-col fixed top-0 z-50" #formContainer>
+        <form action="" >
+            <div class="max-w-screen-xl flex flex-col relative p-10 rounded bg-gray-50 gap-10 shadow-2xl">
+                <button (click)="closeForm(formContainer)" class="absolute top-1 right-1 text-red-500 border-2 border-red-500 transition hover:text-white hover:bg-red-500 rounded p-1 flex items-center justify-center">
+                    <span class="material-icons">close</span>
+                </button>
+                <div class="flex flex-col gap-2 items-start justify-center">
+                    <label for="title">Titulo</label>
+                    <input id="title" type="text" class="border rounded" >
+                </div>
+                <div class="flex flex-col gap-2 items-start justify-center">
+                    <label for="description">Descripcion</label>
+                    <textarea class="border" name="description" id="description" cols="30" rows="10"></textarea>
+                </div>
+                <div class="flex flex-col gap-2 items-start justify-center">
+                   <button class="border border-gray-400 rounded p-1">
+                    Añadir link
+                   </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

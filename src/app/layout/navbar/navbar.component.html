@@ -1,10 +1,10 @@
-<header class="w-full h-[15vh] bg-red-500 shadow dark:bg-red-800 md:bg-green-500">
-    <nav>
-        <ul class="list-none">
-            <li class="bg-blue-300 rounded-none px-4 py-2  w-fit text-white hover:scale-110 cursor-pointer transition"><a routerLink='/video'  routerLinkActive="router-link-active" >Videos</a></li>
-        </ul>
-        <button class="p-4 bg-green-600 rounded-xl text-white drop-shadow mx-4 transition hover:bg-green-300  hover:scale-110" (click)="toggleDarkMode()">
-            DarkMode {{(DarkMode())?'on':'off'}}
+<header class="w-full h-[15vh] bg-main">
+    <nav class="flex h-full items-center w-full justify-evenly">
+        <button class="border-2 border-green-500 text-green-500 rounded hover:scale-110 hover:bg-green-500 hover:text-white transition gap-1 flex p-2">
+            login  <span class="material-icons">login</span>
+        </button>
+        <button class=" hover:scale-110 transition flex items-center justify-center duration-300 " #darkModeButton (click)="toggleDarkMode(darkModeButton)">
+            <span class="material-icons{{DarkMode()?'-outlined': '' }} text-4xl text-white">{{DarkMode() ? 'dark_mode' : 'light_mode'}}</span>      
         </button>
     </nav>
 </header>
