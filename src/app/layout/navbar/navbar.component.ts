@@ -18,7 +18,7 @@ export class NavbarComponent {
     }
   ]
   
-  DarkMode = signal<boolean>(false)
+  DarkMode = signal<boolean>(JSON.parse(window.localStorage.getItem('darkMode') ?? 'false'))
 
   @Output('darkMode') darkMode = new EventEmitter<boolean>(this.DarkMode())
 
@@ -26,5 +26,6 @@ export class NavbarComponent {
     this.DarkMode.set(!this.DarkMode())
     this.darkMode.emit(this.DarkMode())
     button.classList.toggle('rotate-[360deg]')
+    window.localStorage.setItem('darkMode', JSON.stringify(this.DarkMode()))
   }
 }

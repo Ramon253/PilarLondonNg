@@ -10,7 +10,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 })
 export class AppComponent {
   title = 'PilarLondonNg';
-  DarkMode = signal<boolean>(false);
+  DarkMode = signal<boolean>(JSON.parse(window.localStorage.getItem('darkMode')?? 'false'));
 
   @HostBinding('class.dark') get mode() {
     return this.DarkMode()

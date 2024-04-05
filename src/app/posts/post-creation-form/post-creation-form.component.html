@@ -1,0 +1,77 @@
+<div
+    class="flex rounded w-screen h-screen items-center justify-center bg-opacity-20 bg-gray-700 flex-col fixed top-0 z-50 dark:bg-gray-800"
+    #formContainer
+>
+    <form (submit)="createPost(title, description, $event)">
+        <div
+            class="max-w-screen-xl w-96 flex flex-col relative p-10 rounded bg-gray-50 gap-10 shadow-2xl dark:bg-gray-900 dark:text-gray-950"
+        >
+            <button
+                (click)="toggleForm()"
+                class="absolute top-1 right-1 text-red-500 border-2 border-red-500 transition hover:text-white hover:bg-red-500 rounded p-1 flex items-center justify-center"
+            >
+                <span class="material-icons">close</span>
+            </button>
+            <div class="flex flex-col gap-2 items-start justify-center">
+                <label for="title">Titulo</label>
+                <input
+                    #title
+                    id="title"
+                    type="text"
+                    required
+                    class="border rounded"
+                />
+            </div>
+            <div class="flex flex-col gap-2 items-start justify-center">
+                <label for="description">Descripcion</label>
+                <textarea
+                    #description
+                    class="border"
+                    name="description"
+                    required
+                    id="description"
+                    cols="30"
+                    rows="10"
+                ></textarea>
+            </div>
+            <div
+                class="rounded border-2 p-4 flex flex-col gap-2 items-start justify-center"
+            >
+                @for (link of links(); track $index) {
+                <a
+                    href="{{ link.url }}"
+                    class="w-full border-2 text-center font-bold rounded-2xl p-4"
+                >
+                    {{ link.text }}
+                </a>
+                }
+                <div class="flex flex-col">
+                    <label for="linkTitle">Texto</label>
+                    <input
+                        #textInput
+                        type="text"
+                        id="linkTitle"
+                        class="border-2"
+                    />
+                </div>
+                <div class="flex flex-col">
+                    <label for="link">Link</label>
+                    <input #urlInput type="url" id="link" class="border-2" />
+                </div>
+                <button
+                    (click)="createLink(urlInput, textInput)"
+                    type="button"
+                    class="border border-gray-400 rounded p-1 hover:scale-105 transition"
+                >
+                    Añadir link
+                </button>
+            </div>
+            <button
+                class="p-2 rounded border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition"
+                type="submit"
+            >
+                Crear post
+            </button>
+        </div>
+    </form>
+</div>
