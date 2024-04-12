@@ -1,19 +1,40 @@
 <header class="w-full h-[15vh] bg-main">
     <nav class="flex h-full items-center w-full justify-evenly">
-        <button class="border-2 border-green-500 text-green-500 rounded hover:scale-110 hover:bg-green-500 hover:text-white transition gap-1 flex p-2">
-            login  <span class="material-icons">login</span>
+        <ul>
+            @for (link of links; track $index) {
+            <li class="text-white dark:text-black overflow-hidden flex flex-col items-center justify-center p-1 group">
+                <a href="{{ link.url }}">{{ link.name }}</a>
+                <div  class="w-[120%] h-[2px] bg-white -translate-x-[110%] group-hover:-translate-x-0 transition ease-linear duration-200"> </div>
+            </li>
+            }
+        </ul>
+        <button
+            class="border-2 border-green-500 text-green-500 rounded hover:scale-110 hover:bg-green-500 hover:text-white transition gap-1 flex p-2"
+        >
+            login <span class="material-icons">login</span>
         </button>
-        <button class=" hover:scale-110 transition flex items-center justify-center duration-300 " #darkModeButton (click)="toggleDarkMode(darkModeButton)">
-            <span class="material-icons{{DarkMode()?'-outlined': '' }} text-4xl text-white">{{DarkMode() ? 'dark_mode' : 'light_mode'}}</span>      
+        <button
+            class="hover:scale-110 transition flex items-center justify-center duration-300"
+            #darkModeButton
+            (click)="toggleDarkMode(darkModeButton)"
+        >
+            <span
+                class="material-icons{{
+                    DarkMode() 
+                    ? '-outlined' 
+                    : ''
+                }} text-4xl text-white"
+                >{{ DarkMode() ? "dark_mode" : "light_mode" }}</span
+            >
         </button>
     </nav>
 </header>
 <ng-content></ng-content>
 <footer>
-    <div class="w-full h-10 bg-blue-500">
+    <div class="w-full h-fit bg-blue-500">
         <ul>
             <li><a href="https://imstagram.com">IG</a></li>
             <li><a href="https://linkedin.com">Linkedin</a></li>
-        </ul>
+        </ul>   
     </div>
 </footer>

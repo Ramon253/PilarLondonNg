@@ -39,6 +39,10 @@ export class PostCreationFormComponent {
         urlInput.value = '';
         textInput.value = '';
     }
+    deleteLink(event : Event){
+        console.log(event.target);
+        
+    }
     createPost(
         titleInput: HTMLInputElement,
         descriptionInput: HTMLTextAreaElement,

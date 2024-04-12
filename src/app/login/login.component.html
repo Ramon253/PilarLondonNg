@@ -1,4 +1,9 @@
-<form action="">
-    <input type="text" name="userName" id="userName">
-    <input type="email" name="email" id="email">
+<form (submit)="login(name, password, $event)">
+    <input #name type="text" name="name" id="userName">
+    <input #password type="password" name="password" id="password">
+    <button type="submit">Login</button>
 </form>
+<h1 class >Hola </h1>
+<button (click)="getUser()">See user </button>
+<button (click)="getFile()">Get file</button>
+<a href="http://localhost:8000/api/file" target="_blank">Get file finally</a>
