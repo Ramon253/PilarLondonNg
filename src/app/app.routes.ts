@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { IndexComponent } from './index/index.component';
+import {IndexComponent} from "./index/index.component";
 import { LoginComponent } from './login/login.component';
 import { PostsComponent } from './posts/posts.component';
 

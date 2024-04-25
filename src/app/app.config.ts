@@ -6,5 +6,5 @@ import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
 import { DogModelService } from './dog-model.service';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(withFetch()), DogModelService]
+  providers: [provideRouter(routes), provideHttpClient(withFetch())]
 };

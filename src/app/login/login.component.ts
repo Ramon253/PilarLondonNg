@@ -19,22 +19,18 @@ export class LoginComponent {
         event.preventDefault();
         this.loginSvc.getCsrf().subscribe((res) => {
 
-
             this.loginSvc
                 .login({
                     name: name.value,
                     password: password.value
                 })
                 .subscribe((user) => {
-                    console.log(user.headers);
+                    console.log(user.success);
                 });
         });
     }
 
     getUser() {
         this.loginSvc.getUser().subscribe((user) => console.log(user));
-    }
-    async getFile(){
-        this.loginSvc.getFile().subscribe(res => console.log(res))
     }
 }

@@ -1,28 +1,29 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from './models/user';
-import { Credentials } from './models/credentials';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {User} from './models/user/user';
+import {UserResponse} from './models/user/userResponse';
+import {Credentials} from './models/credentials';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http : HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
+    private path = 'http://localhost:8000/api';
+    private csrfPath = `http://localhost:8000/sanctum/csrf-cookie`
+    getCsrf(): Observable<any> {
+        return this.http.get(this.csrfPath, {withCredentials: true})
+    }
 
-  getCsrf():Observable<any>{
-    return this.http.get('http://localhost:8000/sanctum/csrf-cookie',{withCredentials: true})
-  }
+    login(credentials: Credentials): Observable<UserResponse> {
+        return this.http.post<UserResponse>(`${this.path}/login`, credentials, {withCredentials: true})
+    }
 
-  login(credentials : Credentials): Observable<any>{
-    return this.http.post<any>('http://localhost:8000/api/login', credentials, {withCredentials : true} ) 
-  }
+    getUser(): Observable<UserResponse> {
+        return this.http.get<UserResponse>(`${this.path}/user`, {withCredentials: true})
+    }
 
-  getUser(): Observable<User> {
-    return this.http.get<User>('http://localhost:8000/api/user', {withCredentials : true})
-  }
-  getFile(): Observable<any>{
-    return this.http.get('https://localhost:8000/api/file');
-  }
 }

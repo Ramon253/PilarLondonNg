@@ -1,6 +1,6 @@
-import { Link } from "./link";
+import { Link } from "./properties/link";
 
-export interface Task {
+export interface Assignment {
     title : string,
     description : string,
     links : Link[],

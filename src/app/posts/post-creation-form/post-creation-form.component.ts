@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { fromEvent } from 'rxjs';
-import { Link } from '../../models/link';
+import { Link } from '../../models/properties/link';
 import { Post } from '../../models/post';
 import { Title } from '@angular/platform-browser';
 import { YoutubeVideoComponent } from '../youtube-video/youtube-video.component';
@@ -30,6 +30,7 @@ export class PostCreationFormComponent {
         const link = {
             text: textInput.value,
             url: urlInput.value,
+            id : '1'
         };
 
         if (this.checkLink(urlInput.value)) {
@@ -41,7 +42,7 @@ export class PostCreationFormComponent {
     }
     deleteLink(event : Event){
         console.log(event.target);
-        
+
     }
     createPost(
         titleInput: HTMLInputElement,
@@ -50,10 +51,13 @@ export class PostCreationFormComponent {
     ) {
         event.preventDefault();
         let post = {
-            title: titleInput.value,
+            name: titleInput.value,
+            subject: '',
+            group_id: '',
             description: descriptionInput.value,
             links: this.links(),
             videos: this.videos(),
+            files : []
         };
 
         this.post.emit(post);
