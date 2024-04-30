@@ -11,6 +11,7 @@ import { Link } from '../../models/properties/link';
 import { Post } from '../../models/post';
 import { Title } from '@angular/platform-browser';
 import { YoutubeVideoComponent } from '../youtube-video/youtube-video.component';
+import { PostService } from '../../services/post.service';
 
 @Component({
     selector: 'app-post-creation-form',
@@ -52,16 +53,21 @@ export class PostCreationFormComponent {
         event.preventDefault();
         let post = {
             name: titleInput.value,
-            subject: '',
-            group_id: '',
+            subject: 'hOLA MUNDO',
             description: descriptionInput.value,
+            /*
             links: this.links(),
-            videos: this.videos(),
-            files : []
+            videos: this.videos()*/
         };
 
-        this.post.emit(post);
-
+ 
+        this.postSvc.postPost(post as Post)
+            .subscribe(res => {
+                if(res.error)
+                    return
+                this.post.emit(post as Post);
+            })
+        
         this.links.set([]);
         this.videos.set([]);
         titleInput.value = '';
@@ -75,5 +81,8 @@ export class PostCreationFormComponent {
         this.close.emit(true);
     }
 
-    constructor(private renderer: Renderer2) {}
+    constructor(
+        private renderer: Renderer2,
+        public postSvc : PostService    
+    ) {}
 }

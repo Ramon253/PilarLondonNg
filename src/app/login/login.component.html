@@ -1,11 +1,40 @@
-<form (submit)="login(name, password, $event)">
-    <input #name type="text" name="name" id="userName">
-    <input #password type="password" name="password" id="password">
-    <button type="submit">Login</button>
+<form [formGroup]="loginForm" (submit)="login($event)"
+    class="flex flex-col gap-10 items-center justify-center mt-10">
+
+    <!--Name-->
+    <div>
+        <input class="border-2 rounded border-black p-2" formControlName="name" #name type="text" name="name">
+
+        <div class="{{(hasErrors('name'))? 'flex': 'hidden'}} text-red-500">
+            <span>{{validator.getErrors('name', ['required', 'inUse'], loginForm)}}</span>
+        </div>
+    </div>
+
+
+    <div>
+        <input class="border-2 rounded border-black p-2" formControlName="email" #email type="email" name="email"
+            id="userName">
+
+        <div class="{{(hasErrors('email'))? 'flex': 'hidden'}} text-red-500">
+            <span>{{validator.getErrors('email', ['required', 'email', 'inUse'], loginForm)}}</span>
+        </div>
+    </div>
+
+
+    <div>
+        <input class="border-2 rounded border-black p-2" formControlName="password" #password type="password"
+            name="password">
+
+        <div class="{{(hasErrors('password'))? 'flex': 'hidden'}} text-red-500">
+            <span>{{validator.getErrors('password', ['required', 'pattern', 'minlength'], loginForm)}}</span>
+        </div>
+    </div>
+
+
+    <div>
+        <button class="border-2 rounded border-black p-2" [disabled]="loginForm.invalid" type="submit">Login</button>
+    </div>
+
 </form>
-<h1 class >Hola </h1>
+<h1 class>Hola </h1>
 <button (click)="getUser()">See user </button>
-
-<a href="http://localhost:8000/api/file" target="_blank">Get file finally</a>
-
-
