@@ -29,8 +29,8 @@ export class PostCreationFormComponent {
 
     createLink(urlInput: HTMLInputElement, textInput: HTMLInputElement) {
         const link = {
-            text: textInput.value,
-            url: urlInput.value,
+            link_name: textInput.value,
+            link: urlInput.value,
             id : '1'
         };
 
@@ -60,14 +60,14 @@ export class PostCreationFormComponent {
             videos: this.videos()*/
         };
 
- 
+
         this.postSvc.postPost(post as Post)
             .subscribe(res => {
                 if(res.error)
                     return
                 this.post.emit(post as Post);
             })
-        
+
         this.links.set([]);
         this.videos.set([]);
         titleInput.value = '';
@@ -83,6 +83,6 @@ export class PostCreationFormComponent {
 
     constructor(
         private renderer: Renderer2,
-        public postSvc : PostService    
+        public postSvc : PostService
     ) {}
 }

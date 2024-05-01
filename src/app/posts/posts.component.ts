@@ -1,18 +1,12 @@
-import {
-    ApplicationRef,
-    Component,
-    ElementRef,
-    EnvironmentInjector,
-    Renderer2,
-    signal,
-    viewChild,
-} from '@angular/core';
-import { Post } from '../models/post';
+import {ApplicationRef, Component, ElementRef, EnvironmentInjector, Renderer2, signal, viewChild,} from '@angular/core';
+import {Post} from '../models/post';
 
-import { PostCreationFormComponent } from './post-creation-form/post-creation-form.component';
-import { PostComponent } from './post/post.component';
-import { LoginService } from '../login.service';
-import { PostService } from '../services/post.service';
+import {PostCreationFormComponent} from './post-creation-form/post-creation-form.component';
+import {PostComponent} from './post/post.component';
+import {LoginService} from '../login.service';
+import {PostService} from '../services/post.service';
+import {Link} from "../models/properties/link";
+
 
 @Component({
     selector: 'app-posts',
@@ -39,21 +33,34 @@ export class PostsComponent {
     ) {
         this.postSvc.getPosts().subscribe(res => {
 
-            this.posts().push(...res as Post[])
+                this.posts().push(...res.map((post: Post) => {
+                    post.videos = []
+                    post.links =  post.links.filter((link: Link) => {
+                        if (this.postSvc.checkLink(link.link)) {
+                            post.videos.push(link)
+                            return false
+                        }
+                        return true
+                    })
+                    console.log(post.files)
+                    return post
+                }) as Post[])
 
-            this.loading()?.nativeElement.classList.add('hidden')
-            this.postContainer()?.nativeElement.classList.remove('hidden')
-            this.postContainer()?.nativeElement.classList.add('flex')
-        }
+                this.loading()?.nativeElement.classList.add('hidden')
+                this.postContainer()?.nativeElement.classList.remove('hidden')
+                this.postContainer()?.nativeElement.classList.add('flex')
+            }
         )
     }
 
     createPost(post: Post) {
         this.posts().push(post);
     }
+
     closeForm(form: HTMLDivElement) {
         form.classList.toggle('hidden');
     }
+
     openForm(form: HTMLDivElement) {
         form.classList.toggle('hidden');
     }

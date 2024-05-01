@@ -43,8 +43,8 @@
             >
                 @for (link of links(); track $index) {
                 <div class="w-full border-2 text-center font-bold rounded-2xl p-4 flex items-center justify-between">
-                    <a class="mx-auto" href="{{ link.url }}">
-                        {{ link.text }}
+                    <a class="mx-auto" href="{{ link.link }}">
+                        {{ link.link_name }}
                     </a>
                     <button (click)="deleteLink($event)"  class="hover:text-red-500 transition flex items-center justify-center ">
                         <span class="material-icons">close</span>

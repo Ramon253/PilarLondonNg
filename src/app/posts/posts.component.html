@@ -4,7 +4,7 @@
 <div #loadingContainer class="flex animate-spin size-10">
 <img src="https://cdn-icons-png.freepik.com/512/39/39979.png" alt="">
 </div>
-    <div #postsContainer class="hidden flex-col justify-center items-center gap-4">
+    <div #postsContainer class="hidden flex-col  gap-5">
         @for (post of posts(); track $index) {
         <app-post [post]="post"></app-post>
         }

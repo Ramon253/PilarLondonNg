@@ -1,27 +1,28 @@
 <div
-    class="p-4 rounded-lg border-2 flex flex-col items-center shadow gap-9 max-w-screen-xl w-full h-fit"
+    class="p-4 rounded-lg border-2 flex flex-col items-center shadow gap-9 max-w-screen-lg w-full h-fit"
 >
     <div>
-        <span class="font-bold text-4xl">{{ post.name }}</span>
+        <span class="font-bold w-full text-4xl">{{ post.name }}</span>
     </div>
-    <div class="max-w-2xl overflow-hidden">
+    <div class="w-full aspect-auto overflow-hidden">
         <p>{{ post.description }}</p>
     </div>
-    <div class="flex gap-4">
+    <div class="flex w-full gap-4">
         @for (link of post.links; track $index) {
         <a
-            href="{{ link.url }}"
+            href="{{ link.link}}"
             class="flex w-fit border-2 text-center font-bold rounded-2xl p-4"
         >
-            {{ link.text }}
+            {{ link.link_name }}
         </a>
         }
+
     </div>
     <div #youtube class="w-full">
         @for (video of post.videos; track $index) {
         <app-youtube-video
-            [url]="video.url"
-            [text]="video.text"
+            [url]="video.link"
+            [text]="video.link_name"
         ></app-youtube-video>
         }
     </div>

@@ -11,4 +11,5 @@ import { Post } from '../../models/post';
 })
 export class PostComponent {
     @Input({ required: true }) post!: Post;
+    protected readonly File = File;
 }
