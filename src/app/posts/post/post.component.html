@@ -1,29 +1,42 @@
-<div
-    class="p-4 rounded-lg border-2 flex flex-col items-center shadow gap-9 max-w-screen-lg w-full h-fit"
->
+<div class="p-4 relative rounded-lg border-2 {{isLoading()? 'hidden' : 'flex'}} flex-col items-center shadow gap-9 max-w-screen-lg w-full h-fit">
+    @if (loginSvc.user()?.role === 'teacher' ) {
+    <div class="absolute right-4 top-4">
+        <span class="material-icons cursor-pointer" (click)="deletePost()">delete</span>
+    </div>
+    }
+   
     <div>
         <span class="font-bold w-full text-4xl">{{ post.name }}</span>
     </div>
     <div class="w-full aspect-auto overflow-hidden">
         <p>{{ post.description }}</p>
     </div>
+
+    <h2>Links</h2>
     <div class="flex w-full gap-4">
         @for (link of post.links; track $index) {
-        <a
-            href="{{ link.link}}"
-            class="flex w-fit border-2 text-center font-bold rounded-2xl p-4"
-        >
+        <a href="{{ link.link}}" class="flex w-fit border-2 text-center font-bold rounded-2xl p-4">
             {{ link.link_name }}
         </a>
         }
-
     </div>
+    <div class="flex w-full gap-4">
+        @for (file of post.files; track $index) {
+        <a href="http://localhost:8000/api/post/file/{{file.id}}/download"
+            class="flex w-fit border-2 text-center font-bold rounded-2xl p-4">
+            {{ file.file_name }}
+        </a>
+        }
+    </div>
+    <div #multimedia>
+        @for (multimedia of post.multimedia; track $index) {
+        <app-multimedia [file]="multimedia"></app-multimedia>
+        }
+    </div>
+
     <div #youtube class="w-full">
         @for (video of post.videos; track $index) {
-        <app-youtube-video
-            [url]="video.link"
-            [text]="video.link_name"
-        ></app-youtube-video>
+        <app-youtube-video [url]="video.link" [text]="video.link_name"></app-youtube-video>
         }
     </div>
 </div>

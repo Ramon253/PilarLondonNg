@@ -1,40 +1,55 @@
-<form [formGroup]="loginForm" (submit)="login($event)"
-    class="flex flex-col gap-10 items-center justify-center mt-10">
-
-    <!--Name-->
-    <div>
-        <input class="border-2 rounded border-black p-2" formControlName="name" #name type="text" name="name">
-
-        <div class="{{(hasErrors('name'))? 'flex': 'hidden'}} text-red-500">
-            <span>{{validator.getErrors('name', ['required', 'inUse'], loginForm)}}</span>
+<div class="bg-main-grey h-[90vh] mt-[10vh] p-4">
+    <div #loadingAnimation class="hidden">
+        <div class="flex items-center justify-center">
+            <img src="https://cdn-icons-png.freepik.com/512/39/39979.png" alt="" class="animate-spin size-10">
         </div>
     </div>
+    <div #formContainer>
+        <form [formGroup]="loginForm" (submit)="login($event)"
+            class="flex flex-col gap-10 items-center justify-center mt-10">
+
+            <!--Name-->
+            <div>
+                <input class="border-2 rounded border-black p-2" formControlName="name" #name type="text" name="name">
+
+                <div class="{{(hasErrors('name'))? 'flex': 'hidden'}} text-red-500">
+                    <span>{{validator.getErrors('name', ['required', 'inUse', 'invalidCredentials'], loginForm)}}</span>
+                </div>
+            </div>
 
 
-    <div>
-        <input class="border-2 rounded border-black p-2" formControlName="email" #email type="email" name="email"
-            id="userName">
+            <div>
+                <input class="border-2 rounded border-black p-2" formControlName="email" #email type="email"
+                    name="email" id="userName">
 
-        <div class="{{(hasErrors('email'))? 'flex': 'hidden'}} text-red-500">
-            <span>{{validator.getErrors('email', ['required', 'email', 'inUse'], loginForm)}}</span>
-        </div>
+                <div class="{{(hasErrors('email'))? 'flex': 'hidden'}} text-red-500">
+                    <span>{{validator.getErrors('email', ['required', 'email', 'inUse', 'invalidCredentials'],
+                        loginForm)}}</span>
+                </div>
+            </div>
+
+
+            <div>
+                <input class="border-2 rounded border-black p-2" formControlName="password" #password type="password"
+                    name="password">
+
+                <div class="{{(hasErrors('password'))? 'flex': 'hidden'}} text-red-500">
+                    <span>{{validator.getErrors('password', ['required', 'pattern', 'minlength', 'invalidCredentials'],
+                        loginForm)}}</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="remember_me">Recuerdame</label>
+                <input type="checkbox" id="remember_me" name="remember_me">
+
+            </div>
+
+            <div>
+                <button class="border-2 rounded border-black p-2" [disabled]="loginForm.invalid"
+                    type="submit">Login</button>
+            </div>
+
+        </form>
     </div>
-
-
-    <div>
-        <input class="border-2 rounded border-black p-2" formControlName="password" #password type="password"
-            name="password">
-
-        <div class="{{(hasErrors('password'))? 'flex': 'hidden'}} text-red-500">
-            <span>{{validator.getErrors('password', ['required', 'pattern', 'minlength'], loginForm)}}</span>
-        </div>
-    </div>
-
-
-    <div>
-        <button class="border-2 rounded border-black p-2" [disabled]="loginForm.invalid" type="submit">Login</button>
-    </div>
-
-</form>
-<h1 class>Hola </h1>
-<button (click)="getUser()">See user </button>
+</div>

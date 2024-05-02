@@ -12,15 +12,25 @@ export class YoutubeVideoComponent {
   @ViewChild('container') container! : ElementRef
   @Input({required : true}) url! : string
   @Input({required : true}) text! : string
+
   constructor(
     private renderer: Renderer2,
     private el: ElementRef
   ){}
 
   ngAfterViewInit(){
+    if(this.url.includes('youtube.com/embed')) return
+
+    if (this.url.includes('drive.google.com')){
+      this.url = this.url.replace('view', 'preview')
+    }
+    this.url = this.url.replace('youtube.com', 'youtube.com/embed')
     this.url = this.url.replace('youtu.be', 'youtube.com/embed')
     this.addVideo(this.container.nativeElement, this.url, this.text)
   }
+
+
+
   addVideo(container : HTMLDivElement, url: string, text :string){
     const iframe = this.renderer.createElement('iframe');
     this.renderer.setAttribute(iframe, 'src', url)

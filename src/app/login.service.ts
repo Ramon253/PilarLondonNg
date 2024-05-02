@@ -9,22 +9,36 @@ import { User } from './models/user/user';
     providedIn: 'root'
 })
 export class LoginService {
-    isLogged = signal<boolean>(false)
-    User = signal<User | null>(null)
-    constructor(private http: HttpClient) {
+    private isLogged = signal<boolean>(false)
 
-        this.getUser().subscribe(user => {
-            if (user.error) {
-                this.isLogged.set(false)
-                return
-            }
-            this.User.set(user as User)
-            this.isLogged.set(true)
-        })
+
+    user = signal<User | null>(null)
+    constructor(private http: HttpClient) {
+        this.isLoggedIn()
     }
 
     private path = 'http://localhost:8000/api';
     private csrfPath = `http://localhost:8000/sanctum/csrf-cookie`
+
+    putLogin(isLogged : boolean){
+        this.isLogged.set(isLogged)
+    }
+    async isLoggedIn()  {
+        if (this.isLogged()) {
+            return this.isLogged()
+        }
+
+        let user:UserResponse | undefined = await this.getUser().toPromise()
+
+        if (user === undefined || user.error) {
+            this.isLogged.set(false)
+            return false
+        }
+        this.user.set(user.user as User)
+        this.isLogged.set(true)
+
+        return true
+    }
 
     getCsrf(): Observable<any> {
         return this.http.get(this.csrfPath, { withCredentials: true })

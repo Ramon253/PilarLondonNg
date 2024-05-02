@@ -1,52 +1,30 @@
-<div
-    class="flex rounded p-20 w-screen h-screen items-center justify-center bg-opacity-20 bg-gray-700 flex-col fixed top-0 z-50 dark:bg-gray-800"
-    #formContainer
->
-    <form
-        class="w-[50%] max-w-screen-xl p-10"
-        (submit)="createPost(title, description, $event)"
-    >
+<div class="flex rounded p-20 w-screen h-screen items-center justify-center bg-opacity-20 bg-gray-700 flex-col fixed top-0 z-50 dark:bg-gray-800"
+    #formContainer>
+
+    <form class="w-screen-xl max-w-screen-xl p-10" (submit)="createPost(title, description, $event)">
         <div
-            class="flex flex-col relative items-center bg-opacity-100 p-10 rounded bg-gray-50 gap-10 shadow-2xl dark:bg-gray-900 dark:text-gray-950"
-        >
-            <button
-                (click)="toggleForm()"
-                class="absolute top-1 right-1 text-red-500 border-2 border-red-500 transition hover:text-white hover:bg-red-500 rounded p-1 flex items-center justify-center"
-            >
+            class="flex flex-col relative items-center bg-opacity-100 p-10 rounded bg-gray-50 gap-10 shadow-2xl dark:bg-gray-900 dark:text-gray-950">
+            <button (click)="toggleForm()"
+                class="absolute top-1 right-1 text-red-500 border-2 border-red-500 transition hover:text-white hover:bg-red-500 rounded p-1 flex items-center justify-center">
                 <span class="material-icons">close</span>
             </button>
-            <div
-                class="flex flex-col w-[70%] gap-2 items-start justify-center text-center"
-            >
+            <div class="flex flex-col w-[70%] gap-2 items-start justify-center text-center">
                 <label class="w-full" for="title">Titulo</label>
-                <input
-                    #title
-                    id="title"
-                    type="text"
-                    required
-                    class="border rounded p-2 w-full"
-                />
+                <input #title id="title" type="text" required class="border rounded p-2 w-full" />
             </div>
             <div class="flex flex-col gap-2 items-start justify-center w-[70%]">
                 <label for="description">Descripcion</label>
-                <textarea
-                    #description
-                    class="border h-full w-full"
-                    name="description"
-                    required
-                    id="description"
-                    rows="10"
-                ></textarea>
+                <textarea #description class="border h-full w-full" name="description" required id="description"
+                    rows="10"></textarea>
             </div>
-            <div
-                class="rounded border-2 p-4 flex flex-col gap-2 items-start justify-center w-[70%]"
-            >
+            <div class="rounded border-2 p-4 flex flex-col gap-2 items-start justify-center w-[70%]">
                 @for (link of links(); track $index) {
                 <div class="w-full border-2 text-center font-bold rounded-2xl p-4 flex items-center justify-between">
                     <a class="mx-auto" href="{{ link.link }}">
                         {{ link.link_name }}
                     </a>
-                    <button (click)="deleteLink($event)"  class="hover:text-red-500 transition flex items-center justify-center ">
+                    <button (click)="deleteLink($event)"
+                        class="hover:text-red-500 transition flex items-center justify-center ">
                         <span class="material-icons">close</span>
                     </button>
                 </div>
@@ -54,34 +32,20 @@
                 }
                 <div class="flex flex-col w-full">
                     <label for="linkTitle">Texto</label>
-                    <input
-                        #textInput
-                        type="text"
-                        id="linkTitle"
-                        class="border-2 w-full"
-                    />
+                    <input #textInput type="text" id="linkTitle" class="border-2 w-full" />
                 </div>
                 <div class="flex w-full flex-col">
                     <label for="link">Link</label>
-                    <input
-                        #urlInput
-                        type="url"
-                        id="link"
-                        class="w-full border-2"
-                    />
+                    <input #urlInput type="url" id="link" class="w-full border-2" />
                 </div>
-                <button
-                    (click)="createLink(urlInput, textInput)"
-                    type="button"
-                    class="border border-gray-400 rounded p-1 hover:scale-105 transition"
-                >
+                <button (click)="createLink(urlInput, textInput)" type="button"
+                    class="border border-gray-400 rounded p-1 hover:scale-105 transition">
                     Añadir link
                 </button>
             </div>
             <button
                 class="p-2 rounded border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition"
-                type="submit"
-            >
+                type="submit">
                 Crear post
             </button>
         </div>

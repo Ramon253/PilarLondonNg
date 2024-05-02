@@ -41,33 +41,37 @@ export class PostCreationFormComponent {
         urlInput.value = '';
         textInput.value = '';
     }
+
     deleteLink(event : Event){
         console.log(event.target);
-
     }
+    
     createPost(
         titleInput: HTMLInputElement,
         descriptionInput: HTMLTextAreaElement,
         event: SubmitEvent
     ) {
         event.preventDefault();
+
         let post = {
             name: titleInput.value,
             subject: 'hOLA MUNDO',
             description: descriptionInput.value,
-            /*
             links: this.links(),
-            videos: this.videos()*/
+            videos : this.videos()
         };
+        
 
+        post.links.push(...this.videos())
 
         this.postSvc.postPost(post as Post)
             .subscribe(res => {
                 if(res.error)
                     return
+                post.links = this.links()
                 this.post.emit(post as Post);
             })
-
+        
         this.links.set([]);
         this.videos.set([]);
         titleInput.value = '';

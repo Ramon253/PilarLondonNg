@@ -1,0 +1,8 @@
+<div>
+    <h2>{{file()?.header}}</h2>
+    @if (file()?.mime_type?.includes('image')) {
+        <img src="http://localhost:8000/api/post/file/{{file()?.id}}/get" class="aspect-auto" alt="{{file()?.file_name}}">
+    } @else {
+        <video src="http://localhost:8000/api/post/file/{{file()?.id}}/get" controls></video>
+    }
+</div>

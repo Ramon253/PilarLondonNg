@@ -1,24 +1,21 @@
-<div
-    class="min-h-[85vh] flex flex-col items-center justify-evenly dark:text-white"
->
-<div #loadingContainer class="flex animate-spin size-10">
-<img src="https://cdn-icons-png.freepik.com/512/39/39979.png" alt="">
-</div>
+<div class="min-h-[85vh] flex flex-col items-center justify-evenly dark:text-white">
+    <div #loadingContainer class="flex animate-spin size-10">
+        <img src="https://cdn-icons-png.freepik.com/512/39/39979.png" alt="">
+    </div>
+
     <div #postsContainer class="hidden flex-col  gap-5">
         @for (post of posts(); track $index) {
-        <app-post [post]="post"></app-post>
+        <app-post (delete)="deletePost($event)" [post]="post"></app-post>
         }
     </div>
-    <button
-        (click)="openForm(formContainer)"
-        class="bg-green-500 rounded p-2 text-white hover:bg-white hover:text-green-500 hover:border-2 hover:border-green-500 hover:scale-110 transition"
-    >
+
+    <button (click)="openForm(formContainer)"
+        class="bg-green-500 rounded p-2 text-white hover:bg-white hover:text-green-500 hover:border-2 hover:border-green-500 hover:scale-110 transition">
         Crear post
     </button>
 </div>
+
 <div #formContainer class="hidden">
-    <app-post-creation-form
-        (post)="createPost($event)"
-        (close)="closeForm(formContainer)"
-    ></app-post-creation-form>
+    <app-post-creation-form (post)="createPost($event)" (close)="closeForm(formContainer)">
+    </app-post-creation-form>
 </div>

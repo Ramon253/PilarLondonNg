@@ -1,5 +1,4 @@
 import { Component,EventEmitter, HostBinding, Output, signal, NgModule } from '@angular/core';
-import { NavLink } from './nav-link';
 import {RouterLink, RouterLinkActive, Routes} from "@angular/router";
 
 
@@ -11,12 +10,7 @@ import {RouterLink, RouterLinkActive, Routes} from "@angular/router";
   styles: ``
 })
 export class NavbarComponent {
-  public links : Array<NavLink> = [
-    {
-      name : 'migithub',
-      url : 'https://github.com/ramon253'
-    }
-  ]
+
   
   DarkMode = signal<boolean>(JSON.parse(window.localStorage.getItem('darkMode') ?? 'false'))
 

@@ -12,7 +12,8 @@ export class ValidationsService {
         'required': 'El campo @field es obligatorio',
         'email': 'El campo email debe ser un email valido',
         'pattern': 'El campo @field debe tener al menos un numero y un simbolo',
-        'minlength': 'El campo @field debe tener un minimo de @length caracteres'
+        'minlength': 'El campo @field debe tener un minimo de @length caracteres',
+        'invalidCredentials' : 'Credenciales invalidas'
     }
 
 

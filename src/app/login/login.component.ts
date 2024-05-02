@@ -17,10 +17,9 @@ import { Route, Router } from '@angular/router';
     styles: ``,
 })
 export class LoginComponent {
-
-    email = viewChild<ElementRef>('email');
-    name = viewChild<ElementRef>('name');
-
+    formContainer = viewChild<ElementRef>('formContainer')
+    loadingAnimation = viewChild<ElementRef>('loadingAnimation')
+   
     loginForm = this.formBuilder.group({
         name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
@@ -41,19 +40,29 @@ export class LoginComponent {
     
 
     async login(event: SubmitEvent) {
-
         event.preventDefault();
+        
+        this.formContainer()?.nativeElement.classList.toggle('hidden')
+        this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
+
         let res = await this.loginSvc.getCsrf()
 
         this.loginSvc
             .login(this.loginForm.getRawValue() as Credentials)
             .subscribe((user) => {
                 if (user.error){
-                    this.loginForm.setErrors({invalid : true})
+
+                    this.loginForm.get('name')?.setErrors({invalidCredentials : true})
+                    this.loginForm.get('password')?.setErrors({invalidCredentials : true})
+                    this.loginForm.get('email')?.setErrors({invalidCredentials : true})
+
+                    this.formContainer()?.nativeElement.classList.toggle('hidden')
+                    this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
+
                     return
                 }
 
-                this.loginSvc.isLogged.set(true)
+                this.loginSvc.putLogin(true)
                 this.router.navigate(['/posts']);
             })
     }

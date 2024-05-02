@@ -22,7 +22,11 @@ export class PostService {
         return this.http.post<Response>(this.path + 'group/1/post', post, {withCredentials: true})
     }
 
+    deletePost(post : Post) : Observable<Response> {
+        return this.http.delete<Response>(`${this.path}post/${post.id}`, {withCredentials : true})
+    }
+
     checkLink(url: string): boolean {
-        return url.includes('youtube') || url.includes('yout');
+        return url.includes('youtube') || url.includes('yout') || url.includes('drive.google.com');
     }
 }

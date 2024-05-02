@@ -1,4 +1,5 @@
 export interface Response {
     success ?: string,
-    error ? : string
+    error ? : string,
+    status ? : string
 }
