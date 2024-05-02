@@ -1,11 +1,11 @@
 <nav class="h-[15hv] bg-main-white fixed top-0 w-full shadow">
-    <header class="w-full h-[10vh]  bg-main-white flex items-center justify-between max-w-screen-xl mx-auto">
+    <header class="w-full h-[10vh]  bg-main-white flex items-center justify-between max-w-screen-2xl mx-auto">
         <div #logo class="w-1/3">
-            <img src="../../../assets/img/logo.png" class="aspect-[12/3]  w-56" alt="">
+            <img src="assets/img/logo.png" class="aspect-[12/3]  w-56" alt="">
         </div>
         <div #links class="h-full w-1/3 flex items-center flex-col">
             <ul
-                class="h-full list-none flex gap-9 w-full justify-center items-end text font-medium text-font-grey p-[2px]">
+                class="h-full list-none flex gap-9 w-full justify-center items-end text-lg font-medium text-font-grey p-[2px]">
                 <li class=" overflow-hidden">
                     <a routerLink="clases" class="group flex flex-col items-center">
                         Clases
@@ -34,16 +34,16 @@
             </ul>
 
         </div>
-        <div #buttons class="w-1/3 flex gap-4 justify-end">
+        <div #buttons class="w-1/3 flex h-full gap-4 justify-end items-start pt-4">
             <div>
                 <button routerLink="/login"
-                    class="py-2 w-24 px-4 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white hover:scale-105 transition">
+                    class="py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white hover:scale-105 transition">
                     Login
                 </button>
             </div>
             <div>
                 <button routerLink="/register"
-                    class="py-2 px-4 rounded-lg border-[3px] border-main text-main font-bold bg-transparent hover:bg-main hover:text-main-white hover:scale-105 transition w-24">
+                    class="py-1 px-2 rounded-lg border-[3px] border-main text-main font-bold bg-transparent hover:bg-main hover:text-main-white hover:scale-105 transition w-24">
                     Register
                 </button>
             </div>

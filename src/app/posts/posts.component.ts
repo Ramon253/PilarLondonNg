@@ -97,7 +97,7 @@ export class PostsComponent {
 
 
     async deletePost(post : Post){
-        
+
         await this.loginSvc.getCsrf()
         this.postSvc.deletePost(post).subscribe(res => {
             if (res.error){

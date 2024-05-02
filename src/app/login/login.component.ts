@@ -17,9 +17,9 @@ import { Route, Router } from '@angular/router';
     styles: ``,
 })
 export class LoginComponent {
-    formContainer = viewChild<ElementRef>('formContainer')
+    submitButton = viewChild<ElementRef>('submitButton')
     loadingAnimation = viewChild<ElementRef>('loadingAnimation')
-   
+
     loginForm = this.formBuilder.group({
         name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
@@ -32,17 +32,17 @@ export class LoginComponent {
 
     constructor(
         private loginSvc: LoginService,
-        private formBuilder: FormBuilder, 
+        private formBuilder: FormBuilder,
         public validator: ValidationsService,
         private router : Router
     ) { }
 
-    
+
 
     async login(event: SubmitEvent) {
         event.preventDefault();
-        
-        this.formContainer()?.nativeElement.classList.toggle('hidden')
+
+        this.submitButton()?.nativeElement.classList.toggle('hidden')
         this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
 
         let res = await this.loginSvc.getCsrf()
@@ -56,7 +56,7 @@ export class LoginComponent {
                     this.loginForm.get('password')?.setErrors({invalidCredentials : true})
                     this.loginForm.get('email')?.setErrors({invalidCredentials : true})
 
-                    this.formContainer()?.nativeElement.classList.toggle('hidden')
+                    this.submitButton()?.nativeElement.classList.toggle('hidden')
                     this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
 
                     return
