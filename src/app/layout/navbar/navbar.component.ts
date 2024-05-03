@@ -1,25 +1,35 @@
-import { Component,EventEmitter, HostBinding, Output, signal, NgModule } from '@angular/core';
-import {RouterLink, RouterLinkActive, Routes} from "@angular/router";
+import { Component, EventEmitter, HostBinding, Output, signal, NgModule, viewChild, ElementRef } from '@angular/core';
+import { RouterLink, RouterLinkActive, Routes } from "@angular/router";
+import { LoginService } from '../../login.service';
+import { User } from '../../models/user/user';
 
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive],
-  templateUrl: './navbar.component.html',
-  styles: ``
+	selector: 'app-navbar',
+	standalone: true,
+	imports: [RouterLink, RouterLinkActive],
+	templateUrl: './navbar.component.html',
+	styles: ``
 })
 export class NavbarComponent {
+	isLogged = this.loginSvc.isLogged
+	user = this.loginSvc.user
+	DarkMode = signal<boolean>(JSON.parse(window.localStorage.getItem('darkMode') ?? 'false'))
 
-  
-  DarkMode = signal<boolean>(JSON.parse(window.localStorage.getItem('darkMode') ?? 'false'))
+	@Output('darkMode') darkMode = new EventEmitter<boolean>(this.DarkMode())
 
-  @Output('darkMode') darkMode = new EventEmitter<boolean>(this.DarkMode())
-
-  toggleDarkMode(button : HTMLButtonElement){
-    this.DarkMode.set(!this.DarkMode())
-    this.darkMode.emit(this.DarkMode())
-    button.classList.toggle('rotate-[360deg]')
-    window.localStorage.setItem('darkMode', JSON.stringify(this.DarkMode()))
-  }
+	constructor(private loginSvc: LoginService) {
+		if (this.user() === null &&  this.isLogged()){
+			this.loginSvc.getUser().subscribe(
+				user => {
+					this.loginSvc.user.set(user.user as User)
+			})
+		}
+	}
+	toggleDarkMode(button: HTMLButtonElement) {
+		this.DarkMode.set(!this.DarkMode())
+		this.darkMode.emit(this.DarkMode())
+		button.classList.toggle('rotate-[360deg]')
+		window.localStorage.setItem('darkMode', JSON.stringify(this.DarkMode()))
+	}
 }

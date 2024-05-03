@@ -1,6 +1,6 @@
-<nav class="h-[15hv] bg-main-white fixed top-0 w-full shadow">
+<nav class="h-[15hv] bg-main-white fixed top-0 w-full shadow z-50">
     <header class="w-full h-[10vh]  bg-main-white flex items-center justify-between max-w-screen-2xl mx-auto">
-        <div #logo class="w-1/3 p-[5%]">
+        <div #logo class="w-1/3 p-[7%] cursor-pointer " routerLink="/">
             <img src="assets/img/logo.png" class="aspect-auto  w-auto h-full" alt="">
         </div>
         <div #links class="h-full w-1/3 flex items-center flex-col">
@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li class="overflow-hidden">
-                    <a href="" class="group flex flex-col items-center">
+                    <a routerLink="/posts" class="group flex flex-col items-center">
                         Posts
                         <div
                             class="h-[2px] bg-font-grey transition -translate-x-full w-[150%] group-hover:translate-x-0 ">
@@ -34,7 +34,10 @@
             </ul>
 
         </div>
-        <div #buttons class="w-1/3 flex h-full gap-4 justify-end items-start pt-4">
+
+
+        @if (!isLogged()) {
+        <div class="w-1/3 flex h-full gap-4 justify-end items-start pt-4">
             <div>
                 <button routerLink="/login"
                     class="py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white hover:scale-105 transition">
@@ -48,6 +51,26 @@
                 </button>
             </div>
         </div>
+        }@else {
+        <div class="w-1/3 h-full p-4 flex items-center justify-end">
+            @if (user() === null) {
+            <div class="rounded-full bg-main-grey animate-pulse aspect-square size-16"></div>
+
+            }@else {
+            <div class="h-full rounded-full flex items-center gap-4  bg-main-grey">
+                <div class="rounded-full flex items-center justify-center shadow-xl bg-main-grey aspect-square max-w-fit h-[110%] p-2 ">
+                    @if (user()?.role === 'none' || user()?.profile_photo === null) {
+                    <img src="assets/img/defaultProfile.png" alt="default_profile_photo">
+                    }
+                </div>
+                <div class="w-fit text-center pr-4 font-bold text-main"> {{user()?.name}}</div>
+            </div>
+
+            }
+        </div>
+        }
+
+
     </header>
 </nav>
 <main class="">

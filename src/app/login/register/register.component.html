@@ -1,42 +1,48 @@
-<form [formGroup]="registerForm" class="flex flex-col gap-10 items-center justify-center mt-10"
-    (submit)="register($event)">
+<div class="bg-main-grey">
+    <div class="max-w-screen-xl mx-auto bg-transparent mt-[10vh]">
+        <form [formGroup]="registerForm" class="flex flex-col gap-10 items-center justify-center mt-10"
+            (submit)="register($event)">
 
-    <!--Name-->
-    <div>
-        <input class="border-2 rounded border-black p-2" formControlName="name" #name type="text" name="name">
-        <div class="{{ hasErrors('name')? 'flex': 'hidden'}} text-red-500">
-            <span>{{validator.getErrors('name', ['required'], registerForm)}}</span>
-        </div>
+            <!--Name-->
+            <div>
+                <input class="border-2 rounded border-black p-2" formControlName="name" #name type="text" name="name">
+                <div class="{{ hasErrors('name')? 'flex': 'hidden'}} text-red-500">
+                    <span>{{validator.getErrors('name', ['required'], registerForm)}}</span>
+                </div>
+            </div>
+
+            <!--email-->
+            <div>
+                <input class="border-2 rounded border-black p-2" formControlName="email" #email type="email">
+                <div class="{{hasErrors('email') ? 'flex' :'hidden' }} text-red-500">
+                    <span>{{validator.getErrors('email', ['required', 'email'], registerForm)}}</span>
+                </div>
+            </div>
+
+            <!--passwords-->
+            <div>
+                <input class="border-2 rounded border-black p-2" formControlName="password" #password type="password">
+                <div class="{{hasErrors('password') ? 'flex' :'hidden' }} text-red-500">
+                    <span>{{validator.getErrors('password', ['required', 'minlength', 'pattern'], registerForm)}}</span>
+                </div>
+            </div>
+
+            <div>
+                <input class="border-2 rounded border-black p-2" formControlName="password_confirmation" #password
+                    type="password">
+                <div class="{{hasErrors('password_confirmation') ? 'flex' :'hidden' }} text-red-500">
+                    <span>{{validator.getErrors('password_confirmation', ['required', 'minlength', 'pattern'],
+                        registerForm)}}</span>
+                </div>
+            </div>
+
+            <!--Submit-->
+            <div>
+                <button
+                    class="{{registerForm.invalid ? 'border-gray-400 text-gray-400' : 'border-black text-black'}} border-2 rounded  p-2"
+                    [disabled]="registerForm.invalid" type="submit">Login</button>
+            </div>
+
+        </form>
     </div>
-
-    <!--email-->
-    <div>
-        <input class="border-2 rounded border-black p-2" formControlName="email" #email type="email">
-        <div class="{{hasErrors('email') ? 'flex' :'hidden' }} text-red-500">
-            <span>{{validator.getErrors('email', ['required', 'email'], registerForm)}}</span>
-        </div>
-    </div>
-
-    <!--passwords-->
-    <div>
-        <input class="border-2 rounded border-black p-2" formControlName="password" #password type="password">
-        <div class="{{hasErrors('password') ? 'flex' :'hidden' }} text-red-500">
-            <span>{{validator.getErrors('password', ['required', 'minlength', 'pattern'], registerForm)}}</span>
-        </div>
-    </div>
-
-    <div>
-        <input class="border-2 rounded border-black p-2" formControlName="password_confirmation" #password
-            type="password">
-        <div class="{{hasErrors('password_confirmation') ? 'flex' :'hidden' }} text-red-500">
-            <span>{{validator.getErrors('password_confirmation', ['required', 'minlength', 'pattern'],
-                registerForm)}}</span>
-        </div>
-    </div>
-
-    <!--Submit-->
-    <div>
-        <button class="{{registerForm.invalid ? 'border-gray-400 text-gray-400' : 'border-black text-black'}} border-2 rounded  p-2" [disabled]="registerForm.invalid" type="submit">Login</button>
-    </div>
-
-</form>
+</div>

@@ -8,6 +8,7 @@ import { PostService } from '../services/post.service';
 import { Link } from "../models/properties/link";
 import { Route, Router } from '@angular/router';
 import { FileR } from '../models/properties/file';
+import { throwError } from 'rxjs';
 
 
 @Component({
@@ -35,13 +36,10 @@ export class PostsComponent {
         public postSvc: PostService
     ) {
 
-        this.loginSvc.isLoggedIn().then((res) => {
-            if (!res) {
-                this.router.navigate(['/login'])
-                return
-            }
-            this.getPosts()
-        });
+        if(!this.loginSvc.isLogged()){
+            router.navigate(['/login'])
+        }
+        this.getPosts()
     }
 
     createPost(post: Post) {
@@ -50,11 +48,21 @@ export class PostsComponent {
 
     getPosts() {
         this.postSvc.getPosts().subscribe(res => {
+
             this.posts().push(...res.map(this.getResources) as Post[])
 
             this.loading()?.nativeElement.classList.add('hidden')
             this.postContainer()?.nativeElement.classList.remove('hidden')
             this.postContainer()?.nativeElement.classList.add('flex')
+        },
+        err => {
+            if (this.Unauthenticated(err.status)) return
+
+            if (err.status >= 500) {
+                throw new Error('Server error')
+                return
+            }
+            
         })
     }
 
@@ -100,12 +108,23 @@ export class PostsComponent {
 
         await this.loginSvc.getCsrf()
         this.postSvc.deletePost(post).subscribe(res => {
+            
             if (res.error){
-                alert('nofufo')
+                
                 return
             }
             alert('sifufo')
             this.posts().splice(this.posts().indexOf(post), 1)
         })
+    }
+
+    Unauthenticated(status : number) : boolean{
+        if (status === 401){
+            this.loginSvc.isLogged.set(false)
+            localStorage.removeItem('isLogged')
+            this.router.navigate(['/login'])
+            return false
+        }
+        return true
     }
 }
