@@ -3,6 +3,8 @@ import {IndexComponent} from "./index/index.component";
 import { LoginComponent } from './login/login.component';
 import { PostsComponent } from './posts/posts.component';
 import { RegisterComponent } from './login/register/register.component';
+import {PostCardComponent} from "./posts/post-card/post-card.component";
+import {PostComponent} from "./posts/post/post.component";
 
 
 export const routes: Routes = [
@@ -25,6 +27,10 @@ export const routes: Routes = [
     {
         path : 'login',
         component: LoginComponent
+    },
+    {
+        path : 'post/:post',
+        component : PostComponent
     }
 
 ];

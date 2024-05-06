@@ -11,7 +11,7 @@ import { User } from './models/user/user';
 export class LoginService {
     public isLogged = signal<boolean>(JSON.parse(localStorage.getItem('isLogged') ?? 'false'))
     user = signal<User | null>(null)
-    
+
     constructor(private http: HttpClient) {
     }
 
@@ -35,7 +35,7 @@ export class LoginService {
     }
 
     logout(): Observable<any> {
-        return this.http.post<any>(`${this.path}/logout`, { withCredential: true })
+        return this.http.post<any>(`${this.path}/logout`, { withCredentials: true })
     }
 
     activate(code: string): Observable<any> {

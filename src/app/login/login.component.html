@@ -1,4 +1,4 @@
-<section class="bg-main-grey h-[90vh] mt-[10vh] p-4">
+<section class="bg-main-grey min-h-[90vh] mt-[10vh] p-4">
     <div #formContainer class="flex flex-col h-full items-center max-w-screen-sm gap-2 mx-auto">
         <div class="drop-shadow w-full text-center">
             <h1 class="text-5xl font-bold text-secondary drop-shadow-2xl p-10">Inicio de sesion</h1>
@@ -9,7 +9,7 @@
                 @if (identifier() === 'name') {
                 <!--Name-->
                 <div class="h-[32%] w-full flex flex-col">
-                    <input 
+                    <input
                         class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
                         formControlName="name" #name type="text" name="name" id="name" placeholder=" ">
 
@@ -33,7 +33,7 @@
                 }@else {
                 <div class="h-[32%] w-full flex flex-col w-full">
 
-                    <input class="border-b-2 bg-main-white w-full border-main p-2 order-2 peer" formControlName="email" 
+                    <input class="border-b-2 bg-main-white w-full border-main p-2 order-2 peer" formControlName="email"
                         #email type="email" name="email" id="email" placeholder=" ">
                     <div
                         class="w-fit peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 transition-all peer-placeholder-shown:text-dark-grey order-1">

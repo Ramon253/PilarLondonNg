@@ -1,25 +1,48 @@
-import { Component, EventEmitter, Input, input, output, signal } from '@angular/core';
-import { YoutubeVideoComponent } from '../youtube-video/youtube-video.component';
-import { Post } from '../../models/post';
-import { MultimediaComponent } from '../../multimedia/multimedia.component';
-import { LoginService } from '../../login.service';
+import {Component, signal} from '@angular/core';
+import {PostService} from "../../services/post.service";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {Post} from "../../models/post";
+import {DatePipe} from "@angular/common";
+import {popResultSelector} from "rxjs/internal/util/args";
 
 @Component({
-    selector: 'app-post',
-    standalone: true,
-    imports: [YoutubeVideoComponent, MultimediaComponent],
-    templateUrl: './post.component.html',
-    styles: ``,
+  selector: 'app-post',
+  standalone: true,
+    imports: [
+        RouterLink
+    ],
+  templateUrl: './post.component.html',
+  styleUrl: './post.component.css'
 })
 export class PostComponent {
-    @Input({ required: true }) post!: Post;
-    public isLoading = signal<boolean>(false)
-    delete = output<Post>()
+
+    post = signal<Post>({
+        name : '',
+        subject : '',
+        description : '',
+        group_id : ''
+    } as Post)
 
 
-    deletePost(){
-        this.delete.emit(this.post as Post);
+    ngOnInit() {
+        this.route.params.subscribe(
+            params => {
+
+                this.postSvc.getPost(params['post']).subscribe(
+                    post => {
+                        console.log(post)
+                        post.created_at = this.datePipe.transform(post.created_at, 'HH:mm dd/MM/yyyy') ?? ''
+                        this.post.set(post as Post)
+                    }
+                )
+            }
+        )
+    }
+    constructor(
+        private postSvc : PostService,
+        private route : ActivatedRoute,
+        private  datePipe : DatePipe) {
     }
 
-    constructor(public loginSvc : LoginService){}
+    protected readonly popResultSelector = popResultSelector;
 }

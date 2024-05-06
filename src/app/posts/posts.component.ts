@@ -2,11 +2,11 @@ import { ApplicationRef, Component, ElementRef, EnvironmentInjector, Renderer2, 
 import { Post } from '../models/post';
 
 import { PostCreationFormComponent } from './post-creation-form/post-creation-form.component';
-import { PostComponent } from './post/post.component';
+import { PostCardComponent } from './post-card/post-card.component';
 import { LoginService } from '../login.service';
 import { PostService } from '../services/post.service';
 import { Link } from "../models/properties/link";
-import { Route, Router } from '@angular/router';
+import {Route, Router, RouterLink} from '@angular/router';
 import { FileR } from '../models/properties/file';
 import { throwError } from 'rxjs';
 
@@ -14,7 +14,7 @@ import { throwError } from 'rxjs';
 @Component({
     selector: 'app-posts',
     standalone: true,
-    imports: [PostCreationFormComponent, PostComponent],
+    imports: [PostCreationFormComponent, PostCardComponent, RouterLink],
     templateUrl: './posts.component.html',
     styles: ``,
 })
@@ -60,9 +60,8 @@ export class PostsComponent {
 
             if (err.status >= 500) {
                 throw new Error('Server error')
-                return
             }
-            
+
         })
     }
 
@@ -108,9 +107,9 @@ export class PostsComponent {
 
         await this.loginSvc.getCsrf()
         this.postSvc.deletePost(post).subscribe(res => {
-            
+
             if (res.error){
-                
+
                 return
             }
             alert('sifufo')

@@ -2,12 +2,14 @@ import { Component, EventEmitter, HostBinding, Output, signal, NgModule, viewChi
 import { RouterLink, RouterLinkActive, Routes } from "@angular/router";
 import { LoginService } from '../../login.service';
 import { User } from '../../models/user/user';
+import {NgOptimizedImage} from "@angular/common";
+import {UserCardComponent} from "../user-card/user-card.component";
 
 
 @Component({
 	selector: 'app-navbar',
 	standalone: true,
-	imports: [RouterLink, RouterLinkActive],
+    imports: [RouterLink, RouterLinkActive, NgOptimizedImage, UserCardComponent],
 	templateUrl: './navbar.component.html',
 	styles: ``
 })
@@ -23,7 +25,11 @@ export class NavbarComponent {
 			this.loginSvc.getUser().subscribe(
 				user => {
 					this.loginSvc.user.set(user.user as User)
-			})
+			},
+                error => {
+                    this.loginSvc.isLogged.set(false)
+                    localStorage.removeItem('isLogged')
+                })
 		}
 	}
 	toggleDarkMode(button: HTMLButtonElement) {

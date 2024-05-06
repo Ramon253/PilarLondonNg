@@ -31,7 +31,7 @@ export class LoginComponent {
             Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>\/?]).+$/),
             Validators.minLength(10)
         ]]
-    }) 
+    })
 
 
     constructor(
@@ -39,8 +39,7 @@ export class LoginComponent {
         private formBuilder: FormBuilder,
         public validator: ValidationsService,
         private router: Router
-    ) { 
-        
+    ) {
         effect(this.requireId);
     }
 
@@ -53,8 +52,7 @@ export class LoginComponent {
         this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
 
         let res = await this.loginSvc.getCsrf()
-        this.loginForm.get(this.identifier() === 'name' ? 'email' : 'name')?.setValue('')
-        
+
         this.loginSvc
             .login(this.loginForm.getRawValue() as Credentials)
             .subscribe((user) => {
@@ -72,7 +70,7 @@ export class LoginComponent {
 
                 this.loginSvc.isLogged.set(true)
 
-                const expiration = new Date().getTime() + 120 * 60 * 1000; 
+                const expiration = new Date().getTime() + 120 * 60 * 1000;
                 const isLogged = {
                     isLogged : true,
                     expiration: expiration
@@ -91,9 +89,7 @@ export class LoginComponent {
     }
 
     requireId = () => {
-        console.log('Form');
-        console.log(this.loginForm);
-        
+
         this.loginForm.get(this.identifier())?.setValidators(Validators.required)
 
         if (this.identifier() === 'email')
@@ -102,16 +98,16 @@ export class LoginComponent {
         this.loginForm.get(this.identifier())?.updateValueAndValidity();
         console.log('Form after ->' + this.identifier());
         console.log(this.loginForm);
-        
+
         let before = this.identifier() === 'name' ? 'email' : 'name'
 
         console.log(before);
         console.log(this.loginForm.get(before));
-        
-        
+
+
         this.loginForm.get(before)?.removeValidators(Validators.required);
         this.loginForm.get(before)?.updateValueAndValidity();
-
+        this.loginForm.get(before)?.setValue('')
         console.log('form al final');
         console.log(this.loginForm);
       }

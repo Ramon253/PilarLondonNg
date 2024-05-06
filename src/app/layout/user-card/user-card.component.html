@@ -1,0 +1,22 @@
+@if (user() === null) {
+    <div class="rounded-full bg-main-grey animate-pulse aspect-square size-16"></div>
+} @else {
+    <details class="h-full relative rounded-full  items-center   bg-main-grey">
+        <summary class="flex items-center gap-4">
+            <div
+                class="rounded-full overflow-hidden flex items-center justify-center shadow-xl bg-main-grey aspect-square max-w-fit h-[110%] p-2 ">
+                <img src="assets/img/defaultProfile.png" alt="default_profile_photo"
+                     class="size-full min-w-8 aspect-square">
+            </div>
+            <div class="w-fit overflow-hidden text-center pr-4 font-bold text-main"> {{ user()?.name }}</div>
+        </summary>
+        <div #options class="">
+            <button
+                class="text-secondary border-[3px] border-secondary rounded-lg py-[2px] px-[3px] flex items-center hover:bg-secondary hover:text-main-grey transition hover:scale-110 gap-2"
+                (click)="logout()">
+                <span class="material-icons-outlined">logout</span> logout
+            </button>
+        </div>
+    </details>
+
+}

@@ -1,17 +1,8 @@
-import {
-    Component,
-    EventEmitter,
-    Output,
-    Renderer2,
-    signal,
-} from '@angular/core';
-
-import { fromEvent } from 'rxjs';
-import { Link } from '../../models/properties/link';
-import { Post } from '../../models/post';
-import { Title } from '@angular/platform-browser';
-import { YoutubeVideoComponent } from '../youtube-video/youtube-video.component';
-import { PostService } from '../../services/post.service';
+import {Component, EventEmitter, Output, Renderer2, signal,} from '@angular/core';
+import {Link} from '../../models/properties/link';
+import {Post} from '../../models/post';
+import {YoutubeVideoComponent} from '../youtube-video/youtube-video.component';
+import {PostService} from '../../services/post.service';
 
 @Component({
     selector: 'app-post-creation-form',
@@ -31,7 +22,7 @@ export class PostCreationFormComponent {
         const link = {
             link_name: textInput.value,
             link: urlInput.value,
-            id : '1'
+            id: '1'
         };
 
         if (this.checkLink(urlInput.value)) {
@@ -42,10 +33,10 @@ export class PostCreationFormComponent {
         textInput.value = '';
     }
 
-    deleteLink(event : Event){
+    deleteLink(event: Event) {
         console.log(event.target);
     }
-    
+
     createPost(
         titleInput: HTMLInputElement,
         descriptionInput: HTMLTextAreaElement,
@@ -58,20 +49,20 @@ export class PostCreationFormComponent {
             subject: 'hOLA MUNDO',
             description: descriptionInput.value,
             links: this.links(),
-            videos : this.videos()
+            videos: this.videos()
         };
-        
+
 
         post.links.push(...this.videos())
 
         this.postSvc.postPost(post as Post)
-            .subscribe(res => {
-                if(res.error)
-                    return
-                post.links = this.links()
-                this.post.emit(post as Post);
-            })
-        
+            .subscribe(
+                  res => {
+                    post.links = this.links()
+                    this.post.emit(post as Post);
+                }
+            )
+
         this.links.set([]);
         this.videos.set([]);
         titleInput.value = '';
@@ -81,12 +72,14 @@ export class PostCreationFormComponent {
     checkLink(url: string): boolean {
         return url.includes('youtube') || url.includes('yout');
     }
+
     toggleForm() {
         this.close.emit(true);
     }
 
     constructor(
         private renderer: Renderer2,
-        public postSvc : PostService
-    ) {}
+        public postSvc: PostService
+    ) {
+    }
 }
