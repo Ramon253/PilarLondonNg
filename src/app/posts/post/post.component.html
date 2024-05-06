@@ -24,7 +24,7 @@ class="w-full bg-main-grey">
                 </div>
                 <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
                     @for(file of post().files; track $index){
-                        <a class="p-4 rounded-2xl border-2 border-secondary" href="https://localhost:8000/api/post/file/{{file.id}}/download">{{file.file_name}}</a>
+                        <a class="p-4 rounded-2xl border-2 border-secondary" href="http://localhost:8000/api/post/file/{{file.id}}/download">{{file.file_name}}</a>
                     }
                 </div>
             </div>
