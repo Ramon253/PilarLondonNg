@@ -9,6 +9,7 @@ import { Link } from "../models/properties/link";
 import {Route, Router, RouterLink} from '@angular/router';
 import { FileR } from '../models/properties/file';
 import { throwError } from 'rxjs';
+import {ValidationsService} from "../services/validations.service";
 
 
 @Component({
@@ -33,7 +34,8 @@ export class PostsComponent {
         private el: ElementRef,
         private router: Router,
         public loginSvc: LoginService,
-        public postSvc: PostService
+        public postSvc: PostService,
+        private validator : ValidationsService
     ) {
 
         if(!this.loginSvc.isLogged()){
@@ -71,7 +73,7 @@ export class PostsComponent {
          */
         post.videos = []
         post.links = post.links.filter((link: Link) => {
-            if (this.postSvc.checkLink(link.link)) {
+            if (this.validator.checkLink(link.link)) {
                 post.videos.push(link)
                 return false
             }
@@ -83,7 +85,7 @@ export class PostsComponent {
          */
         post.multimedia = []
         post.files = post.files.filter((file: FileR) => {
-            if (file.mime_type.includes('image') || file.mime_type.includes('video')) {
+            if (this.validator.checkFile(file.mime_type)) {
                 post.multimedia?.push(file)
                 return false
             }

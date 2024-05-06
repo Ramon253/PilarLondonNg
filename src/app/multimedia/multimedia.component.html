@@ -1,7 +1,8 @@
-<div>
-    <h2>{{file()?.header}}</h2>
+<div class="flex flex-col gap-5">
+    <h2 class="text-3xl font-bold text-main">{{ file()?.header ?? file()?.file_name}}</h2>
     @if (file()?.mime_type?.includes('image')) {
-        <img src="http://localhost:8000/api/post/file/{{file()?.id}}/get" class="aspect-auto" alt="{{file()?.file_name}}">
+        <img src="http://localhost:8000/api/post/file/{{file()?.id}}/get"  class="aspect-auto"
+             alt="{{file()?.file_name}}">
     } @else {
         <video src="http://localhost:8000/api/post/file/{{file()?.id}}/get" controls></video>
     }

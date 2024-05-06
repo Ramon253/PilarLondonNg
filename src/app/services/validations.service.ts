@@ -33,4 +33,11 @@ export class ValidationsService {
 
         return ''
     }
+
+    public checkLink(url: string): boolean {
+        return url.includes('youtube') || url.includes('yout') || url.includes('drive.google.com');
+    }
+    public checkFile(mimeType : string) : boolean {
+        return mimeType.includes('video') || mimeType.includes('image')
+    }
 }

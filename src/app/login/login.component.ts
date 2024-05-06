@@ -77,7 +77,10 @@ export class LoginComponent {
                 };
                 localStorage.setItem('isLogged', JSON.stringify(isLogged))
                 this.router.navigate(['/posts']);
-            })
+            },
+                error => {
+                    throw new Error()
+                })
     }
 
     hasErrors(field: string) {
