@@ -1,10 +1,9 @@
 <section #loading>
 </section>
 
-<section
-    class="w-full bg-main-grey">
+<section class="w-full bg-main-grey">
     <div class="mt-[10vh] min-h-[90vh] max-w-screen-xl mx-auto p-4 flex gap-10 bg-main-grey">
-        <div class="flex flex-col items-center max-w-screen-md  mx-auto gap-4 pt-10">
+        <div class="flex flex-col items-center max-w-screen-lg  w-max mx-auto gap-4 pt-10">
             <div class="pl-1 w-full flex justify-between">
                 <span>POST/{{ post().group_name }}</span>
                 <span>{{ post().created_at }}</span>
@@ -15,69 +14,70 @@
             <div class="w-full min-h-3">
                 <p class="w-[768px]">{{ post().description }}</p>
             </div>
-            <div class="flex flex-col gap-10">
+            <div class="flex flex-col w-full gap-10">
                 <div class="w-full flex flex-col gap-10">
                     @for (video of post().videos; track $index) {
-                        <app-youtube-video [url]="video.link" [text]="video.link_name"></app-youtube-video>
+                    <app-youtube-video [url]="video.link" [text]="video.link_name"></app-youtube-video>
                     }
                 </div>
                 <div class="w-full flex flex-col gap-10">
                     @for (multimedia of post().multimedia; track $index) {
-                        <app-multimedia [file]="multimedia"></app-multimedia>
+                    <app-multimedia [file]="multimedia"></app-multimedia>
                     }
                 </div>
             </div>
             <div class="flex flex-col w-full gap-5 mt-10">
                 <h3 class="text-3xl text-secondary font-bold">Comentarios</h3>
                 <div class="border-b-2 border-font-grey w-full flex">
-                    <div
-                        class=" px-6 relative font-medium cursor-pointer transition {{privateComments()? '' : 'text-secondary'}} "
+                    <div class=" px-6 relative font-medium cursor-pointer transition {{privateComments()? '' : 'text-secondary'}} "
                         (click)="privateComments.set(false)">
                         Public
                         <div
                             class="absolute -bottom-[3px] left-0 h-[3px] transition ease-in-out bg-secondary w-full shadow {{privateComments()? 'translate-x-full' : ''}}">
                         </div>
                     </div>
-                    <div
-                        class="border-b px-6 font-medium cursor-pointer transition {{!privateComments()? '' : 'text-secondary'}}"
+                    <div class="border-b px-6 font-medium cursor-pointer transition {{!privateComments()? '' : 'text-secondary'}}"
                         (click)="privateComments.set(true)">
                         Private
                     </div>
                 </div>
-
-                @if (post().comments?.length === 0) {
+                <div class="flex w-full flex-col max-h-[60vh] overflow-y-scroll gap-4 pr-2">
+                    @if (post().comments?.length === 0) {
                     <div class="w-full">
                         <span>No hay ningun comentario todavia</span>
                     </div>
-                } @else {
-                    @for (comment of post().comments; track $index) {
-                        @if (comment.public && !privateComments()){
-                            <div class="w-full border-2 rounded-xl border-main text-font-grey shadow min-h-10 p-2">
-                                <p>{{ comment.content }}</p>
-                            </div>
-                        }
-                        @if (!comment.public && privateComments()){
-                            <div class="w-full border-2 rounded-xl border-main text-font-grey shadow min-h-10 p-2 flex items-center">
+                    } @else {
+                    @for (comment of comments(); track $index) {
 
-                                <p>{{ comment.content }}</p>
-                            </div>
-                        }
-                    }
-
+                    @if (((comment.public && !privateComments())|| (!comment.public && privateComments())) &&
+                    comment.parent_id === null){
+                    <app-comment [comment]="comment" (answer)="answerComment.set($event.id); answerTo.set($event.name)"
+                        [answerComments]="post().comments"></app-comment>
+                    }}}
+                </div>
+                @if (answerComment()) {
+                <div class="text-main text-lg font-medium flex items-center justify-between w-full p-4 rounded-md border-2 border-font-grey ">
+                    <div>
+                        Comentario de respuesta a : <strong>{{answerTo()}}</strong>
+                    </div>
+                    <button class="text-secondary aspect-square h-full" (click)="answerComment.set(undefined); answerTo.set(undefined)">
+                        <span class="material-icons  ">close</span>
+                    </button>
+                </div>
                 }
-
                 <div class="relative">
                     <form (submit)="postComment()" [formGroup]="postForm">
-                        <input formControlName="Comentario" #commentInput type="text" placeholder="Escriba su propio comentario"
-                               class="p-2 bg-transparent rounded-full w-full h-full border-2 border-main shadow ">
-                        <button
-                            [disabled]="postForm.invalid"
-                            type="submit"
+                        <input formControlName="Comentario" #commentInput type="text"
+                            placeholder="Escriba su propio comentario"
+                            class="p-2 bg-transparent rounded-full w-full h-full border-2 border-main shadow ">
+                        <button [disabled]="postForm.invalid" type="submit" #submitButton
                             class="border-2 {{postForm.invalid? 'cursor-not-allowed' : 'hover:bg-secondary hover:text-main-grey transition hover:scale-x-110' }} rounded-r-full text-secondary border-secondary shadow absolute right-0 h-full w-auto aspect-square text-center  ">
-
                             <div class="h-full aspect-square flex items-center justify-center bg-transparent">
-                                <span
-                                    class="material-icons text-center  transition">send</span>
+                                @if (isLoadingPost()) {
+                                <img src="assets/img/loading_wheel.png" class="p-2 animate-spin aspect-square" alt="">
+                                } @else {
+                                <span class="material-icons text-center  transition">send</span>
+                                }
                             </div>
                         </button>
 
@@ -86,30 +86,30 @@
             </div>
         </div>
 
-        <div class="w-full pt-20  ">
+        <div class="w-full pt-10">
             <div class="p-4 rounded-xl border-2 border-main h-fit flex flex-col bg-main-white shadow">
                 @if (post().files.length !== 0) {
-                    <div class="w-full border-b border-font-grey  text-center pb-4 ">
-                        <h1 class="text-secondary font-bold text-center text-2xl">Files</h1>
-                    </div>
-                    <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
-                        @for (file of post().files; track $index) {
-                            <a class="p-4 rounded-2xl border-2 border-secondary"
-                               href="http://localhost:8000/api/post/file/{{file.id}}/download">{{ file.file_name }}</a>
-                        }
-                    </div>
+                <div class="w-full border-b border-font-grey  text-center pb-4 ">
+                    <h1 class="text-secondary font-bold text-center text-2xl">Files</h1>
+                </div>
+                <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
+                    @for (file of post().files; track $index) {
+                    <a class="p-4 rounded-2xl border-2 border-secondary"
+                        href="http://localhost:8000/api/post/file/{{file.id}}/download">{{ file.file_name }}</a>
+                    }
+                </div>
                 }
                 @if (post().links.length !== 0) {
 
-                    <div class="w-full border-b border-font-grey  text-center pb-4 mt-10">
-                        <h1 class="text-main font-bold text-center text-2xl">Links</h1>
-                    </div>
-                    <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
-                        @for (link of post().links; track $index) {
-                            <a class="p-4 rounded-2xl border-2 border-secondary"
-                               href="{{link.link}}" target="_blank">{{ link.link_name }}</a>
-                        }
-                    </div>
+                <div class="w-full border-b border-font-grey  text-center pb-4 mt-10">
+                    <h1 class="text-main font-bold text-center text-2xl">Links</h1>
+                </div>
+                <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
+                    @for (link of post().links; track $index) {
+                    <a class="p-4 rounded-2xl border-2 border-secondary" href="{{link.link}}" target="_blank">{{
+                        link.link_name }}</a>
+                    }
+                </div>
                 }
             </div>
 

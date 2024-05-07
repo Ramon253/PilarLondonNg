@@ -4,6 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
-input{
+input {
     outline: none;
+}
+
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-main rounded-full shadow;
 }

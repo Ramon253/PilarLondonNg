@@ -6,6 +6,7 @@ import { ThisReceiver, identifierName } from '@angular/compiler';
 import { Credentials } from '../models/credentials';
 import { ValidationsService } from '../services/validations.service';
 import { Route, Router, RouterLink } from '@angular/router';
+import { UserResponse } from '../models/user/userResponse';
 
 @Component({
     selector: 'app-login',
@@ -55,7 +56,7 @@ export class LoginComponent {
 
         this.loginSvc
             .login(this.loginForm.getRawValue() as Credentials)
-            .subscribe((user) => {
+            .subscribe((user : UserResponse) => {
                 if (user.error) {
 
                     this.loginForm.get('name')?.setErrors({ invalidCredentials: true })
@@ -69,13 +70,8 @@ export class LoginComponent {
                 }
 
                 this.loginSvc.isLogged.set(true)
-
-                const expiration = new Date().getTime() + 120 * 60 * 1000;
-                const isLogged = {
-                    isLogged : true,
-                    expiration: expiration
-                };
-                localStorage.setItem('isLogged', JSON.stringify(isLogged))
+                this.loginSvc.user.set(user.user)
+                localStorage.setItem('isLogged', JSON.stringify(true))
                 this.router.navigate(['/posts']);
             },
                 error => {
