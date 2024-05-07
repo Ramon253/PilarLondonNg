@@ -23,7 +23,7 @@
                     <a class="mx-auto" href="{{ link.link }}">
                         {{ link.link_name }}
                     </a>
-                    <button (click)="deleteLink($event)"
+                    <button >
                         class="hover:text-red-500 transition flex items-center justify-center ">
                         <span class="material-icons">close</span>
                     </button>
@@ -42,6 +42,30 @@
                     class="border border-gray-400 rounded p-1 hover:scale-105 transition">
                     Añadir link
                 </button>
+
+            </div>
+            <div class="rounded border-2 p-4 flex flex-col gap-2 items-start justify-center w-[70%]">
+                @for (file of files(); track $index) {
+                <div class="w-full border-2 text-center font-bold rounded-2xl p-4 flex items-center justify-between">
+                    <span class="mx-auto" >
+                        {{file.name}}
+                    </span>
+                    <button
+                        class="hover:text-red-500 transition flex items-center justify-center ">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+
+                }
+                <div class="flex flex-col w-full">
+                    <label for="file">Texto</label>
+                    <input #fileInput type="file" id="file" class="border-2 w-full"/>
+                </div>
+                <button (click)="creteFile(fileInput)" type="button"
+                    class="border border-gray-400 rounded p-1 hover:scale-105 transition">
+                    Añadir archivo
+                </button>
+
             </div>
             <button
                 class="p-2 rounded border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition"

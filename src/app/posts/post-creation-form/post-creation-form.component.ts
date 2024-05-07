@@ -3,6 +3,8 @@ import {Link} from '../../models/properties/link';
 import {Post} from '../../models/post';
 import {YoutubeVideoComponent} from '../youtube-video/youtube-video.component';
 import {PostService} from '../../services/post.service';
+import {Event} from "@angular/router";
+import {createFind} from "rxjs/internal/operators/find";
 
 @Component({
     selector: 'app-post-creation-form',
@@ -17,6 +19,7 @@ export class PostCreationFormComponent {
 
     links = signal<Link[]>([]);
     videos = signal<Link[]>([]);
+    files = signal<File[]>([])
 
     createLink(urlInput: HTMLInputElement, textInput: HTMLInputElement) {
         const link = {
@@ -34,7 +37,14 @@ export class PostCreationFormComponent {
     }
 
     deleteLink(event: Event) {
-        console.log(event.target);
+        console.log(event);
+    }
+
+    creteFile(file: HTMLInputElement) {
+
+        let inputFile = file.files?.item(0) ?? null
+        if (inputFile !== null)
+            this.files().push(inputFile)
     }
 
     createPost(
@@ -49,7 +59,8 @@ export class PostCreationFormComponent {
             subject: 'hOLA MUNDO',
             description: descriptionInput.value,
             links: this.links(),
-            videos: this.videos()
+            videos: this.videos(),
+            files : this.files()
         };
 
 
@@ -57,7 +68,7 @@ export class PostCreationFormComponent {
 
         this.postSvc.postPost(post as Post)
             .subscribe(
-                  res => {
+                res => {
                     post.links = this.links()
                     this.post.emit(post as Post);
                 }
@@ -82,4 +93,6 @@ export class PostCreationFormComponent {
         public postSvc: PostService
     ) {
     }
+
+    protected readonly createFind = createFind;
 }

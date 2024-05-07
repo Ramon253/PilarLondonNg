@@ -13,6 +13,21 @@ export class LoginService {
     user = signal<User | null>(null)
 
     constructor(private http: HttpClient) {
+        if (!this.isLogged()){
+            console.log('????')
+            this.getUser().subscribe(
+                user =>{
+                    this.isLogged.set(true)
+                    this.user.set(user.user)
+                    localStorage.setItem('isLogged', 'true')
+                },
+                error => {
+                    if (error.status  === 401){
+                        this.user.set(null)
+                    }
+                }
+            );
+        }
     }
 
     private path = 'http://localhost:8000/api';
