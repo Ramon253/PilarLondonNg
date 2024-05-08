@@ -4,12 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
-input {
+input, textarea, select {
     outline: none;
 }
-textarea {
-    outline: none;
-}
+
 
 
 ::-webkit-scrollbar {

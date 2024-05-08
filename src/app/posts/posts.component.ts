@@ -23,7 +23,7 @@ export class PostsComponent {
 
     postContainer = viewChild<ElementRef>('postsContainer')
     loading = viewChild<ElementRef>('loadingContainer')
-
+    groups = signal<{name : string, id : string}[]>([])
     posts = signal<Post[]>([]);
     files = signal<FileR[]>([])
 
@@ -51,8 +51,9 @@ export class PostsComponent {
     getPosts() {
         this.postSvc.getPosts().subscribe(res => {
 
-            this.posts().push(...res.map(this.getResources) as Post[])
-
+            this.posts().push(...res.posts.map(this.getResources) as Post[])
+            this.groups.set(res.groups as {name : string, id : string}[])
+                console.log(res.groups)
             this.loading()?.nativeElement.classList.add('hidden')
             this.postContainer()?.nativeElement.classList.remove('hidden')
             this.postContainer()?.nativeElement.classList.add('flex')

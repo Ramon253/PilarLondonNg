@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Output, Renderer2, signal, viewChild,} from '@angular/core';
+import {Component, ElementRef, EventEmitter, input, Output, Renderer2, signal, viewChild,} from '@angular/core';
 import {Link} from '../../models/properties/link';
 import {Post} from '../../models/post';
 import {YoutubeVideoComponent} from '../youtube-video/youtube-video.component';
@@ -19,21 +19,22 @@ export class PostCreationFormComponent {
     @Output() post = new EventEmitter<Post>();
     @Output() close = new EventEmitter<boolean>();
 
+    groups = input<{name : string, id : string}[]>([])
+
     openLinks = viewChild<ElementRef>('openLink')
     closeLinks = viewChild<ElementRef>('closeLink')
-    linkList = viewChild<ElementRef>('linkList')
     formLink = viewChild<ElementRef>('formLink')
     linkMenu = viewChild<ElementRef>('linkMenu')
-    formContent = viewChild<ElementRef>('formContent')
     submitButton = viewChild<ElementRef>('submitButton')
 
     links = signal<Link[]>([]);
     videos = signal<Link[]>([]);
-    files = signal<File[]>([])
+    files = signal<File[]>([]);
 
     postForm = this.formBulider.group({
         name : ['', Validators.required],
-        description : ['', Validators.maxLength(500)]
+        description : ['', Validators.maxLength(500)],
+        group_id : [Validators.required]
     })
 
     linkForm = this.formBulider.group({
@@ -55,21 +56,21 @@ export class PostCreationFormComponent {
         this.linkForm.get('link_name')?.setValue('')
         this.linkForm.get('link')?.setValue('')
 
-    }   
+    }
 
     addLink(){
         this.openLinks()?.nativeElement.classList.toggle('hidden')
         this.closeLinks()?.nativeElement.classList.toggle('hidden')
-        
+
         this.linkMenu()?.nativeElement.classList.toggle('-translate-x-[50%]')
         this.formLink()?.nativeElement.classList.toggle('h-10')
         this.formLink()?.nativeElement.classList.toggle('h-fit')
 
         this.submitButton()?.nativeElement.scrollIntoView({ block: "end", behavior: "smooth" });
-    }   
+    }
 
     deleteLink() {
-        
+
     }
 
     creteFile(file: HTMLInputElement) {

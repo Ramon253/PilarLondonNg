@@ -17,6 +17,6 @@
 </div>
 
 <div #formContainer class="hidden">
-    <app-post-creation-form (post)="createPost($event)" (close)="closeForm(formContainer)">
+    <app-post-creation-form (post)="createPost($event)" [groups]="groups()" (close)="closeForm(formContainer)">
     </app-post-creation-form>
 </div>

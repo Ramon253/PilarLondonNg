@@ -15,8 +15,8 @@ export class PostService {
 
     private path = 'http://localhost:8000/api/'
 
-    public getPosts(): Observable<Post[]> {
-        return this.http.get<Post[]>(this.path + 'posts', {withCredentials: true})
+    public getPosts(): Observable<{posts : Post[], groups? : []}> {
+        return this.http.get<{posts : Post[], groups? : []}>(this.path + 'posts', {withCredentials: true})
     }
 
     public getPost(post_id: string): Observable<Post> {

@@ -32,7 +32,7 @@ export class PostComponent {
     id = ''
     answerTo = signal<string | undefined>('')
     isLoadingPost = signal<boolean>(false)
-
+    isLoading = signal<boolean>(true)
     post = signal<Post>({
         name: '',
         subject: '',
@@ -103,6 +103,7 @@ export class PostComponent {
         })
         this.comments.set(post.comments as Comment[])
 
+        this.isLoading.set(false);
         this.post.set(post as Post)
     }
 
