@@ -67,7 +67,9 @@ export class PostsComponent {
         })
     }
 
-    getResources = (post: Post) => {
+    getResources = (post :any) => {
+        post.fileLinks = post.files
+        post = post as Post
         /**
          * Get links
          */
@@ -84,7 +86,7 @@ export class PostsComponent {
          * Get files
          */
         post.multimedia = []
-        post.files = post.files.filter((file: FileR) => {
+        post.fileLinks = post.fileLinks.filter((file: FileR) => {
             if (this.validator.checkFile(file.mime_type)) {
                 post.multimedia?.push(file)
                 return false

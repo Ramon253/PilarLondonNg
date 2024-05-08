@@ -10,7 +10,8 @@ export interface Post {
     group_id : string,
     links : Link[],
     videos : Link[],
-    files : FileR[]
+    files : File[],
+    fileLinks : FileR[]
     multimedia? : FileR[],
     created_at? : string,
     group_name? : string,

@@ -1,77 +1,145 @@
-<div class="flex rounded p-20 w-screen h-screen items-center justify-center bg-opacity-20 bg-gray-700 flex-col fixed top-0 z-50 dark:bg-gray-800"
+<div class="flex rounded w-screen h-screen items-center justify-center bg-opacity-20 bg-font-grey flex-col fixed top-0 z-50 "
     #formContainer>
 
-    <form class="w-screen-xl max-w-screen-xl p-10" (submit)="createPost(title, description, $event)">
+    <form class="aspect-square max-w-screen-md w-full max-h-[80vh]" (submit)="createPost(title, description, $event)">
         <div
-            class="flex flex-col relative items-center bg-opacity-100 p-10 rounded bg-gray-50 gap-10 shadow-2xl dark:bg-gray-900 dark:text-gray-950">
+            class="flex h-full overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-main-white border-[4px] border-transparent gap-10 shadow-2xl px-20"
+            #formContent>
             <button (click)="toggleForm()"
-                class="absolute top-1 right-1 text-red-500 border-2 border-red-500 transition hover:text-white hover:bg-red-500 rounded p-1 flex items-center justify-center">
+                class="absolute top-1 right-1 text-secondary border-2 border-secondary transition hover:text-main-white hover:bg-secondary rounded hover:scale-125 p-1 flex items-center justify-center">
                 <span class="material-icons">close</span>
             </button>
-            <div class="flex flex-col w-[70%] gap-2 items-start justify-center text-center">
-                <label class="w-full" for="title">Titulo</label>
-                <input #title id="title" type="text" required class="border rounded p-2 w-full" />
+            <div class="flex flex-col w-full gap-2 items-center justify-start ">
+                <input placeholder=" " #title id="title" type="text" required
+                    class="border-b-2 border-main peer bg-transparent order-2 p-2 w-full cursor-text" />
+                <label
+                    class="w-full font-medium translate-x-0 text-main translate-y-0 order-1 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition ease-in-out cursor-text select-none"
+                    for="title">Titulo</label>
+                <div class="h-[2rem] order-3 overflow-hidden">
+                    <div class="text-secondary -translate-y-full invalid:-translate-y-0">
+                        *
+                    </div>
+                </div>
             </div>
-            <div class="flex flex-col gap-2 items-start justify-center w-[70%]">
-                <label for="description">Descripcion</label>
-                <textarea #description class="border h-full w-full" name="description" required id="description"
-                    rows="10"></textarea>
+            <div class="flex flex-col gap-2 items-start justify-center w-full">
+                <label class="font-medium text-main" for="description">Descripción</label>
+                <textarea #description class="border-2 border-main shadow rounded-lg p-2 h-full w-full "
+                    name="description" required id="description" rows="10"
+                    placeholder="Escribe en contenido de texto de el post"></textarea>
             </div>
-            <div class="rounded border-2 p-4 flex flex-col gap-2 items-start justify-center w-[70%]">
-                @for (link of links(); track $index) {
-                <div class="w-full border-2 text-center font-bold rounded-2xl p-4 flex items-center justify-between">
-                    <a class="mx-auto" href="{{ link.link }}">
-                        {{ link.link_name }}
-                    </a>
-                    <button >
-                        class="hover:text-red-500 transition flex items-center justify-center ">
-                        <span class="material-icons">close</span>
+            <!-- Resources -->
+            <div class="w-full flex flex-col items-center h-fit">
+                <!-- Buttons-->
+                <div class="w-full flex items-center justify-center h-fit p-2 gap-4">
+                    <button type="button" (click)="addLink()">
+                        <div #openLink
+                            class="border-2 p-2 text-secondary w-fit rounded-lg flex items-center border-secondary gap-2 transition-all">
+                            <span class="material-icons flex items-center justify-center w-fit">link</span>
+                            <span> | Add a new link</span>
+                        </div>
+                        <div #closeLink
+                            class="flex border-2 p-2 w-fit rounded-lg items-center border-secondary gap-2 text-main-white bg-secondary hidden transition-all">
+                            <span class="material-icons">close</span>
+                            <span>Close the form</span>
+                        </div>
+                    </button>
+                    <button type="button" (click)="addLink()">
+                        <div #openLink
+                            class="border-2 p-2 text-main w-fit rounded-lg flex items-center border-main gap-2 transition-all">
+                            <span class="material-icons flex items-center justify-center w-fit">attach_file</span>
+                            <span> | Add a new file</span>
+                        </div>
+                        <div #closeLink
+                            class="flex border-2 p-2 w-fit rounded-lg items-center border-main gap-2 text-main-white bg-main hidden transition-all">
+                            <span class="material-icons">close</span>
+                            <span>Close the form</span>
+                        </div>
                     </button>
                 </div>
+                <!-- Links -->
+                <div class="w-full overflow-hidden  h-fit">
+                    <div #linkMenu class="flex w-[200%] transition-all ease-out h-fit">
+                        <div #lists class="w-1/2 h-fit flex items-start gap-4">
+                            <div #linkList class="w-1/2 flex flex-col gap-4 h-fit ">
+                                <div class="w-full pb-2 border-b-2 border-main">
+                                    <span class="text-2xl font-medium text-main ">Links</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    @for (link of links(); track $index) {
+                                    <div
+                                        class="w-fit p-2 rounded-lg border-2 border-main flex items-center justify-between">
+                                        <a class="mx-auto" target="_blank" href="{{ link.link }}">
+                                            {{ link.link_name }}
+                                        </a>
+                                        <button class="hover:text-red-500 transition flex items-center justify-center " >
+                                            <span class="material-icons">close</span>
+                                        </button>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="flex flex-col w-1/2 gap-4 min-h-[2rem]" #fileList>
+                                <div class=" w-full pb-2 border-b-2 border-secondary">
+                                    <span class="text-2xl font-medium text-secondary ">Files</span>
+                                </div>
+                                <div class=" flex flex-col flex-wrap gap-2">
+                                    @for (file of files(); track $index) {
+                                    <div
+                                        class="w-full border-2 text-center font-bold rounded-2xl p-4 flex items-center justify-between">
+                                        <span class="mx-auto">
+                                            {{file.name}}
+                                        </span>
+                                        <button class="hover:text-red-500 transition flex items-center justify-center ">
+                                            <span class="material-icons">close</span>
+                                        </button>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/2 h-fit flex">
+                            <form [formGroup]="linkForm" #formLink
+                                class="w-full flex flex-col gap-1 p-4 transition-all ease-in-out h-10"
+                                (submit)="createLink()">
+                                <div class="flex flex-col w-full select-none gap-3 items-start justify-center pt-2">
+                                    <input formControlName="link_name" type="text" id="linkTitle"
+                                        class="border-b-2 w-full order-2 bg-transparent border-main peer"
+                                        placeholder=" " />
+                                    <label
+                                        class="order-1 translate-x-0 translate-y-0 font-medium text-main peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition-all ease-in-out"
+                                        for="linkTitle">Nombre del link</label>
+                                    <div class="min-h-[2rem] order-3">
 
-                }
-                <div class="flex flex-col w-full">
-                    <label for="linkTitle">Texto</label>
-                    <input #textInput type="text" id="linkTitle" class="border-2 w-full" />
-                </div>
-                <div class="flex w-full flex-col">
-                    <label for="link">Link</label>
-                    <input #urlInput type="url" id="link" class="w-full border-2" />
-                </div>
-                <button (click)="createLink(urlInput, textInput)" type="button"
-                    class="border border-gray-400 rounded p-1 hover:scale-105 transition">
-                    Añadir link
-                </button>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full select-none gap-3 items-start justify-center pt-2">
+                                    <input formControlName="link" type="url" id="link"
+                                        class="border-b-2 w-full order-2 bg-transparent border-main peer"
+                                        placeholder=" " />
+                                    <label
+                                        class="order-1 translate-x-0 translate-y-0 font-medium text-main peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition-all ease-in-out"
+                                        for="link">Url del link</label>
+                                    <div class="min-h-[2rem] order-3">
 
+                                    </div>
+                                </div>
+                                <button [disabled]="linkForm.invalid" type="submit"
+                                    class="border-2 cursor-pointer border-secondary text-secondary hover:text-main-white hover:bg-secondary rounded-md p-1 hover:scale-105  transition">
+                                    Añadir link
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="rounded border-2 p-4 flex flex-col gap-2 items-start justify-center w-[70%]">
-                @for (file of files(); track $index) {
-                <div class="w-full border-2 text-center font-bold rounded-2xl p-4 flex items-center justify-between">
-                    <span class="mx-auto" >
-                        {{file.name}}
-                    </span>
-                    <button
-                        class="hover:text-red-500 transition flex items-center justify-center ">
-                        <span class="material-icons">close</span>
-                    </button>
-                </div>
 
-                }
-                <div class="flex flex-col w-full">
-                    <label for="file">Texto</label>
-                    <input #fileInput type="file" id="file" class="border-2 w-full"/>
-                </div>
-                <button (click)="creteFile(fileInput)" type="button"
-                    class="border border-gray-400 rounded p-1 hover:scale-105 transition">
-                    Añadir archivo
-                </button>
-
-            </div>
             <button
-                class="p-2 rounded border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition"
+                class="px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent cursor-pointer hover:bg-main hover:text-main-white hover:scale-105 transition "
+                #submitButton
                 type="submit">
                 Crear post
             </button>
         </div>
+
     </form>
 </div>

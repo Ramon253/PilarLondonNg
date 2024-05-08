@@ -1,15 +1,17 @@
-import {Component, EventEmitter, Output, Renderer2, signal,} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Output, Renderer2, signal, viewChild,} from '@angular/core';
 import {Link} from '../../models/properties/link';
 import {Post} from '../../models/post';
 import {YoutubeVideoComponent} from '../youtube-video/youtube-video.component';
 import {PostService} from '../../services/post.service';
 import {Event} from "@angular/router";
 import {createFind} from "rxjs/internal/operators/find";
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'app-post-creation-form',
     standalone: true,
-    imports: [YoutubeVideoComponent],
+    imports: [YoutubeVideoComponent, ReactiveFormsModule],
     templateUrl: './post-creation-form.component.html',
     styles: ``,
 })
@@ -17,27 +19,57 @@ export class PostCreationFormComponent {
     @Output() post = new EventEmitter<Post>();
     @Output() close = new EventEmitter<boolean>();
 
+    openLinks = viewChild<ElementRef>('openLink')
+    closeLinks = viewChild<ElementRef>('closeLink')
+    linkList = viewChild<ElementRef>('linkList')
+    formLink = viewChild<ElementRef>('formLink')
+    linkMenu = viewChild<ElementRef>('linkMenu')
+    formContent = viewChild<ElementRef>('formContent')
+    submitButton = viewChild<ElementRef>('submitButton')
+
     links = signal<Link[]>([]);
     videos = signal<Link[]>([]);
     files = signal<File[]>([])
 
-    createLink(urlInput: HTMLInputElement, textInput: HTMLInputElement) {
+    postForm = this.formBulider.group({
+        name : ['', Validators.required],
+        description : ['', Validators.maxLength(500)]
+    })
+
+    linkForm = this.formBulider.group({
+        link_name : ['', Validators.required],
+        link : ['', Validators.required]
+    })
+
+
+    createLink() {
         const link = {
-            link_name: textInput.value,
-            link: urlInput.value,
-            id: '1'
-        };
+            link_name: this.linkForm.get('link_name')?.value,
+            link: this.linkForm.get('link')?.value
+        } as Link;
 
-        if (this.checkLink(urlInput.value)) {
-            this.videos().push(link);
-        } else this.links().push(link);
 
-        urlInput.value = '';
-        textInput.value = '';
-    }
+        this.links().push(link)
 
-    deleteLink(event: Event) {
-        console.log(event);
+        this.addLink()
+        this.linkForm.get('link_name')?.setValue('')
+        this.linkForm.get('link')?.setValue('')
+
+    }   
+
+    addLink(){
+        this.openLinks()?.nativeElement.classList.toggle('hidden')
+        this.closeLinks()?.nativeElement.classList.toggle('hidden')
+        
+        this.linkMenu()?.nativeElement.classList.toggle('-translate-x-[50%]')
+        this.formLink()?.nativeElement.classList.toggle('h-10')
+        this.formLink()?.nativeElement.classList.toggle('h-fit')
+
+        this.submitButton()?.nativeElement.scrollIntoView({ block: "end", behavior: "smooth" });
+    }   
+
+    deleteLink() {
+        
     }
 
     creteFile(file: HTMLInputElement) {
@@ -90,7 +122,8 @@ export class PostCreationFormComponent {
 
     constructor(
         private renderer: Renderer2,
-        public postSvc: PostService
+        public postSvc: PostService,
+        private formBulider : FormBuilder
     ) {
     }
 

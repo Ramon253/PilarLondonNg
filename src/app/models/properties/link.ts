@@ -1,5 +1,5 @@
 export interface Link {
-    id : string,
+    id ?: string,
     link_name : string,
     link : string,
 }

@@ -21,7 +21,7 @@
         }
     </div>
     <div class="flex w-full gap-4">
-        @for (file of post.files; track $index) {
+        @for (file of post.fileLinks; track $index) {
         <a href="http://localhost:8000/api/post/file/{{file.id}}/download"
             class="flex w-fit border-2 text-center font-bold rounded-2xl p-4">
             {{ file.file_name }}

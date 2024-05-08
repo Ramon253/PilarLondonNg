@@ -12,6 +12,9 @@ import { Comment } from "../../models/properties/comment";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommaExpr } from '@angular/compiler';
 import { CommentComponent } from '../../resources/comment/comment.component';
+import { FileR } from '../../models/properties/file';
+import { Link } from '../../models/properties/link';
+
 
 @Component({
     selector: 'app-post',
@@ -68,21 +71,25 @@ export class PostComponent {
 
     }
 
-    getPost = (post: Post) => {
-        console.log(post)
+    getPost = (post : any) => {
+
+        post.fileLinks = post.files
+        post = post as Post
+
         post.created_at = this.datePipe.transform(post.created_at, 'HH:mm dd/MM/yyyy') ?? ''
         post.multimedia = []
         post.videos = []
 
-        post.files = post.files.filter((file) => {
-            if (!this.validator.checkFile(file.mime_type)) {
+
+        post.fileLinks = post.fileLinks.filter((fileLink : FileR) => {
+            if (!this.validator.checkFile(fileLink.mime_type)) {
                 return true
             }
-            post.multimedia?.push(file)
+            post.multimedia?.push(fileLink)
             return false
         })
 
-        post.links = post.links.filter((link) => {
+        post.links = post.links.filter((link : Link) => {
             if (!this.validator.checkLink(link.link)) {
                 return true
             }
@@ -90,7 +97,7 @@ export class PostComponent {
             return false
         })
 
-        post.comments = post.comments?.map(comment => {
+        post.comments = post.comments?.map((comment : Comment) => {
             comment.created_at = this.datePipe.transform(comment.created_at, 'HH:mm dd/MM/yyyy') ?? ''
             return comment
         })
