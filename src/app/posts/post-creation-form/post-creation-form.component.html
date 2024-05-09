@@ -1,25 +1,23 @@
 <div class="flex rounded w-screen h-screen items-center justify-center bg-opacity-20 bg-font-grey flex-col fixed top-0 z-50 "
     #formContainer>
 
-    <form class="aspect-square max-w-screen-md w-full h-fit max-h-[90vh]" (submit)="createPost(title, description, $event)">
-        <div
-            class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-main-white border-[4px] border-transparent gap-10 shadow-2xl px-20"
+    <form class="aspect-square max-w-screen-md w-full h-fit max-h-[90vh]" [formGroup]="postForm"
+        (submit)="createPost($event, description)"
+        #form>
+        <div class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-main-white border-[4px] border-transparent gap-10 shadow-2xl px-20"
             #formContent>
             <button (click)="toggleForm()"
                 class="absolute top-1 right-1 text-secondary border-2 border-secondary transition hover:text-main-white hover:bg-secondary rounded hover:scale-125 p-1 flex items-center justify-center">
                 <span class="material-icons">close</span>
             </button>
-            <div class="flex flex-col w-full gap-2 items-center justify-start ">
-                <input placeholder=" " #title id="title" type="text" required
+            <div class="flex flex-col w-full gap-2 items-start justify-center ">
+                <input placeholder=" " #title id="title" type="text" formControlName="name"
                     class="border-b-2 border-main peer bg-transparent order-2 p-2 w-full cursor-text" />
                 <label
                     class="w-full font-medium translate-x-0 text-main translate-y-0 order-1 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition ease-in-out cursor-text select-none"
                     for="title">Titulo</label>
-                <div class="h-[2rem] order-3 overflow-hidden">
-                    <div class="text-secondary -translate-y-full invalid:-translate-y-0">
-
-                    </div>
-                </div>
+                <app-validation-error class="order-3 w-full" [form]="postForm" [errors]="['required']"
+                    [field]="'name'"></app-validation-error>
             </div>
             <div class="flex flex-col gap-2 items-start justify-center w-full">
                 <label class="font-medium text-main" for="description">Descripción</label>
@@ -27,14 +25,20 @@
                     name="description" required id="description" rows="10"
                     placeholder="Escribe en contenido de texto de el post"></textarea>
             </div>
-            <div class="w-full flex items-baseline gap-4 ">
-                <label class="font-medium text-main" for="group_id">Grupo del post</label>
-                <select class="border-main border-2 rounded-md"  formControlName="group_id" id="group_id">
-                    @for (group of groups() ; track $index){
+            <div class="w-full flex flex-col">
+                <div class="flex items-baseline w-full gap-4">
+                    <label class="font-medium text-main" for="group_id">Grupo del post</label>
+                    <select  #select  class="border-main border-2 rounded-md" formControlName="group_id" id="group_id" autocomplete="off">
+                        <option #default [attr.selected]="true" disabled hidden value="">Escoje grupo</option>
+                        @for (group of groups() ; track $index){
                         <option value="{{group.id}}">{{group.name}}</option>
-                    }
-                    <option value="">Publico</option>
-                </select>
+                        }
+                        <option value="">Publico</option>
+                        
+                    </select>
+                </div>
+                <app-validation-error class="" [form]="postForm" [errors]="['required']"
+                    field="group_id" [showError]="showError()"></app-validation-error>
             </div>
             <!-- Resources -->
             <div class="w-full flex flex-col items-center h-fit">
@@ -52,17 +56,13 @@
                             <span>Close the form</span>
                         </div>
                     </button>
-                    <button type="button" (click)="addLink()">
+                    <button type="button" class=" group" (click)="file.click()">
                         <div #openLink
-                            class="border-2 p-2 text-main w-fit rounded-lg flex items-center border-main gap-2 transition-all">
+                            class="border-2 p-2 text-main group-hover:bg-main group-hover:scale-110 group-hover:text-main-white w-fit rounded-lg flex items-center border-main gap-2 transition-all">
                             <span class="material-icons flex items-center justify-center w-fit">attach_file</span>
                             <span> | Add a new file</span>
                         </div>
-                        <div #closeLink
-                            class="flex border-2 p-2 w-fit rounded-lg items-center border-main gap-2 text-main-white bg-main hidden transition-all">
-                            <span class="material-icons">close</span>
-                            <span>Close the form</span>
-                        </div>
+                        <input #file type="file" class="hidden" (change)="addFile($event)">
                     </button>
                 </div>
                 <!-- Links -->
@@ -80,7 +80,7 @@
                                         <a class="mx-auto" target="_blank" href="{{ link.link }}">
                                             {{ link.link_name }}
                                         </a>
-                                        <button class="hover:text-red-500 transition flex items-center justify-center " >
+                                        <button type="button" (click)="deleteLink(link)" class="hover:text-red-500 transition flex items-center justify-center ">
                                             <span class="material-icons">close</span>
                                         </button>
                                     </div>
@@ -93,12 +93,12 @@
                                 </div>
                                 <div class=" flex flex-col flex-wrap gap-2">
                                     @for (file of files(); track $index) {
-                                    <div
-                                        class="w-full border-2 text-center font-bold rounded-2xl p-4 flex items-center justify-between">
-                                        <span class="mx-auto">
-                                            {{file.name}}
-                                        </span>
-                                        <button class="hover:text-red-500 transition flex items-center justify-center ">
+                                        <div
+                                        class="w-fit p-2 rounded-lg border-2 border-secondary flex items-center justify-between">
+                                        <a class="mx-auto" download [href]="download(file)" >
+                                            {{ file.name }}
+                                        </a>
+                                        <button type="button" (click)="deleteFile(file)"  class="hover:text-red-500 transition flex items-center justify-center ">
                                             <span class="material-icons">close</span>
                                         </button>
                                     </div>
@@ -117,9 +117,8 @@
                                     <label
                                         class="order-1 translate-x-0 translate-y-0 font-medium text-main peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition-all ease-in-out"
                                         for="linkTitle">Nombre del link</label>
-                                    <div class="min-h-[2rem] order-3">
-
-                                    </div>
+                                    <app-validation-error class="order-3" [form]="linkForm" [errors]="['required']"
+                                        field="link_name"></app-validation-error>
                                 </div>
                                 <div class="flex flex-col w-full select-none gap-3 items-start justify-center pt-2">
                                     <input formControlName="link" type="url" id="link"
@@ -128,9 +127,8 @@
                                     <label
                                         class="order-1 translate-x-0 translate-y-0 font-medium text-main peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition-all ease-in-out"
                                         for="link">Url del link</label>
-                                    <div class="min-h-[2rem] order-3">
-
-                                    </div>
+                                    <app-validation-error class="order-3" [form]="linkForm" [errors]="['required']"
+                                        field="link"></app-validation-error>
                                 </div>
                                 <button [disabled]="linkForm.invalid" type="submit"
                                     class="border-2 cursor-pointer border-secondary text-secondary hover:text-main-white hover:bg-secondary rounded-md p-1 hover:scale-105  transition">
@@ -143,9 +141,10 @@
             </div>
 
             <button
-                class="px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent cursor-pointer hover:bg-main hover:text-main-white hover:scale-105 transition "
-                #submitButton
-                type="submit">
+                class="{{postForm.invalid ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-main hover:text-main-white hover:scale-105'}} px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent  transition "
+                #submitButton type="submit"
+                [disabled]="postForm.invalid"
+                (click)="tryPostPost()">
                 Crear post
             </button>
         </div>

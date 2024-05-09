@@ -19,15 +19,7 @@
                             Nombre
                         </label>
                     </div>
-                    <div class="order-3 overflow-hidden h-[2rem]">
-                        <div
-                            class="{{(hasErrors('name'))? 'translate-y-0': '-translate-y-[150%]' }} transition ease-in-out flex text-red-500">
-                            <span> *{{ validator.getErrors('name', ['required', 'inUse', 'invalidCredentials'],
-                                loginForm)
-                                }}
-                            </span>
-                        </div>
-                    </div>
+                    <app-validation-error class="order-3" [form]="loginForm" field="name" [errors]="['required', 'invalidCredentials']"></app-validation-error>
                 </div>
 
                 }@else {
@@ -42,16 +34,7 @@
                         </label>
                     </div>
 
-                    <div class="h-[2rem] order-3 overflow-hidden">
-                        <div
-                            class="{{(hasErrors('email'))? 'translate-y-0': '-translate-y-[150%]'}} transition ease-in-out flex text-red-500">
-                            <span> * {{
-                                validator.getErrors('email', ['required', 'email', 'inUse', 'invalidCredentials'],
-                                loginForm)
-                                }}
-                            </span>
-                        </div>
-                    </div>
+                    <app-validation-error class="order-3" [errors]="['required', 'email', 'invalidCredentials']" [field]="'email'" [form]="loginForm"></app-validation-error>
                 </div>
 
                 }
@@ -69,16 +52,7 @@
                         </label>
                     </div>
 
-                    <div class="overflow-hidden h-[3rem]  order-3">
-                        <div
-                            class="{{(hasErrors('password'))? '': '-translate-y-[200%]'}} transition ease-in-out flex text-red-500">
-                            <span> *{{
-                                validator.getErrors('password', ['required', 'pattern', 'minlength',
-                                'invalidCredentials'],
-                                loginForm)
-                                }}</span>
-                        </div>
-                    </div>
+                    <app-validation-error class="order-3 h-fit" [form]="loginForm" [errors]="['required', 'minLength', 'pattern']" field="password"></app-validation-error>
                 </div>
                 <div class="flex flex-col w-full">
                     <div class="h-[32%] w-full flex justify-start gap-4 items-center">

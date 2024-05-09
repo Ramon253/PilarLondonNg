@@ -7,12 +7,13 @@ import { Credentials } from '../models/credentials';
 import { ValidationsService } from '../services/validations.service';
 import { Route, Router, RouterLink } from '@angular/router';
 import { UserResponse } from '../models/user/userResponse';
+import { ValidationErrorComponent } from '../validations/validation-error/validation-error.component';
 
 @Component({
     selector: 'app-login',
     standalone: true,
     imports: [
-        ReactiveFormsModule, RouterLink
+        ReactiveFormsModule, RouterLink, ValidationErrorComponent
     ],
     templateUrl: './login.component.html',
     styles: ``,
