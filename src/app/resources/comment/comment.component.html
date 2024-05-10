@@ -12,11 +12,19 @@
             </div>
             <p class="">{{ comment()?.content }}</p>
             <div class="w-full flex items-center gap-20 font-medium text-main text-sm">
-                <button (click)="showAnswers.set(!showAnswers())">{{(showAnswers()? 'Cerrar respuestas' : 'Ver respuestas')}}
+                <button (click)="showAnswers.set(!showAnswers())">{{(showAnswers()? 'Cerrar respuestas' : 'Ver
+                    respuestas')}}
                 </button>
                 <button (click)="answer()">Responder</button>
             </div>
         </div>
+        @if (loginSvc.user()?.role === 'teacher' || loginSvc.user()?.id === comment()?.user_id) {
+        <div class="w-fit">
+            <button class="text-secondary rounded-full font-medium hover:scale-110 transition ease-in-out hover:bg-secondary hover:text-main-white flex items-center justify-center p-1">
+                <span class="material-icons w-full text-center">close</span>
+            </button>
+        </div>
+        }
     </div>
     @if (showAnswers()) {
 

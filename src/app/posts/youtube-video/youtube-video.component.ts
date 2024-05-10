@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
+import { LoginService } from '../../login.service';
 
 @Component({
   selector: 'app-youtube-video',
@@ -15,7 +16,8 @@ export class YoutubeVideoComponent {
 
   constructor(
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    public loginSvc : LoginService
   ){}
 
   ngAfterViewInit(){

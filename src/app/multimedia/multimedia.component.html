@@ -1,9 +1,19 @@
 <div class="flex flex-col gap-5">
-    <h2 class="text-3xl font-bold text-main">{{ file()?.header ?? file()?.file_name}}</h2>
+    <div class="flex w-full items-center justify-between">
+        <h2 class="text-3xl font-bold text-main">{{ file()?.header ?? file()?.file_name}}</h2>
+        @if (loginSvc.user()?.role === 'teacher') {
+            <button class="flex items-center gap-2 h-full border-2 rounded-lg border-secondary text-secondary font-medium hover:bg-secondary hover:scale-110 hover:text-main-white transition ease-in-out p-2">
+                <span class="material-icons">delete</span>
+                <span>Delete file</span>
+            </button>
+        }
+    </div>
     @if (file()?.mime_type?.includes('image')) {
-        <img src="http://localhost:8000/api/post/file/{{file()?.id}}/get"  class="aspect-auto"
-             alt="{{file()?.file_name}}">
+    <img src="http://localhost:8000/api/post/file/{{file()?.id}}/get" class="aspect-auto" alt="{{file()?.file_name}}">
     } @else {
-        <video src="http://localhost:8000/api/post/file/{{file()?.id}}/get" controls></video>
+    <video src="http://localhost:8000/api/post/file/{{file()?.id}}/get" (seeking)="true" controls>
+
+        <span>There has been a problem with the video, maybe your browser doesnt support the video tag</span>
+    </video>
     }
 </div>

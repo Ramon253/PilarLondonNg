@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { FileR } from '../models/properties/file';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-multimedia',
@@ -10,4 +11,8 @@ import { FileR } from '../models/properties/file';
 })
 export class MultimediaComponent {
   file = input<FileR>()
+
+  constructor(
+    public loginSvc : LoginService
+  ){}
 }

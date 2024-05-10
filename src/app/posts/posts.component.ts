@@ -1,4 +1,4 @@
-import { ApplicationRef, Component, ElementRef, EnvironmentInjector, Renderer2, signal, viewChild, } from '@angular/core';
+import { ApplicationRef, Component, ElementRef, EnvironmentInjector, NgZone, Renderer2, ViewChild, signal, viewChild, } from '@angular/core';
 import { Post } from '../models/post';
 
 import { PostCreationFormComponent } from './post-creation-form/post-creation-form.component';
@@ -27,6 +27,8 @@ export class PostsComponent {
     posts = signal<Post[]>([]);
     files = signal<FileR[]>([])
 
+
+    
     constructor(
         private injector: EnvironmentInjector,
         private appRef: ApplicationRef,
@@ -37,7 +39,6 @@ export class PostsComponent {
         public postSvc: PostService,
         private validator : ValidationsService
     ) {
-
         if(!this.loginSvc.isLogged()){
             router.navigate(['/login'])
         }
@@ -131,4 +132,5 @@ export class PostsComponent {
         }
         return true
     }
+
 }

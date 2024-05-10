@@ -39,7 +39,7 @@ export class PostCreationFormComponent {
     postForm = this.formBulider.group({
         name: ['', Validators.required],
         description: ['', Validators.maxLength(500)],
-        group_id: ['',Validators.required]
+        group_id: ['', Validators.required]
     })
 
     linkForm = this.formBulider.group({
@@ -102,17 +102,27 @@ export class PostCreationFormComponent {
         let formData = undefined
         const post = this.postForm.getRawValue() as Post
         post.description = description.value.replaceAll(' ', '') !== '' ? description.value : undefined
-        
-        post.links = (this.links().length !== 0)? this.links() : undefined;
-        post.files = (this.files().length !== 0)? this.files() : undefined;
 
-        if (post.files){
+        post.links = (this.links().length !== 0) ? this.links() : undefined;
+        post.files = (this.files().length !== 0) ? this.files() : undefined;
+
+        if (post.files) {
             formData = new FormData
-            for (const file of post.files) {
-                formData.append('files', file)
+            for (const key in post.files) {
+                formData.append(`files[${key}]`, post.files[key])
             }
+            formData.append('name', post.name)
 
+            if (post.description)
+                formData.append('description', post.description)
+            if (post.links) {
+                for (const key in post.links) {
+                    formData.append(`links[${key}][link_name]`, post.links[key].link_name)
+                    formData.append(`links[${key}][link]`, post.links[key].link)
+                }
+            }
         }
+
 
         this.postSvc.postPost(post, formData)
             .subscribe(

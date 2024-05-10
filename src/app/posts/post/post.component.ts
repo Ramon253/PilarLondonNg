@@ -28,11 +28,29 @@ import { Link } from '../../models/properties/link';
 export class PostComponent {
     privateComments = signal<boolean>(false)
     answerComment = signal<string | undefined>(undefined)
+
     comments = signal<Comment[]>([])
-    id = ''
     answerTo = signal<string | undefined>('')
+
     isLoadingPost = signal<boolean>(false)
     isLoading = signal<boolean>(true)
+    groups = signal<{ name: string, id: string }[]>([])
+
+    groupInput = viewChild<ElementRef>('group_select')
+    nameInput = viewChild<ElementRef>('nameInput')
+    descriptionInput = viewChild<ElementRef>('descriptionInput')
+
+
+    updateAny = signal<boolean>(false);
+    update = signal<any>({
+        name: false,
+        subject: false,
+        description: false,
+        group_id: false,
+        files: false,
+        links: false
+    })
+
     post = signal<Post>({
         name: '',
         subject: '',
@@ -40,6 +58,7 @@ export class PostComponent {
         group_id: ''
     } as Post)
 
+    id = ''
     postForm = new FormGroup({
         Comentario: new FormControl('', Validators.required)
     })
@@ -66,14 +85,19 @@ export class PostComponent {
         private route: ActivatedRoute,
         private datePipe: DatePipe,
         private router: Router,
-        private loginSvc: LoginService,
-        public validator: ValidationsService) {
+        public loginSvc: LoginService,
+        public validator: ValidationsService
+    ) {
 
     }
 
-    getPost = (post : any) => {
+    getPost = (post: any) => {
 
         post.fileLinks = post.files
+        console.log(post.groups);
+
+        this.groups.set(post.groups as { name: string, id: string }[])
+
         post = post as Post
 
         post.created_at = this.datePipe.transform(post.created_at, 'HH:mm dd/MM/yyyy') ?? ''
@@ -81,7 +105,7 @@ export class PostComponent {
         post.videos = []
 
 
-        post.fileLinks = post.fileLinks.filter((fileLink : FileR) => {
+        post.fileLinks = post.fileLinks.filter((fileLink: FileR) => {
             if (!this.validator.checkFile(fileLink.mime_type)) {
                 return true
             }
@@ -89,7 +113,7 @@ export class PostComponent {
             return false
         })
 
-        post.links = post.links.filter((link : Link) => {
+        post.links = post.links.filter((link: Link) => {
             if (!this.validator.checkLink(link.link)) {
                 return true
             }
@@ -97,7 +121,7 @@ export class PostComponent {
             return false
         })
 
-        post.comments = post.comments?.map((comment : Comment) => {
+        post.comments = post.comments?.map((comment: Comment) => {
             comment.created_at = this.datePipe.transform(comment.created_at, 'HH:mm dd/MM/yyyy') ?? ''
             return comment
         })
@@ -134,9 +158,33 @@ export class PostComponent {
             }
         )
     }
+
+    /*
+    * Updates
+    */
+
+    updatePost(){
+        if (this.update().name){
+            this.post().name = this.nameInput()?.nativeElement.value
+        }
+        if (this.update().group_id){
+            this.post().group_id = this.groupInput()?.nativeElement.value
+        }
+        if (this.update().description){
+            this.post().description = this.descriptionInput()?.nativeElement.value
+        }
+
+        
+    }
     answer(comment_id: string | undefined) {
         this.answerComment.set(comment_id)
 
+    }
+
+    triggerResize(textArea: HTMLTextAreaElement) {
+        while (textArea.scrollHeight > textArea.clientHeight) {
+            textArea.rows += 1
+        }
     }
     protected readonly popResultSelector = popResultSelector;
 }

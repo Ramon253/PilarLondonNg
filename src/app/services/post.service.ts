@@ -25,7 +25,7 @@ export class PostService {
 
     public postPost(post: Post, formData: FormData | undefined): Observable<Post> {
         if (formData) {
-            formData.append('post', JSON.stringify(post))
+
             return this.http.post<Post>(
                 this.path + `group/${post.group_id}/post`,
                 formData,
