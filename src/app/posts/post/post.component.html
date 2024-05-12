@@ -21,13 +21,13 @@
                     @if (update().group_id) {
                     <select #group_select class="bg-transparent">
                         @for (group of groups(); track $index) {
-                        <option value="{{group.id}}">
+                        <option [attr.selected]="group.id === post().group_id" value="{{group.id}}">
                             {{group.name}}</option>
                         }
                     </select>
                     }@else {
 
-                    {{ post().group_name }}
+                    {{ post().group_name}}
 
                     @if (loginSvc.user()?.role === 'teacher') {
                     <button (click)="update().group_id = true; updateAny.set(true)"
@@ -39,7 +39,7 @@
                 </span>
 
                 @if (updateAny()) {
-                <button
+                <button (click)="updatePost()"
                     class="p-2 rounded-lg border-2 border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition flex items-center gap-1">
                     <span class="material-icons h-full">save</span> Save
                 </button>
@@ -182,7 +182,7 @@
                 </div>
                 }
                 @if (post().links?.length !== 0) {
-        
+
                 <div class="w-full border-b border-font-grey  text-center pb-4 ">
                     <h1 class="text-main font-bold text-center text-2xl">Links</h1>
                 </div>

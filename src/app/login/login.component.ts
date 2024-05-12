@@ -32,7 +32,8 @@ export class LoginComponent {
             Validators.required,
             Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>\/?]).+$/),
             Validators.minLength(10)
-        ]]
+        ]],
+        remember_me : [false]
     })
 
 

@@ -53,7 +53,6 @@ export class PostComponent {
 
     post = signal<Post>({
         name: '',
-        subject: '',
         description: '',
         group_id: ''
     } as Post)
@@ -94,8 +93,6 @@ export class PostComponent {
     getPost = (post: any) => {
 
         post.fileLinks = post.files
-        console.log(post.groups);
-
         this.groups.set(post.groups as { name: string, id: string }[])
 
         post = post as Post
@@ -164,21 +161,42 @@ export class PostComponent {
     */
 
     updatePost(){
+        this.post().subject = 'dd'
         if (this.update().name){
             this.post().name = this.nameInput()?.nativeElement.value
         }
         if (this.update().group_id){
             this.post().group_id = this.groupInput()?.nativeElement.value
+            this.post().group_name = this.groups().find((group) =>  this.post().group_id == group.id)?.name
         }
         if (this.update().description){
             this.post().description = this.descriptionInput()?.nativeElement.value
         }
-
-        
+        this.postSvc.putPost(this.post()).subscribe(
+            post => {
+            },
+            err =>{
+                this.postSvc.getPosts().subscribe(
+                    this.getPost
+                )
+            }
+        )
+        this.restartUpdate()
     }
     answer(comment_id: string | undefined) {
         this.answerComment.set(comment_id)
 
+    }
+    private restartUpdate(){
+        this.update.set({
+            name: false,
+            subject: false,
+            description: false,
+            group_id: false,
+            files: false,
+            links: false
+        })
+        this.updateAny.set(false)
     }
 
     triggerResize(textArea: HTMLTextAreaElement) {
