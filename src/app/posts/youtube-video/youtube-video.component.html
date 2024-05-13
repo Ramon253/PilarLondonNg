@@ -2,10 +2,15 @@
     <div class="flex items-center justify-between">
         <span class="font-bold text-main text-3xl">{{ text }}</span>
         @if (loginSvc.user()?.role === 'teacher') {
-            <button class="flex items-center gap-2 h-full border-2 rounded-lg border-secondary text-secondary font-medium hover:bg-secondary hover:scale-110 hover:text-main-white transition ease-in-out p-2">
-                <span class="material-icons">delete</span>
-                <span>Delete video</span>
-            </button>
+        <button (click)="delete.emit(true); isLoadingDelete.set(true)"
+            class="flex items-center gap-2 h-full border-2 rounded-lg border-secondary text-secondary font-medium hover:bg-secondary hover:scale-110 hover:text-main-white transition ease-in-out p-2">
+            @if (isLoadingDelete()) {
+            <app-loading-wheel></app-loading-wheel><span>Loading...</span>
+            }@else {
+            <span class="material-icons">delete</span>
+            <span>Delete video</span>
+            }
+        </button>
         }
     </div>
     <div #container>

@@ -44,8 +44,5 @@ export class PostService {
         return this.http.delete<Response>(`${this.path}post/${post.id}`, {withCredentials: true})
     }
 
-    postComment(comment: Comment): Observable<Response> {
-        return this.http.post<Response>(`${this.path}post/${comment.post_id}/comment`, comment, {withCredentials: true})
-    }
 
 }

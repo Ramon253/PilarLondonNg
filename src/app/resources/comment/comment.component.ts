@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output, SimpleChanges, effect, input, signal } from '@angular/core';
+import { Component, EventEmitter, Output, SimpleChanges, effect, input, output, signal } from '@angular/core';
 import { Comment } from '../../models/properties/comment';
 import { LoginService } from '../../login.service';
+import { CommentService } from '../../services/resources/comment.service';
 
 @Component({
 	selector: 'app-comment',
@@ -18,7 +19,8 @@ export class CommentComponent {
 	}
 
 	constructor(
-		public loginSvc : LoginService
+		public loginSvc : LoginService,
+		private commentSvc : CommentService
 	) { }
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -38,9 +40,23 @@ export class CommentComponent {
 		
 	}
 
+
 	showAnswers = signal<boolean>(false)
 	answerComments = input<Comment[]>()
 	comment = input<Comment>()
-
 	ownAnswers = signal<Comment[]>([])
+
+	delete = output<string>()
+
+
+	
+    deleteComment(){
+		console.log(this.comment()?.id);
+		
+        this.commentSvc.deleteComment(this.comment()?.id ?? '', 'post').subscribe(
+            res => {
+                this.delete.emit(this.comment()?.id ?? '')
+            }
+        )
+    }
 }

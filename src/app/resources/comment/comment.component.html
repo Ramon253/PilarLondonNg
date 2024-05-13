@@ -19,7 +19,7 @@
             </div>
         </div>
         @if (loginSvc.user()?.role === 'teacher' || loginSvc.user()?.id === comment()?.user_id) {
-        <div class="w-fit">
+        <div class="w-fit" (click)="deleteComment()">
             <button class="text-secondary rounded-full font-medium hover:scale-110 transition ease-in-out hover:bg-secondary hover:text-main-white flex items-center justify-center p-1">
                 <span class="material-icons w-full text-center">close</span>
             </button>

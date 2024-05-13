@@ -9,11 +9,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { ValidationErrorComponent } from '../../validations/validation-error/validation-error.component';
 import { Title } from '@angular/platform-browser';
+import { FormPostComponent } from '../../resources/form-post/form-post.component';
 
 @Component({
     selector: 'app-post-creation-form',
     standalone: true,
-    imports: [YoutubeVideoComponent, ReactiveFormsModule, ValidationErrorComponent],
+    imports: [YoutubeVideoComponent, ReactiveFormsModule, ValidationErrorComponent, FormPostComponent],
     templateUrl: './post-creation-form.component.html',
     styles: ``,
 })
@@ -23,10 +24,7 @@ export class PostCreationFormComponent {
 
     groups = input<{ name: string, id: string }[]>([])
 
-    openLinks = viewChild<ElementRef>('openLink')
-    closeLinks = viewChild<ElementRef>('closeLink')
-    formLink = viewChild<ElementRef>('formLink')
-    linkMenu = viewChild<ElementRef>('linkMenu')
+
     submitButton = viewChild<ElementRef>('submitButton')
     form = viewChild<ElementRef>('form')
 
@@ -42,49 +40,6 @@ export class PostCreationFormComponent {
         group_id: ['', Validators.required]
     })
 
-    linkForm = this.formBulider.group({
-        link_name: ['', Validators.required],
-        link: ['', Validators.required]
-    })
-
-    createLink() {
-        const link = {
-            link_name: this.linkForm.get('link_name')?.value,
-            link: this.linkForm.get('link')?.value
-        } as Link;
-
-
-        this.links().push(link)
-
-        this.addLink()
-        this.linkForm.get('link_name')?.setValue('')
-        this.linkForm.get('link')?.setValue('')
-
-    }
-
-    addLink() {
-        this.openLinks()?.nativeElement.classList.toggle('hidden')
-        this.closeLinks()?.nativeElement.classList.toggle('hidden')
-
-        this.linkMenu()?.nativeElement.classList.toggle('-translate-x-[50%]')
-        this.formLink()?.nativeElement.classList.toggle('h-10')
-        this.formLink()?.nativeElement.classList.toggle('h-fit')
-
-        this.submitButton()?.nativeElement.scrollIntoView({ block: "end", behavior: "smooth" });
-    }
-
-    addFile(event: any) {
-        if (event.target.files.item(0) !== null) {
-            this.files().push(event.target.files.item(0))
-        }
-    }
-
-    deleteLink(link: Link) {
-        this.links().splice(this.links().indexOf(link), 1)
-    }
-    deleteFile(file: File) {
-        this.files().splice(this.files().indexOf(file), 1)
-    }
 
     creteFile(file: HTMLInputElement) {
 
@@ -150,9 +105,6 @@ export class PostCreationFormComponent {
             this.showError.set(true)
     }
 
-    download(file: File) {
-        return URL.createObjectURL(file)
-    }
 
     constructor(
         private renderer: Renderer2,

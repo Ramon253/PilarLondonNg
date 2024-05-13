@@ -19,10 +19,13 @@
             <div class="pl-1 w-full flex justify-between">
                 <span class="flex items-center gap-4">POST/
                     @if (update().group_id) {
-                    <select #group_select class="bg-transparent">
+                    <select #group_select class="bg-transparent autofill:disabled:">
                         @for (group of groups(); track $index) {
-                        <option [attr.selected]="group.id === post().group_id" value="{{group.id}}">
-                            {{group.name}}</option>
+
+                        <option [attr.selected]="group.id == post().group_id ? true : null" value="{{group.id}}">
+                            {{group.name}}
+                        </option>
+
                         }
                     </select>
                     }@else {
@@ -86,15 +89,26 @@
             <div class="flex flex-col w-full gap-10">
                 <div class="w-full flex flex-col gap-10">
                     @for (video of post().videos; track $index) {
-                    <app-youtube-video [url]="video.link" [text]="video.link_name"></app-youtube-video>
+                    <app-youtube-video [url]="video.link" [text]="video.link_name"
+                        (delete)="deleteLink(video.id ?? '', true)"></app-youtube-video>
                     }
                 </div>
                 <div class="w-full flex flex-col gap-10">
                     @for (multimedia of post().multimedia; track $index) {
-                    <app-multimedia [file]="multimedia"></app-multimedia>
+                    <app-multimedia (delete)="deleteFile(multimedia.id.toString(), true)"
+                        [file]="multimedia"></app-multimedia>
                     }
                 </div>
             </div>
+            @if (loginSvc.user()?.role === 'teacher') {
+            <div class="w-full">
+                <button (click)="showDeleteDialog.set(true)"
+                    class="font-bold flex items-center border-secondary gap-2 border-2 rounded-lg text-secondary p-2 hover:bg-secondary hover:text-main-white hover:scale-110 transition ease-in-out">
+                    <span class="material-icons">delete</span>
+                    | Delete post
+                </button>
+            </div>
+            }
             <div class="flex flex-col w-full gap-5 mt-10">
                 <h3 class="text-3xl text-secondary font-bold">Comentarios</h3>
                 <div class="border-b-2 border-font-grey w-full flex">
@@ -120,8 +134,10 @@
 
                     @if (((comment.public && !privateComments()) || (!comment.public && privateComments())) &&
                     comment.parent_id === null) {
-                    <app-comment [comment]="comment" (answer)="answerComment.set($event.id); answerTo.set($event.name)"
-                        [answerComments]="post().comments"></app-comment>
+                    <app-comment [comment]="comment" [answerComments]="post().comments"
+                        (answer)="answerComment.set($event.id);answerTo.set($event.name)"
+                        (delete)="deleteComment($event)" />
+
                     }
                     }
                     }
@@ -167,17 +183,7 @@
                 </div>
                 <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
                     @for (file of post().fileLinks; track $index) {
-                    <a class="p-4 pr-2 gap-2 rounded-2xl border-2 border-secondary flex items-center justify-between"
-                        href="http://localhost:8000/api/post/file/{{file.id}}/download">{{ file.file_name }}
-                        @if (loginSvc.user()?.role === 'teacher') {
-                        <div class="w-fit">
-                            <button
-                                class="text-secondary rounded-full font-medium hover:scale-110 transition ease-in-out hover:bg-secondary hover:text-main-white flex items-center justify-center p-1">
-                                <span class="material-icons w-full text-center">close</span>
-                            </button>
-                        </div>
-                        }
-                    </a>
+                    <app-file [file]="file" (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
                     }
                 </div>
                 }
@@ -188,24 +194,13 @@
                 </div>
                 <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
                     @for (link of post().links; track $index) {
-                    <a class="p-4 flex items-center h-fit justify-between gap-2 rounded-2xl border-2 border-secondary pr-2" href="{{link.link}}" target="_blank">
-
-                        {{link.link_name}}
-                        @if (loginSvc.user()?.role === 'teacher') {
-                        <div class="w-fit">
-                            <button
-                                class="text-secondary rounded-full font-medium hover:scale-110 transition ease-in-out hover:bg-secondary hover:text-main-white flex items-center justify-center p-1">
-                                <span class="material-icons w-full text-center">close</span>
-                            </button>
-                        </div>
-                        }
-                    </a>
+                        <app-link  (delete)="deleteLink($event.id, $event.isVideo)" [link]="link"></app-link>
                     }
                 </div>
                 }
                 @if (loginSvc.user()?.role === 'teacher') {
                 <div class="w-full flex p-2 items-center justify-center">
-                    <button
+                    <button (click)="showPostDialog.set(true)"
                         class="flex p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
                         <span class="material-icons">add</span> <span>|</span> Añadir link u archivo
                     </button>
@@ -218,4 +213,53 @@
 
         }
     </div>
+    @if (showDeleteDialog()) {
+    <app-dialog>
+        <form class="w-fit p-4 flex items-center gap-4 flex-col" method="dialog">
+            <span class="w-fit">Seguro que quieres <span class="font-bold text-secondary">eliminar</span> el
+                post</span>
+            <div class="w-full flex items-center justify-center gap-4">
+                <button (click)="deletePost();" type="submit"
+                    class="border-2 h-[3rem] flex items-center gap-2 py-2 px-4 rounded-lg border-secondary font-bold text-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition ease-in-out">
+                    @if (isLoadingDelete()) {
+                    <div class="h-full aspect-square">
+                        <app-loading-wheel></app-loading-wheel>
+                    </div>
+                    <span>Loading...</span>
+                    }@else {
+                    Si
+                    }
+                </button>
+                <button
+                    class="border-2 py-2 px-4 rounded-lg border-main font-bold text-main hover:scale-110 hover:bg-main hover:text-main-white transition ease-in-out"
+                    (click)="showDeleteDialog.set(false)" type="submit">
+                    No
+                </button>
+            </div>
+        </form>
+    </app-dialog>
+    }
+    @if (showPostDialog()) {
+    <app-dialog>
+        <div class="max-w-screen-md w-full overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
+            <div class="w-fit aspect-square absolute right-0 top-0">
+                <button (click)="showPostDialog.set(false)"
+                    class="rounded-full hover:bg-secondary transition text-secondary hover:text-main-white p-1 flex items-center justify-center">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <app-form-post (newLinks)="inputLinks.set($event)" (newFiles)="inputFiles.set($event)"></app-form-post>
+            <button
+                class="flex items-center gap-2 p-2 border-2 border-secondary font-medium text-secondary hover:text-main-white hover:bg-secondary hover:scale-110 transition rounded-lg"
+                (click)="postResource()">
+                @if (isLoadingPostResource()) {
+                <app-loading-wheel></app-loading-wheel> Loading...
+                }@else {
+                <span class="material-icons">save</span>
+                Save
+                }
+            </button>
+        </div>
+    </app-dialog>
+    }
 </section>

@@ -1,10 +1,11 @@
-import { Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2, ViewChild, output, signal } from '@angular/core';
 import { LoginService } from '../../login.service';
+import { LoadingWheelComponent } from '../../svg/loading-wheel/loading-wheel.component';
 
 @Component({
   selector: 'app-youtube-video',
   standalone: true,
-  imports: [],
+  imports: [LoadingWheelComponent],
   templateUrl: './youtube-video.component.html',
   styleUrl: './youtube-video.component.css'
 })
@@ -13,6 +14,8 @@ export class YoutubeVideoComponent {
   @ViewChild('container') container! : ElementRef
   @Input({required : true}) url! : string
   @Input({required : true}) text! : string
+  delete = output<boolean>()
+  isLoadingDelete = signal<boolean>(false)
 
   constructor(
     private renderer: Renderer2,

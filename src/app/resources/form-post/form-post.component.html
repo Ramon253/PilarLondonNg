@@ -1,0 +1,93 @@
+<div class="w-full flex flex-col items-center h-fit">
+    <div class="w-full flex items-center justify-center h-fit p-2 gap-4">
+        <button type="button" (click)="addLink()">
+            <div #openLink
+                class="border-2 p-2 text-secondary w-fit rounded-lg flex items-center border-secondary gap-2 transition-all">
+                <span class="material-icons flex items-center justify-center w-fit">link</span>
+                <span> | Add a new link</span>
+            </div>
+            <div #closeLink
+                class="flex border-2 p-2 w-fit rounded-lg items-center border-secondary gap-2 text-main-white bg-secondary hidden transition-all">
+                <span class="material-icons">close</span>
+                <span>Close the form</span>
+            </div>
+        </button>
+        <button type="button" class=" group" (click)="file.click()">
+            <div #openLink
+                class="border-2 p-2 text-main group-hover:bg-main group-hover:scale-110 group-hover:text-main-white w-fit rounded-lg flex items-center border-main gap-2 transition-all">
+                <span class="material-icons flex items-center justify-center w-fit">attach_file</span>
+                <span> | Add a new file</span>
+            </div>
+            <input #file type="file" class="hidden" (change)="addFile($event)">
+        </button>
+    </div>
+    <div class="w-full overflow-hidden  h-fit">
+        <div #linkMenu class="flex w-[200%] transition-all ease-out h-fit">
+            <div #lists class="w-1/2 h-fit flex items-start gap-4">
+                <div #linkList class="w-1/2 flex flex-col gap-4 h-fit ">
+                    <div class="w-full pb-2 border-b-2 border-main">
+                        <span class="text-2xl font-medium text-main ">Links</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        @for (link of links(); track $index) {
+                        <div class="w-fit p-2 rounded-lg border-2 border-main flex items-center justify-between">
+                            <a class="mx-auto" target="_blank" href="{{ link.link }}">
+                                {{ link.link_name }}
+                            </a>
+                            <button type="button" (click)="deleteLink(link)"
+                                class="hover:text-red-500 transition flex items-center justify-center ">
+                                <span class="material-icons">close</span>
+                            </button>
+                        </div>
+                        }
+                    </div>
+                </div>
+                <div class="flex flex-col w-1/2 gap-4 min-h-[2rem]" #fileList>
+                    <div class=" w-full pb-2 border-b-2 border-secondary">
+                        <span class="text-2xl font-medium text-secondary ">Files</span>
+                    </div>
+                    <div class=" flex flex-col flex-wrap gap-2">
+                        @for (file of files(); track $index) {
+                        <div class="w-fit p-2 rounded-lg border-2 border-secondary flex items-center justify-between">
+                            <a class="mx-auto" download [href]="download(file)">
+                                {{ file.name }}
+                            </a>
+                            <button type="button" (click)="deleteFile(file)"
+                                class="hover:text-red-500 transition flex items-center justify-center ">
+                                <span class="material-icons">close</span>
+                            </button>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/2 h-fit flex">
+                <form [formGroup]="linkForm" #formLink
+                    class="w-full flex flex-col gap-1 p-4 transition-all ease-in-out h-10" (submit)="createLink()">
+                    <div class="flex flex-col w-full select-none gap-3 items-start justify-center pt-2">
+                        <input formControlName="link_name" type="text" id="linkTitle"
+                            class="border-b-2 w-full order-2 bg-transparent border-main peer" placeholder=" " />
+                        <label
+                            class="order-1 translate-x-0 translate-y-0 font-medium text-main peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition-all ease-in-out"
+                            for="linkTitle">Nombre del link</label>
+                        <app-validation-error class="order-3" [form]="linkForm" [errors]="['required']"
+                            field="link_name"></app-validation-error>
+                    </div>
+                    <div class="flex flex-col w-full select-none gap-3 items-start justify-center pt-2">
+                        <input formControlName="link" type="url" id="link"
+                            class="border-b-2 w-full order-2 bg-transparent border-main peer" placeholder=" " />
+                        <label
+                            class="order-1 translate-x-0 translate-y-0 font-medium text-main peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition-all ease-in-out"
+                            for="link">Url del link</label>
+                        <app-validation-error class="order-3" [form]="linkForm" [errors]="['required']"
+                            field="link"></app-validation-error>
+                    </div>
+                    <button [disabled]="linkForm.invalid" type="submit"
+                        class="border-2 cursor-pointer border-secondary text-secondary hover:text-main-white hover:bg-secondary rounded-md p-1 hover:scale-105  transition">
+                        Añadir link
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
