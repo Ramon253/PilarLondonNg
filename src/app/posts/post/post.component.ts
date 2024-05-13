@@ -20,8 +20,8 @@ import { DialogComponent } from '../../dialog/dialog.component';
 import { FormPostComponent } from '../../resources/form-post/form-post.component';
 import { LinkService } from '../../services/resources/link.service';
 import { FileService } from '../../services/resources/file.service';
-import { FileComponent } from '../../resource/file/file.component';
-import { LinkComponent } from '../../resource/link/link.component';
+import { FileComponent } from '../../resources/file/file.component';
+import { LinkComponent } from '../../resources/link/link.component';
 
 
 @Component({
@@ -200,9 +200,9 @@ export class PostComponent {
         const comment = {
             content: content,
             public: !this.privateComments(),
-            from_id: this.post().id,
+            post_id: this.post().id,
             parent_id: this.answerComment(),
-            
+
         } as Comment
 
         this.commentSvc.postComment(comment as Comment, 'post').subscribe(
@@ -215,6 +215,7 @@ export class PostComponent {
                 this.answerTo.set(undefined)
             },
             error => {
+                console.error(error)
                 this.postForm.get('Comentario')?.setErrors({ required: true })
                 this.isLoadingPost.set(false)
             }
@@ -313,6 +314,10 @@ export class PostComponent {
         while (textArea.scrollHeight > textArea.clientHeight) {
             textArea.rows += 1
         }
+    }
+
+    hasResources(){
+        return this.post().fileLinks?.length !== 0 || this.post().links?.length !== 0 || this.loginSvc.user()?.role === 'teacher'
     }
     protected readonly popResultSelector = popResultSelector;
 }

@@ -77,7 +77,7 @@
                     #descriptionInput class="border-2 rounded-lg w-[768px] h-fit p-2 bg-main-white"
                     placeholder="description" id="">{{post().description}}</textarea>
                 }@else {
-                <p class="w-[768px]">{{ post().description }}</p>
+                <p class="{{ hasResources() ? 'w-[768px]' : 'w-full' }}">{{ post().description }}</p>
                 @if (loginSvc.user()?.role === 'teacher') {
                 <button (click)="update().description = true; updateAny.set(true)"
                     class="rounded text-center p-1 text-main flex items-center justify-center h-fit aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main">
@@ -174,7 +174,7 @@
                 </div>
             </div>
         </div>
-        @if (post().fileLinks?.length !== 0 || post().links?.length !== 0 || loginSvc.user()?.role === 'teacher') {
+        @if (hasResources()) {
         <div class="w-full pt-20">
             <div class="p-4 rounded-xl border-2 border-main h-fit flex flex-col bg-main-white shadow">
                 @if (post().fileLinks?.length !== 0 ) {
