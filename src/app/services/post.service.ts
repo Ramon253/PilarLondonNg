@@ -11,7 +11,7 @@ import { Link } from '../models/properties/link';
 import { FileService } from './resources/file.service';
 import { LinkService } from './resources/link.service';
 import { CommentService } from './resources/comment.service';
-import * as moment from 'moment'
+
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +19,8 @@ import * as moment from 'moment'
 export class PostService {
 
     constructor(
-        private http: HttpClient, 
-        private datePipe: DatePipe, 
+        private http: HttpClient,
+        private datePipe: DatePipe,
         private validator : ValidationsService,
         private fileSvc : FileService,
         private linkSvc : LinkService,
@@ -61,7 +61,7 @@ export class PostService {
 
 
     mapPost(post : any) : Post{
-        
+
         post.fileLinks = post.files
         post = post as Post
 
@@ -73,7 +73,7 @@ export class PostService {
     filterResources(post : Post){
 
         const files = this.fileSvc.mapFiles(post.fileLinks ?? [])
-         
+
         post.fileLinks = files.files
         post.multimedia = files.multimedia
 
@@ -81,9 +81,9 @@ export class PostService {
 
         post.links = links.links
         post.videos = links.videos
-        
+
         post.comments = this.commentSvc.mapComments(post.comments ?? [])
-        
+
         return post
     }
 

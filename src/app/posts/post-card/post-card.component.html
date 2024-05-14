@@ -1,14 +1,16 @@
 <div
-    class="p-4 flex relative rounded-xl border-[3px] border-secondary flex-col shadow-lg gap-10 max-w-screen-lg w-full max-h-[70vh] overflow-hidden items-center">
+    class="p-4 flex relative bg-main-white rounded-xl border-[3px] border-main pt-14 flex-col shadow-lg gap-10 max-w-screen-lg w-full max-h-[70vh] overflow-hidden items-center">
 
     @if (loginSvc.user()?.role === 'teacher' ) {
     <div class="absolute right-4 top-4">
         <span class="material-icons cursor-pointer" (click)="deletePost()">delete</span>
     </div>
     }
-    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden">
+    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-20"
+         style="mask-image: linear-gradient(to bottom, white 95%, transparent 100%)"
+    >
         <div class="w-full">
-            <h1 class="text-6xl font-bold text-main w-full text-center">
+            <h1 class="text-5xl font-bold text-secondary w-full text-center">
                 <a routerLink="/post/{{post.id}}">{{ post.name }}</a>
             </h1>
         </div>
