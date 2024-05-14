@@ -5,17 +5,19 @@ import {MultimediaComponent} from '../../multimedia/multimedia.component';
 import {LoginService} from '../../login.service';
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {PostService} from "../../services/post.service";
+import { LinkComponent } from '../../resources/link/link.component';
+import { FileComponent } from '../../resources/file/file.component';
 
 @Component({
     selector: 'app-post-card',
     standalone: true,
-    imports: [YoutubeVideoComponent, MultimediaComponent, RouterLink],
+    imports: [YoutubeVideoComponent, MultimediaComponent, RouterLink, LinkComponent, FileComponent],
     templateUrl: './post-card.component.html',
     styles: ``,
 })
 export class PostCardComponent {
     @Input({required: true}) post!: Post;
-    public isLoading = signal<boolean>(false)
+
     delete = output<Post>()
     public Post = signal<Post>({name: '', description: '', group_id: '', subject: ''} as Post)
 

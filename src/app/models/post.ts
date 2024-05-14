@@ -16,5 +16,6 @@ export interface Post {
     multimedia? : FileR[],
     created_at? : string,
     group_name? : string,
+    groups? : any,
     comments? : Comment[]
 }

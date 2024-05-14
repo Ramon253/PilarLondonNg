@@ -28,3 +28,12 @@ input, textarea, select {
 ::-moz-input {
     outline: none;
 }
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.scroll-hidden::-webkit-scrollbar{
+    display: none;
+}

@@ -37,27 +37,26 @@ import { LinkComponent } from '../../resources/link/link.component';
 export class PostComponent {
     privateComments = signal<boolean>(false)
     answerComment = signal<string | undefined>(undefined)
-    hoverCloseButton = signal<boolean>(false)
-
     inputLinks = signal<Link[]>([])
     inputFiles = signal<File[]>([])
 
     showPostDialog = signal<boolean>(false)
     showDeleteDialog = signal<boolean>(false)
 
-    comments = signal<Comment[]>([])
     answerTo = signal<string | undefined>('')
 
     isLoadingPost = signal<boolean>(false)
     isLoading = signal<boolean>(true)
     isLoadingDelete = signal<boolean>(false)
     isLoadingPostResource = signal<boolean>(false)
+    isLoadingFile = false
+    isLoadingLink = false
     groups = signal<{ name: string, id: string }[]>([])
 
     groupInput = viewChild<ElementRef>('group_select')
     nameInput = viewChild<ElementRef>('nameInput')
     descriptionInput = viewChild<ElementRef>('descriptionInput')
-
+    commentInput = viewChild<ElementRef>('commentInput')
 
     prevLink = ''
 
@@ -87,7 +86,10 @@ export class PostComponent {
             params => {
                 this.id = params['post']
                 this.postSvc.getPost(this.id).subscribe(
-                    this.getPost,
+                    (post : any) => {
+                        this.post.set(this.postSvc.mapPost(post))
+                        this.isLoading.set(false)
+                    },  
                     error => {
                         if (error.status === 401) {
                             this.router.navigate(['/login'])
@@ -113,113 +115,21 @@ export class PostComponent {
 
     }
 
-    getPost = (post: any) => {
 
-        post.fileLinks = post.files
-        this.groups.set(post.groups as { name: string, id: string }[])
-
-        post = post as Post
-
-        post.created_at = this.datePipe.transform(post.created_at, 'HH:mm dd/MM/yyyy') ?? ''
-        post.multimedia = []
-        post.videos = []
-
-
-        post.fileLinks = post.fileLinks.filter((fileLink: FileR) => {
-            if (!this.validator.checkFile(fileLink.mime_type)) {
-                return true
-            }
-            post.multimedia?.push(fileLink)
-            return false
-        })
-
-        post.links = post.links.filter((link: Link) => {
-            if (!this.validator.checkLink(link.link)) {
-                return true
-            }
-            post.videos.push(link)
-            return false
-        })
-
-        post.comments = post.comments?.map((comment: Comment) => {
-            comment.created_at = this.datePipe.transform(comment.created_at, 'HH:mm dd/MM/yyyy') ?? ''
-            return comment
-        })
-        this.comments.set(post.comments as Comment[])
-
-        this.isLoading.set(false);
-        this.post.set(post as Post)
-    }
 
     postResource() {
         this.isLoadingPostResource.set(true)
-        let isLoadingFile = false;
-        let isLoadingLink = false;
 
         if (this.inputFiles().length !== 0) {
-            isLoadingFile = true
-            let formData = new FormData
-            for (const file of this.inputFiles()) {
-                formData.append(`files[${this.inputFiles().indexOf(file)}]`, file)
-            }
-            this.fileSvc.postFile('post', this.post().id?.toString() ?? '', formData).subscribe(
-                (res: any) => {
-                    this.post().files = res.files
-                    isLoadingFile = false
-                    this.inputFiles.set([])
-
-                    if (!isLoadingLink) {
-                        this.isLoadingPostResource.set(false)
-                        this.showPostDialog.set(false)
-                    }
-
-                }
-            )
+            this.fileSvc.createFiles('post', this)
         }
         if (this.inputLinks().length !== 0) {
-            isLoadingLink = true
-            this.linkSvc.postLink('post', this.post().id?.toString() ?? '', this.inputLinks()).subscribe(
-                (res: any) => {
-                    this.post().links = res.links
-                    isLoadingLink = false
-                    this.inputLinks.set([])
-
-                    if (!isLoadingFile) {
-                        this.isLoadingPostResource.set(false)
-                        this.showPostDialog.set(false)
-                    }
-                }
-            )
+           this.linkSvc.createLinks('post', this)
         }
     }
 
     postComment() {
-        this.isLoadingPost.set(true)
-        let content = this.postForm.get('Comentario')?.value
-
-        const comment = {
-            content: content,
-            public: !this.privateComments(),
-            post_id: this.post().id,
-            parent_id: this.answerComment(),
-
-        } as Comment
-
-        this.commentSvc.postComment(comment as Comment, 'post').subscribe(
-            res => {
-                if (!this.post().comments) this.post().comments = []
-                this.isLoadingPost.set(false)
-                this.postForm.get('Comentario')?.setValue('')
-                this.postSvc.getPost(this.id).subscribe(this.getPost)
-                this.answerComment.set(undefined)
-                this.answerTo.set(undefined)
-            },
-            error => {
-                console.error(error)
-                this.postForm.get('Comentario')?.setErrors({ required: true })
-                this.isLoadingPost.set(false)
-            }
-        )
+        this.commentSvc.createComment('post', this)
     }
 
     /*
@@ -228,6 +138,7 @@ export class PostComponent {
 
     updatePost() {
         this.post().subject = 'dd'
+
         if (this.update().name) {
             this.post().name = this.nameInput()?.nativeElement.value
         }
@@ -243,20 +154,11 @@ export class PostComponent {
             },
             err => {
                 this.postSvc.getPosts().subscribe(
-                    this.getPost
+                    post => this.post.set(this.postSvc.mapPost(post))
                 )
             }
         )
         this.restartUpdate()
-    }
-
-    addLinks(links: Link[]) {
-
-        this.linkSvc.postLink('post', this.post().id?.toString() ?? '', links).subscribe(
-            (res: any) => {
-                this.post().links = res.links
-            }
-        )
     }
 
     deletePost() {
@@ -269,9 +171,7 @@ export class PostComponent {
     }
 
     deleteComment(id: string) {
-        this.comments.set(
-            this.comments().filter(comment => comment.id !== id)
-        )
+        this.post().comments = this.post().comments?.filter(comment => comment.id !== id)
     }
 
     deleteFile(id: string, isMultimedia: boolean) {
@@ -281,6 +181,7 @@ export class PostComponent {
             this.post().fileLinks = this.post().fileLinks?.filter(file => id !== file.id.toString())
 
     }
+
     deleteLink(id: string, isIframe: boolean) {
         if (isIframe) {
             this.post().videos = this.post().videos?.filter(video => id !== video.id)
@@ -291,11 +192,6 @@ export class PostComponent {
 
     answer(comment_id: string | undefined) {
         this.answerComment.set(comment_id)
-    }
-
-    disableLink(event: Event) {
-        if (this.hoverCloseButton())
-            event.preventDefault()
     }
 
     private restartUpdate() {
@@ -319,5 +215,6 @@ export class PostComponent {
     hasResources(){
         return this.post().fileLinks?.length !== 0 || this.post().links?.length !== 0 || this.loginSvc.user()?.role === 'teacher'
     }
+
     protected readonly popResultSelector = popResultSelector;
 }

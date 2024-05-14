@@ -6,10 +6,10 @@ import { PostCardComponent } from './post-card/post-card.component';
 import { LoginService } from '../login.service';
 import { PostService } from '../services/post.service';
 import { Link } from "../models/properties/link";
-import {Route, Router, RouterLink} from '@angular/router';
+import { Route, Router, RouterLink } from '@angular/router';
 import { FileR } from '../models/properties/file';
 import { throwError } from 'rxjs';
-import {ValidationsService} from "../services/validations.service";
+import { ValidationsService } from "../services/validations.service";
 
 
 @Component({
@@ -22,13 +22,13 @@ import {ValidationsService} from "../services/validations.service";
 export class PostsComponent {
 
     postContainer = viewChild<ElementRef>('postsContainer')
-    loading = viewChild<ElementRef>('loadingContainer')
-    groups = signal<{name : string, id : string}[]>([])
+    isLoading = signal<boolean>(true)
+    groups = signal<{ name: string, id: string }[]>([])
     posts = signal<Post[]>([]);
     files = signal<FileR[]>([])
 
 
-    
+
     constructor(
         private injector: EnvironmentInjector,
         private appRef: ApplicationRef,
@@ -37,9 +37,9 @@ export class PostsComponent {
         private router: Router,
         public loginSvc: LoginService,
         public postSvc: PostService,
-        private validator : ValidationsService
+        private validator: ValidationsService
     ) {
-        if(!this.loginSvc.isLogged()){
+        if (!this.loginSvc.isLogged()) {
             router.navigate(['/login'])
         }
         this.getPosts()
@@ -50,53 +50,24 @@ export class PostsComponent {
     }
 
     getPosts() {
-        this.postSvc.getPosts().subscribe(res => {
+        this.postSvc.getPosts().subscribe(
+            (res) => {
+                this.groups.set(res.groups as { name: string, id: string }[])
 
-            this.posts().push(...res.posts.map(this.getResources) as Post[])
-            this.groups.set(res.groups as {name : string, id : string}[])
-                console.log(res.groups)
-            this.loading()?.nativeElement.classList.add('hidden')
-            this.postContainer()?.nativeElement.classList.remove('hidden')
-            this.postContainer()?.nativeElement.classList.add('flex')
-        },
-        err => {
-            if (this.Unauthenticated(err.status)) return
+                this.posts.set(res.posts.map(post => {
+                    return this.postSvc.mapPost(post)
+                }))
 
-            if (err.status >= 500) {
-                throw new Error('Server error')
-            }
+                this.isLoading.set(false)
+            },
+            err => {
+                if (this.Unauthenticated(err.status)) return
 
-        })
-    }
+                if (err.status >= 500) {
+                    throw new Error('Server error')
+                }
 
-    getResources = (post :any) => {
-        post.fileLinks = post.files
-        post = post as Post
-        /**
-         * Get links
-         */
-        post.videos = []
-        post.links = post.links.filter((link: Link) => {
-            if (this.validator.checkLink(link.link)) {
-                post.videos.push(link)
-                return false
-            }
-            return true
-        })
-
-        /**
-         * Get files
-         */
-        post.multimedia = []
-        post.fileLinks = post.fileLinks.filter((file: FileR) => {
-            if (this.validator.checkFile(file.mime_type)) {
-                post.multimedia?.push(file)
-                return false
-            }
-            return true
-        })
-
-        return post
+            })
     }
 
     closeForm(form: HTMLDivElement) {
@@ -109,12 +80,12 @@ export class PostsComponent {
 
 
 
-    async deletePost(post : Post){
+    async deletePost(post: Post) {
 
         await this.loginSvc.getCsrf()
         this.postSvc.deletePost(post).subscribe(res => {
 
-            if (res.error){
+            if (res.error) {
 
                 return
             }
@@ -123,8 +94,8 @@ export class PostsComponent {
         })
     }
 
-    Unauthenticated(status : number) : boolean{
-        if (status === 401){
+    Unauthenticated(status: number): boolean {
+        if (status === 401) {
             this.loginSvc.isLogged.set(false)
             localStorage.removeItem('isLogged')
             this.router.navigate(['/login'])

@@ -77,7 +77,7 @@
                     #descriptionInput class="border-2 rounded-lg w-[768px] h-fit p-2 bg-main-white"
                     placeholder="description" id="">{{post().description}}</textarea>
                 }@else {
-                <p class="{{ hasResources() ? 'w-[768px]' : 'w-full' }}">{{ post().description }}</p>
+                <p class="{{ hasResources() ? 'w-[768px]' : 'w-[1024px]' }}">{{ post().description }}</p>
                 @if (loginSvc.user()?.role === 'teacher') {
                 <button (click)="update().description = true; updateAny.set(true)"
                     class="rounded text-center p-1 text-main flex items-center justify-center h-fit aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main">
@@ -89,8 +89,7 @@
             <div class="flex flex-col w-full gap-10">
                 <div class="w-full flex flex-col gap-10">
                     @for (video of post().videos; track $index) {
-                    <app-youtube-video [url]="video.link" [text]="video.link_name"
-                        (delete)="deleteLink(video.id ?? '', true)"></app-youtube-video>
+                    <app-youtube-video [link]="video" (delete)="deleteLink(video.id ?? '', true)"></app-youtube-video>
                     }
                 </div>
                 <div class="w-full flex flex-col gap-10">
@@ -109,7 +108,10 @@
                 </button>
             </div>
             }
-            <div class="flex flex-col w-full gap-5 mt-10">
+            <!--Comment section-->
+
+
+            <section class="flex flex-col w-full gap-5 mt-10">
                 <h3 class="text-3xl text-secondary font-bold">Comentarios</h3>
                 <div class="border-b-2 border-font-grey w-full flex">
                     <div class=" px-6 relative font-medium cursor-pointer transition {{privateComments()? '' : 'text-secondary'}} "
@@ -130,12 +132,17 @@
                         <span>No hay ningun comentario todavia</span>
                     </div>
                     } @else {
-                    @for (comment of comments(); track $index) {
+                    @for (comment of post().comments; track $index) {
 
                     @if (((comment.public && !privateComments()) || (!comment.public && privateComments())) &&
                     comment.parent_id === null) {
                     <app-comment [comment]="comment" [answerComments]="post().comments"
-                        (answer)="answerComment.set($event.id);answerTo.set($event.name)"
+                        (answer)="
+                            answerComment.set($event.id);
+                            answerTo.set($event.name);
+                            focusCommentInput.scrollIntoView({ block: 'center', behavior: 'smooth' })
+                            "
+
                         (delete)="deleteComment($event)" />
 
                     }
@@ -148,7 +155,8 @@
                     <div>
                         Comentario de respuesta a : <strong>{{ answerTo() }}</strong>
                     </div>
-                    <button class="text-secondary aspect-square h-full"
+                    <button
+                        class="text-secondary aspect-square flex items-center justify-center rounded-full hover:bg-secondary hover:text-main-white h-full"
                         (click)="answerComment.set(undefined); answerTo.set(undefined)">
                         <span class="material-icons  ">close</span>
                     </button>
@@ -161,7 +169,7 @@
                             class="p-2 bg-transparent rounded-full w-full h-full border-2 border-main shadow ">
                         <button [disabled]="postForm.invalid" type="submit" #submitButton
                             class="border-2 {{postForm.invalid? 'cursor-not-allowed' : 'hover:bg-secondary hover:text-main-grey transition hover:scale-x-110' }} rounded-r-full text-secondary border-secondary shadow absolute right-0 h-full w-auto aspect-square text-center  ">
-                            <div class="h-full aspect-square flex items-center justify-center bg-transparent">
+                            <div class="h-full aspect-square flex items-center justify-center bg-transparent" #sendButton>
                                 @if (isLoadingPost()) {
                                 <img src="assets/img/loading_wheel.png" class="p-2 animate-spin aspect-square" alt="">
                                 } @else {
@@ -172,7 +180,8 @@
 
                     </form>
                 </div>
-            </div>
+                <div class="h-0" #focusCommentInput></div>
+            </section>
         </div>
         @if (hasResources()) {
         <div class="w-full pt-20">
@@ -194,7 +203,7 @@
                 </div>
                 <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
                     @for (link of post().links; track $index) {
-                        <app-link  (delete)="deleteLink($event.id, $event.isVideo)" [link]="link"></app-link>
+                    <app-link (delete)="deleteLink($event.id, $event.isVideo)" [link]="link"></app-link>
                     }
                 </div>
                 }

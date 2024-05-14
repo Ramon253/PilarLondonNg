@@ -13,21 +13,19 @@ export class LoginService {
     user = signal<User | null>(null)
 
     constructor(private http: HttpClient) {
-        if (!this.isLogged()){
-            console.log('????')
-            this.getUser().subscribe(
-                user =>{
-                    this.isLogged.set(true)
-                    this.user.set(user.user)
-                    localStorage.setItem('isLogged', 'true')
-                },
-                error => {
-                    if (error.status  === 401){
-                        this.user.set(null)
-                    }
+        this.getUser().subscribe(
+            user => {
+                this.isLogged.set(true)
+                this.user.set(user.user)
+                localStorage.setItem('isLogged', 'true')
+            },
+            error => {
+                if (error.status === 401) {
+                    this.logoutFront()
                 }
-            );
-        }
+            }
+        );
+
     }
 
     private path = 'http://localhost:8000/api';
@@ -55,6 +53,13 @@ export class LoginService {
 
     activate(code: string): Observable<any> {
         return this.http.post<any>(`${this.path}/activate`, { 'join_code': code }, { withCredentials: true })
+    }
+
+
+    logoutFront() {
+        this.user.set(null)
+        this.isLogged.set(false)
+        localStorage.removeItem('isLogged')
     }
 
 }

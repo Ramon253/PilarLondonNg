@@ -2,18 +2,18 @@ import { Component, EventEmitter, Output, SimpleChanges, effect, input, output, 
 import { Comment } from '../../models/properties/comment';
 import { LoginService } from '../../login.service';
 import { CommentService } from '../../services/resources/comment.service';
+import { LoadingWheelComponent } from '../../svg/loading-wheel/loading-wheel.component';
 
 @Component({
 	selector: 'app-comment',
 	standalone: true,
-	imports: [],
+	imports: [LoadingWheelComponent],
 	templateUrl: './comment.component.html',
 	styleUrl: './comment.component.css'
 })
 export class CommentComponent {
 
 	@Output('answer') answerComment = new EventEmitter<{ id?: string, name?: string }>()
-
 	answer(answer?: {}) {
 		this.answerComment.emit(answer ?? { id: this.comment()?.id, name: this.comment()?.user_name })
 	}
@@ -45,16 +45,18 @@ export class CommentComponent {
 	answerComments = input<Comment[]>()
 	comment = input<Comment>()
 	ownAnswers = signal<Comment[]>([])
+	isLoadingDelete = signal<boolean>(false)
 
 	delete = output<string>()
 
 
 	
     deleteComment(){
-		console.log(this.comment()?.id);
-		
+		this.isLoadingDelete.set(true)
+
         this.commentSvc.deleteComment(this.comment()?.id ?? '', 'post').subscribe(
             res => {
+				this.isLoadingDelete.set(false)
                 this.delete.emit(this.comment()?.id ?? '')
             }
         )

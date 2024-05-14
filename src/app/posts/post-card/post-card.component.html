@@ -1,42 +1,61 @@
-<div  class="p-4 relative rounded-lg border-2 {{isLoading()? 'hidden' : 'flex'}} flex-col items-center shadow gap-9 max-w-screen-lg w-full h-fit">
+<div
+    class="p-4 flex relative rounded-xl border-[3px] border-secondary flex-col shadow-lg gap-10 max-w-screen-lg w-full max-h-[70vh] overflow-hidden items-center">
+
     @if (loginSvc.user()?.role === 'teacher' ) {
     <div class="absolute right-4 top-4">
         <span class="material-icons cursor-pointer" (click)="deletePost()">delete</span>
     </div>
     }
+    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden">
+        <div class="w-full">
+            <h1 class="text-6xl font-bold text-main w-full text-center">
+                <a routerLink="/post/{{post.id}}">{{ post.name }}</a>
+            </h1>
+        </div>
 
-    <div >
-        <a routerLink="/post/{{post.id}}" class="font-bold w-full text-4xl">{{ post.name }}</a>
+        <div class="w-full h-fit aspect-auto ">
+            <p class="max-w-screen-lg text-center h-fit text-font-grey">{{ post.description }}</p>
+        </div>
+
+        <div #multimedia class="h-fit">
+            @for (multimedia of post.multimedia; track $index) {
+            <app-multimedia [file]="multimedia"></app-multimedia>
+            }
+        </div>
+
+        <div #youtube class="w-full h-fit">
+            @for (video of post.videos; track $index) {
+            <app-youtube-video [link]="video"></app-youtube-video>
+            }
+        </div>
+
+        <section class="flex gap-4 w-full">
+            <div class="w-full flex gap-4 flex-col p-4 justify-center h-fit">
+                <h2 class="text-4xl  font-medium text-secondary w-full py-4 border-b-2 border-secondary">Links
+                </h2>
+                <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                    @for (link of post.links; track $index) {
+                    <app-link [link]="link"></app-link>
+                    }
+                </div>
+            </div>
+            <div class="w-full flex gap-4 flex-col p-4 items-center h-fit">
+                <h2 class="text-4xl  font-medium text-main w-full py-4 border-b-2 border-main">Files
+                </h2>
+                <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                    @for (file of post.fileLinks; track $index) {
+                    <app-file [file]="file"></app-file>
+                    }
+                </div>
+            </div>
+        </section>
+
     </div>
-    <div class="w-full aspect-auto overflow-hidden">
-        <p>{{ post.description }}</p>
+    <div class="h-fit">
+        <button routerLink="/post/{{post.id}}"
+            class="p-2 rounded-lg border-[3px] border-main text-main font-medium hover:scale-105 hover:bg-main hover:text-main-white transition-all">
+            Ver mas
+        </button>
     </div>
 
-    <h2>Links</h2>
-    <div class="flex w-full gap-4">
-        @for (link of post.links; track $index) {
-        <a href="{{ link.link}}" class="flex w-fit border-2 text-center font-bold rounded-2xl p-4">
-            {{ link.link_name }}
-        </a>
-        }
-    </div>
-    <div class="flex w-full gap-4">
-        @for (file of post.fileLinks; track $index) {
-        <a href="http://localhost:8000/api/post/file/{{file.id}}/download"
-            class="flex w-fit border-2 text-center font-bold rounded-2xl p-4">
-            {{ file.file_name }}
-        </a>
-        }
-    </div>
-    <div #multimedia>
-        @for (multimedia of post.multimedia; track $index) {
-        <app-multimedia [file]="multimedia"></app-multimedia>
-        }
-    </div>
-
-    <div #youtube class="w-full">
-        @for (video of post.videos; track $index) {
-        <app-youtube-video [url]="video.link" [text]="video.link_name"></app-youtube-video>
-        }
-    </div>
 </div>

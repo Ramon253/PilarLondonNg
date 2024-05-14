@@ -23,21 +23,10 @@ export class LinkComponent {
 		private linkSvc: LinkService
 	) { }
 
-	deleteLink() {
-		this.isLoadingDelete.set(true)
-		this.linkSvc.deleteLink('post', this.link()?.id ?? '').subscribe(
-			res => {
-				this.isLoadingDelete.set(false)
-				this.delete.emit({
-					id : this.link()?.id ?? '',
-					isVideo : false
-				})
-			},
-			err => {
-				this.isLoadingDelete.set(false)
-			}
-		)
+	deleteLink()  {
+		this.linkSvc.destroyLink(this as LinkComponent)
 	}
+
 
 	disableLink(event: Event) {
 		if (this.hoverCloseButton())

@@ -25,16 +25,7 @@ export class FileComponent {
   ) { }
 
   deleteFile() {
-    this.isLoadingDelete.set(true)
-    this.fileSvc.deleteFile('post', this.file()?.id.toString() ?? '').subscribe(
-      res => {
-        this.delete.emit({ id: this.file()?.id.toString() ?? '', isMultimedia: false })
-        this.isLoadingDelete.set(false)
-      },
-      err => {
-        this.isLoadingDelete.set(false)
-      }
-    )
+    this.fileSvc.destroyFile(this)
   }
 
   disableLink(event: Event) {
