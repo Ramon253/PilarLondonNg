@@ -6,6 +6,9 @@ import { LinkComponent } from '../../resources/link/link.component';
 import { YoutubeVideoComponent } from '../../posts/youtube-video/youtube-video.component';
 import { ValidationsService } from '../validations.service';
 import { PostComponent } from '../../posts/post/post.component';
+import {AssignmentComponent} from "../../assignments/assignment/assignment.component";
+import {Post} from "../../models/post";
+import {Assignment} from "../../models/assignment";
 
 @Injectable({
 	providedIn: 'root'
@@ -24,14 +27,15 @@ export class LinkService {
 		return this.http.delete(`${this.path}${from}/link/${id}`, { withCredentials: true })
 	}
 
-	destroyLink(LinkComponent: LinkComponent | YoutubeVideoComponent) {
+	destroyLink(from : string , LinkComponent: LinkComponent | YoutubeVideoComponent) {
 		LinkComponent.isLoadingDelete.set(true)
-		this.deleteLink('post', LinkComponent.link()?.id ?? '').subscribe(
+
+		this.deleteLink(from, LinkComponent.link()?.id ?? '').subscribe(
 			res => {
 				LinkComponent.isLoadingDelete.set(false)
 				LinkComponent.delete.emit({
 					id: LinkComponent.link()?.id ?? '',
-					isVideo: false
+					isVideo: LinkComponent.constructor.name === 'YoutubeVideoComponent',
 				})
 			},
 			err => {
@@ -40,15 +44,15 @@ export class LinkService {
 		)
 	}
 
-	createLinks(from : string, fromComponent : PostComponent){
+	createLinks(from : string, fromComponent : PostComponent | AssignmentComponent, post : Post| Assignment){
 		 fromComponent.isLoadingLink = true
-		this.postLink(from, fromComponent.post().id?.toString() ?? '', fromComponent.inputLinks()).subscribe(
+		this.postLink(from, post.id?.toString() ?? '', fromComponent.inputLinks()).subscribe(
 			(res: any) => {
 				const links = this.mapLinks(res.links)
 
-				fromComponent.post().links = links.links
-				fromComponent.post().videos = links.videos
-				
+				post.links = links.links
+				post.videos = links.videos
+
 				fromComponent.isLoadingLink = false
 				fromComponent.inputLinks.set([])
 

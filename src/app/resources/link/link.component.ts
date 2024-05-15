@@ -15,6 +15,7 @@ export class LinkComponent {
 	hoverCloseButton = signal<boolean>(false)
 	link = input<Link>()
 	delete = output<{ id: string, isVideo: boolean }>()
+    parent = input.required<string>()
 	isLoadingDelete = signal<boolean>(false)
 
 
@@ -24,7 +25,7 @@ export class LinkComponent {
 	) { }
 
 	deleteLink()  {
-		this.linkSvc.destroyLink(this as LinkComponent)
+		this.linkSvc.destroyLink(this.parent(), this as LinkComponent)
 	}
 
 

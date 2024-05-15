@@ -4,6 +4,7 @@ import { LoginService } from '../../login.service';
 import { LoadingWheelComponent } from '../../svg/loading-wheel/loading-wheel.component';
 import { FileService } from '../../services/resources/file.service';
 
+
 @Component({
   selector: 'app-file',
   standalone: true,
@@ -17,6 +18,7 @@ export class FileComponent {
   hoverCloseButton = signal<boolean>(false)
   delete = output<{ id: string, isMultimedia: boolean }>()
 
+    parent = input.required<string>()
   isLoadingDelete = signal<boolean>(false)
 
   constructor(
@@ -25,7 +27,7 @@ export class FileComponent {
   ) { }
 
   deleteFile() {
-    this.fileSvc.destroyFile(this)
+    this.fileSvc.destroyFile(this.parent(),this)
   }
 
   disableLink(event: Event) {

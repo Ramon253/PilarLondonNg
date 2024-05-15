@@ -88,12 +88,12 @@
             <div class="flex flex-col w-full gap-10">
                 <div class="w-full flex flex-col gap-10">
                     @for (video of post().videos; track $index) {
-                    <app-youtube-video [link]="video" (delete)="deleteLink(video.id ?? '', true)"></app-youtube-video>
+                    <app-youtube-video parent="post" [link]="video" (delete)="deleteLink(video.id ?? '', true)"></app-youtube-video>
                     }
                 </div>
                 <div class="w-full flex flex-col gap-10">
                     @for (multimedia of post().multimedia; track $index) {
-                    <app-multimedia (delete)="deleteFile(multimedia.id.toString(), true)"
+                    <app-multimedia parent="post" (delete)="deleteFile(multimedia.id.toString(), true)"
                         [file]="multimedia"></app-multimedia>
                     }
                 </div>
@@ -109,9 +109,9 @@
             }
             <div class="w-full">
                 <!--Comment section-->
-                <app-comments 
+                <app-comments
                     [comments]="commentSvc.mapComments(post().comments ?? [])"
-                    [parent]="{type : 'post', id : post().id?.toString() ?? ''}" 
+                    [parent]="{type : 'post', id : post().id?.toString() ?? ''}"
                     (delete)="deleteComment($event)"
                     (post)="postComment($event)"></app-comments>
             </div>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
                     @for (file of post().fileLinks; track $index) {
-                    <app-file [file]="file" (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
+                    <app-file parent="post" [file]="file" (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
                     }
                 </div>
                 }
@@ -137,7 +137,7 @@
                 </div>
                 <div class="flex flex-wrap items-center justify-center pt-4 gap-2">
                     @for (link of post().links; track $index) {
-                    <app-link (delete)="deleteLink($event.id, $event.isVideo)" [link]="link"></app-link>
+                    <app-link parent="post" (delete)="deleteLink($event.id, $event.isVideo)" [link]="link"></app-link>
                     }
                 </div>
                 }

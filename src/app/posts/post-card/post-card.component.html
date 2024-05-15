@@ -29,13 +29,13 @@
 
         <div #multimedia class="h-fit">
             @for (multimedia of post.multimedia; track $index) {
-            <app-multimedia [file]="multimedia"></app-multimedia>
+            <app-multimedia parent="post" [file]="multimedia"></app-multimedia>
             }
         </div>
 
         <div #youtube class="w-full h-fit">
             @for (video of post.videos; track $index) {
-            <app-youtube-video [link]="video"></app-youtube-video>
+            <app-youtube-video parent="post" [link]="video"></app-youtube-video>
             }
         </div>
 
@@ -45,7 +45,7 @@
                 </h2>
                 <div class="w-full items-center justify-center h-fit flex flex-wrap">
                     @for (link of post.links; track $index) {
-                    <app-link [link]="link"></app-link>
+                    <app-link parent="post" [link]="link"></app-link>
                     }
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 </h2>
                 <div class="w-full items-center justify-center h-fit flex flex-wrap">
                     @for (file of post.fileLinks; track $index) {
-                    <app-file [file]="file"></app-file>
+                    <app-file parent="post" [file]="file"></app-file>
                     }
                 </div>
             </div>

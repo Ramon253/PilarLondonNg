@@ -8,6 +8,9 @@ import { ValidationsService } from '../validations.service';
 import { PostCardComponent } from '../../posts/post-card/post-card.component';
 import { PostComponent } from '../../posts/post/post.component';
 import { FormPostComponent } from '../../resources/form-post/form-post.component';
+import {AssignmentComponent} from "../../assignments/assignment/assignment.component";
+import {Post} from "../../models/post";
+import {Assignment} from "../../models/assignment";
 
 @Injectable({
 	providedIn: 'root'
@@ -28,9 +31,9 @@ export class FileService {
 	}
 
 
-	destroyFile(file: FileComponent | MultimediaComponent) {
+	destroyFile(from : string , file: FileComponent | MultimediaComponent) {
 		file.isLoadingDelete.set(true)
-		this.deleteFile('post', file.file()?.id.toString() ?? '').subscribe(
+		this.deleteFile(from, file.file()?.id.toString() ?? '').subscribe(
 			res => {
 				file.delete.emit({ id: file.file()?.id.toString() ?? '', isMultimedia: false })
 				file.isLoadingDelete.set(false)
@@ -42,7 +45,7 @@ export class FileService {
 	}
 
 
-	createFiles(from: string, fromComponent: PostComponent) {
+	createFiles(from: string, fromComponent: PostComponent | AssignmentComponent, post : Post|Assignment) {
 
 		fromComponent.isLoadingFile = true
 		const formData = new FormData
@@ -50,13 +53,13 @@ export class FileService {
 			formData.append(`files[${fromComponent.inputFiles().indexOf(file)}]`, file)
 		}
 
-		this.postFile(from, fromComponent.post().id?.toString() ?? '', formData).subscribe(
+		this.postFile(from, post.id?.toString() ?? '', formData).subscribe(
 			(res: any) => {
-				
+
 				const files = this.mapFiles(res.files)
 
-				fromComponent.post().fileLinks = files.files
-				fromComponent.post().multimedia = files.multimedia
+				post.fileLinks = files.files
+				post.multimedia = files.multimedia
 				fromComponent.isLoadingFile = false
 				fromComponent.inputFiles.set([])
 
@@ -64,6 +67,7 @@ export class FileService {
 					fromComponent.isLoadingPostResource.set(false)
 					fromComponent.showPostDialog.set(false)
 				}
+
 
 			}
 		)

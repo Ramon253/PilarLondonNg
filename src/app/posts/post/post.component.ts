@@ -114,10 +114,10 @@ export class PostComponent {
         this.isLoadingPostResource.set(true)
 
         if (this.inputFiles().length !== 0) {
-            this.fileSvc.createFiles('post', this)
+            this.fileSvc.createFiles('post', this, this.post())
         }
         if (this.inputLinks().length !== 0) {
-            this.linkSvc.createLinks('post', this)
+            this.linkSvc.createLinks('post', this, this.post())
         }
     }
 
