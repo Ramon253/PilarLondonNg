@@ -1,3 +1,4 @@
+<!--
 <section #loading>
 </section>
 
@@ -16,12 +17,12 @@
         <div class="flex flex-col items-center max-w-screen-lg  w-max mx-auto gap-4 pt-10">
 
             <div class="pl-1 w-full flex justify-between">
-                <span class="flex items-center gap-4">POST/
+                <span class="flex items-center gap-4">Assignment/
                     @if (update().group_id) {
                     <select #group_select class="bg-transparent autofill:disabled:">
                         @for (group of groups(); track $index) {
 
-                        <option [attr.selected]="group.id == post().group_id ? true : null" value="{{group.id}}">
+                        <option [attr.selected]="group.id == assignment().group_id ? true : null" value="{{group.id}}">
                             {{group.name}}
                         </option>
 
@@ -29,7 +30,7 @@
                     </select>
                     }@else {
 
-                    {{ post().group_name}}
+                    {{ assignment().group_name}}
 
                     @if (loginSvc.user()?.role === 'teacher') {
                     <button (click)="update().group_id = true; updateAny.set(true)"
@@ -41,26 +42,26 @@
                 </span>
 
                 @if (updateAny()) {
-                <button (click)="updatePost()"
+                <button (click)="updateAssignment()"
                     class="p-2 rounded-lg border-2 border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition flex items-center gap-1">
                     <span class="material-icons h-full">save</span> Save
                 </button>
                 }@else {
                 <span>
-                    {{ post().created_at }}
+                    {{ assignment().created_at }}
                 </span>
                 }
 
             </div>
 
-            <!-- Post name-->
+
 
             <div class="w-full border-b border-font-grey  pb-4">
                 <h1 class="text-main font-bold text-5xl flex items-center justify-between gap-4">
                     @if (update().name) {
-                    <input #nameInput type="text" class="bg-transparent border-2 rounded p-1" [value]="post().name">
+                    <input #nameInput type="text" class="bg-transparent border-2 rounded p-1" [value]="assignment().name">
                     }@else {
-                    {{ post().name }}
+                    {{ assignment().name }}
                     }
                     @if (loginSvc.user()?.role === 'teacher') {
                     <button (click)="update().name=true; updateAny.set(true)"
@@ -74,9 +75,9 @@
                 @if (update().description) {
                 <textarea (focus)="triggerResize(descriptionInput)" autofocus (input)="triggerResize(descriptionInput)"
                     #descriptionInput class="border-2 rounded-lg w-[768px] h-fit p-2 bg-main-white"
-                    placeholder="description" id="">{{post().description}}</textarea>
+                    placeholder="description" id="">{{assignment().description}}</textarea>
                 }@else {
-                <p class="{{ hasResources() ? 'w-[768px]' : 'w-[1024px]' }}">{{ post().description }}</p>
+                <p class="{{ hasResources() ? 'w-[768px]' : 'w-[1024px]' }}">{{ assignment().description }}</p>
                 @if (loginSvc.user()?.role === 'teacher') {
                 <button (click)="update().description = true; updateAny.set(true)"
                     class="rounded text-center p-1 text-main flex items-center justify-center h-fit aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main">
@@ -87,12 +88,12 @@
             </div>
             <div class="flex flex-col w-full gap-10">
                 <div class="w-full flex flex-col gap-10">
-                    @for (video of post().videos; track $index) {
+                    @for (video of assignment().videos; track $index) {
                     <app-youtube-video [link]="video" (delete)="deleteLink(video.id ?? '', true)"></app-youtube-video>
                     }
                 </div>
                 <div class="w-full flex flex-col gap-10">
-                    @for (multimedia of post().multimedia; track $index) {
+                    @for (multimedia of assignment().multimedia; track $index) {
                     <app-multimedia (delete)="deleteFile(multimedia.id.toString(), true)"
                         [file]="multimedia"></app-multimedia>
                     }
@@ -108,7 +109,7 @@
             </div>
             }
             <div class="w-full">
-                <!--Comment section-->
+
                 <app-comments 
                     [comments]="commentSvc.mapComments(post().comments ?? [])"
                     [parent]="{type : 'post', id : post().id?.toString() ?? ''}" 
@@ -206,3 +207,5 @@
     </app-dialog>
     }
 </section>
+
+-->

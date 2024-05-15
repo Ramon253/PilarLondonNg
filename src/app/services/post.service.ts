@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Observable, pipe} from 'rxjs';
-import {Post} from '../models/post';
-import {HttpClient} from '@angular/common/http';
-import {Response} from '../models/response';
-import {Comment} from "../models/properties/comment";
+import { Injectable } from '@angular/core';
+import { Observable, pipe } from 'rxjs';
+import { Post } from '../models/post';
+import { HttpClient } from '@angular/common/http';
+import { Response } from '../models/response';
+import { Comment } from "../models/properties/comment";
 import { DatePipe } from '@angular/common';
 import { FileR } from '../models/properties/file';
 import { ValidationsService } from './validations.service';
@@ -21,46 +21,51 @@ export class PostService {
     constructor(
         private http: HttpClient,
         private datePipe: DatePipe,
-        private validator : ValidationsService,
-        private fileSvc : FileService,
-        private linkSvc : LinkService,
-        private commentSvc : CommentService
-    ) {}
+        private validator: ValidationsService,
+        private fileSvc: FileService,
+        private linkSvc: LinkService,
+        private commentSvc: CommentService
+    ) { }
 
     private path = 'http://localhost:8000/api/'
 
-    public getPosts(): Observable<{ posts: Post[], groups?: [] }> {
-        return this.http.get<{ posts: Post[], groups?: [] }>(this.path + 'posts', {withCredentials: true})
+    public getPosts(isPublic?: boolean): Observable<{ posts: Post[], groups?: [] }> {
+        if (isPublic)
+            return this.http.get<{ posts: Post[], groups?: [] }>(this.path + 'posts', { withCredentials: true })
+
+        return this.http.get<{ posts: Post[], groups?: [] }>(`${this.path}dashboard/post`, { withCredentials: true })
     }
 
     public getPost(post_id: string): Observable<Post> {
-        return this.http.get<Post>(this.path + 'post/' + post_id, {withCredentials: true})
+        return this.http.get<Post>(this.path + 'post/' + post_id, { withCredentials: true })
     }
 
-    public postPost(post: Post, formData: FormData | undefined): Observable<Post> {
-        if (formData) {
+    public postPost(post: Post, formData: FormData | undefined, isPublic : boolean): Observable<Post> {
+        
+        const postPath = (isPublic)?this.path + 'post' : this.path + `group/${post.group_id}/post`
 
+        if (formData) {
             return this.http.post<Post>(
-                this.path + `group/${post.group_id}/post`,
+                postPath,
                 formData,
                 {
                     withCredentials: true
                 })
         }
-        return this.http.post<Post>(this.path + `group/${post.group_id}/post`, post, {withCredentials: true})
+        return this.http.post<Post>(postPath, post, { withCredentials: true })
     }
 
 
     public putPost(post: Post): Observable<Post> {
-        return this.http.put<Post>(this.path + `post/${post.id}`, post, {withCredentials: true})
+        return this.http.put<Post>(this.path + `post/${post.id}`, post, { withCredentials: true })
     }
 
     public deletePost(post: Post): Observable<Response> {
-        return this.http.delete<Response>(`${this.path}post/${post.id}`, {withCredentials: true})
+        return this.http.delete<Response>(`${this.path}post/${post.id}`, { withCredentials: true })
     }
 
 
-    mapPost(post : any) : Post{
+    mapPost(post: any): Post {
 
         post.fileLinks = post.files
         post = post as Post
@@ -70,7 +75,7 @@ export class PostService {
         return this.filterResources(post)
     }
 
-    filterResources(post : Post){
+    filterResources(post: Post) {
 
         const files = this.fileSvc.mapFiles(post.fileLinks ?? [])
 

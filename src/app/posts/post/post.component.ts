@@ -22,6 +22,7 @@ import { LinkService } from '../../services/resources/link.service';
 import { FileService } from '../../services/resources/file.service';
 import { FileComponent } from '../../resources/file/file.component';
 import { LinkComponent } from '../../resources/link/link.component';
+import { CommentsComponent } from '../../resources/comments/comments.component';
 
 
 @Component({
@@ -29,23 +30,19 @@ import { LinkComponent } from '../../resources/link/link.component';
     standalone: true,
     imports: [
         RouterLink, YoutubeVideoComponent, MultimediaComponent, ReactiveFormsModule, CommentComponent, LoadingWheelComponent, DialogComponent, FormPostComponent,
-        FileComponent, LinkComponent
+        FileComponent, LinkComponent, CommentsComponent
     ],
     templateUrl: './post.component.html',
     styleUrl: './post.component.css'
 })
 export class PostComponent {
-    privateComments = signal<boolean>(false)
-    answerComment = signal<string | undefined>(undefined)
+
     inputLinks = signal<Link[]>([])
     inputFiles = signal<File[]>([])
 
     showPostDialog = signal<boolean>(false)
     showDeleteDialog = signal<boolean>(false)
 
-    answerTo = signal<string | undefined>('')
-
-    isLoadingPost = signal<boolean>(false)
     isLoading = signal<boolean>(true)
     isLoadingDelete = signal<boolean>(false)
     isLoadingPostResource = signal<boolean>(false)
@@ -77,19 +74,16 @@ export class PostComponent {
     } as Post)
 
     id = ''
-    postForm = new FormGroup({
-        Comentario: new FormControl('', Validators.required)
-    })
 
     ngOnInit() {
         this.route.params.subscribe(
             params => {
                 this.id = params['post']
                 this.postSvc.getPost(this.id).subscribe(
-                    (post : any) => {
+                    (post: any) => {
                         this.post.set(this.postSvc.mapPost(post))
                         this.isLoading.set(false)
-                    },  
+                    },
                     error => {
                         if (error.status === 401) {
                             this.router.navigate(['/login'])
@@ -104,13 +98,12 @@ export class PostComponent {
     constructor(
         private postSvc: PostService,
         private route: ActivatedRoute,
-        private datePipe: DatePipe,
         private router: Router,
         public loginSvc: LoginService,
         public validator: ValidationsService,
-        private commentSvc: CommentService,
         private linkSvc: LinkService,
-        private fileSvc: FileService
+        private fileSvc: FileService,
+        public commentSvc : CommentService
     ) {
 
     }
@@ -124,13 +117,10 @@ export class PostComponent {
             this.fileSvc.createFiles('post', this)
         }
         if (this.inputLinks().length !== 0) {
-           this.linkSvc.createLinks('post', this)
+            this.linkSvc.createLinks('post', this)
         }
     }
 
-    postComment() {
-        this.commentSvc.createComment('post', this)
-    }
 
     /*
     * Updates
@@ -170,8 +160,12 @@ export class PostComponent {
         )
     }
 
-    deleteComment(id: string) {
+    deleteComment(id : string) {
         this.post().comments = this.post().comments?.filter(comment => comment.id !== id)
+    }
+
+    postComment(comments : Comment[]){
+        this.post().comments = comments
     }
 
     deleteFile(id: string, isMultimedia: boolean) {
@@ -188,10 +182,6 @@ export class PostComponent {
         } else {
             this.post().links = this.post().links?.filter(link => id !== link.id)
         }
-    }
-
-    answer(comment_id: string | undefined) {
-        this.answerComment.set(comment_id)
     }
 
     private restartUpdate() {
@@ -212,7 +202,7 @@ export class PostComponent {
         }
     }
 
-    hasResources(){
+    hasResources() {
         return this.post().fileLinks?.length !== 0 || this.post().links?.length !== 0 || this.loginSvc.user()?.role === 'teacher'
     }
 

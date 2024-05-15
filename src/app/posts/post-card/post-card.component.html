@@ -3,20 +3,28 @@
 
     @if (loginSvc.user()?.role === 'teacher' ) {
     <div class="absolute right-4 top-4">
-        <span class="material-icons cursor-pointer" (click)="deletePost()">delete</span>
+        <button (click)="showDeleteDialog.set(true)"
+            class=" flex items-center p-2 px-3 border-2 font-bold text-secondary hover:text-main-white border-secondary hover:bg-secondary hover:scale-110 transition-all rounded-lg">
+            <span class="material-icons cursor-pointer flex items-center">delete</span>
+            <span>| Delete post </span>
+        </button>
     </div>
     }
-    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-20"
-         style="mask-image: linear-gradient(to bottom, white 95%, transparent 100%)"
-    >
-        <div class="w-full">
-            <h1 class="text-5xl font-bold text-secondary w-full text-center">
-                <a routerLink="/post/{{post.id}}">{{ post.name }}</a>
-            </h1>
+    <div class="w-full max-w-screen-md">
+        <h1 class="text-5xl font-bold text-secondary w-full text-center">
+            <a routerLink="/post/{{post.id}}">{{ post.name }}</a>
+        </h1>
+        <div class="flex items-center justify-between text-secondary-grey">
+            <span>{{post.group_name ?? ''}}</span>
+            <span>{{post.created_at}}</span>
         </div>
+    </div>
+    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-20"
+        style="mask-image: linear-gradient(to bottom, white 95%, transparent 100%)">
+
 
         <div class="w-full h-fit aspect-auto ">
-            <p class="max-w-screen-lg text-center h-fit text-font-grey">{{ post.description }}</p>
+            <p class="max-w-screen-lg  h-fit text-dark-font">{{ post.description }}</p>
         </div>
 
         <div #multimedia class="h-fit">
@@ -55,9 +63,36 @@
     </div>
     <div class="h-fit">
         <button routerLink="/post/{{post.id}}"
-            class="p-2 rounded-lg border-[3px] border-main text-main font-medium hover:scale-105 hover:bg-main hover:text-main-white transition-all">
+            class="p-2 rounded-lg border-2 px-4 border-main text-main font-medium hover:scale-110 hover:bg-main hover:text-main-white transition-all">
             Ver mas
         </button>
     </div>
 
 </div>
+
+@if (showDeleteDialog()) {
+    <app-dialog>
+        <form class="w-fit p-4 flex items-center gap-4 flex-col" method="dialog">
+            <span class="w-fit">Seguro que quieres <span class="font-bold text-secondary">eliminar</span> el
+                post</span>
+            <div class="w-full flex items-center justify-center gap-4">
+                <button (click)="deletePost();" type="submit"
+                    class="border-2 h-[3rem] flex items-center gap-2 py-2 px-4 rounded-lg border-secondary font-bold text-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition ease-in-out">
+                    @if (isLoadingDelete()) {
+                    <div class="h-full aspect-square">
+                        <app-loading-wheel></app-loading-wheel>
+                    </div>
+                    <span>Loading...</span>
+                    }@else {
+                    Si
+                    }
+                </button>
+                <button
+                    class="border-2 py-2 px-4 rounded-lg border-main font-bold text-main hover:scale-110 hover:bg-main hover:text-main-white transition ease-in-out"
+                    (click)="showDeleteDialog.set(false)" type="submit">
+                    No
+                </button>
+            </div>
+        </form>
+    </app-dialog>
+}

@@ -13,7 +13,9 @@ module.exports = {
         'main': '#012169',
         'secondary': '#C8102E',
         'dark-grey' : '#848484',
-        'light-blue' : '#DEE8FF'
+        'light-blue' : '#DEE8FF',
+        'secondary-grey' : '#848484',
+        'dark-font' : '#1F1F1F'
       },
     },
   },

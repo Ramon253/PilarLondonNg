@@ -1,0 +1,73 @@
+<section class="flex flex-col w-full gap-5 mt-10">
+    <div class="flex w-full gap-10 items-center justify-between">
+        <h3 class="text-3xl text-secondary font-bold">Comentarios</h3> <span
+            class="material-icons text-main  rounded-full p-1 flex items-center justify-center transition  cursor-pointer {{isLoading()? '': 'hover:text-main-white hover:bg-main' }}"
+            (click)="getComments(refhreshButton)" #refhreshButton>@if (isLoading()){
+                <app-loading-wheel></app-loading-wheel>
+            }@else {refresh}</span>
+    </div>
+    <div class="border-b-2 border-font-grey w-full flex">
+        <div class=" px-6 relative font-medium cursor-pointer transition {{privateComments()? '' : 'text-secondary'}} "
+            (click)="privateComments.set(false)">
+            Public
+            <div
+                class="absolute -bottom-[3px] left-0 h-[3px] transition ease-in-out bg-secondary w-full shadow {{privateComments()? 'translate-x-full' : ''}}">
+            </div>
+        </div>
+        <div class="border-b px-6 font-medium cursor-pointer transition {{!privateComments()? '' : 'text-secondary'}}"
+            (click)="privateComments.set(true)">
+            Private
+        </div>
+    </div>
+    <div class="flex w-full flex-col max-h-[60vh] overflow-y-scroll gap-4 pr-2">
+        @if (comments().length === 0) {
+        <div class="w-full">
+            <span>No hay ningun comentario todavia</span>
+        </div>
+        } @else {
+        @for (comment of comments(); track $index) {
+
+        @if (((comment.public && !privateComments()) || (!comment.public && privateComments())) &&
+        comment.parent_id === null) {
+        <app-comment [comment]="comment" [answerComments]="comments()" (answer)="
+                answerComment.set($event.id);
+                answerTo.set($event.name);
+                focusCommentInput.scrollIntoView({ block: 'center', behavior: 'smooth' })
+                " (delete)="deleteComment($event)" />
+
+        }
+        }
+        }
+    </div>
+    @if (answerComment()) {
+    <div
+        class="text-main text-lg font-medium flex items-center justify-between w-full p-4 rounded-md border-2 border-font-grey ">
+        <div>
+            Comentario de respuesta a : <strong>{{ answerTo() }}</strong>
+        </div>
+        <button
+            class="text-secondary aspect-square flex items-center justify-center rounded-full hover:bg-secondary hover:text-main-white h-full"
+            (click)="answerComment.set(undefined); answerTo.set(undefined)">
+            <span class="material-icons  ">close</span>
+        </button>
+    </div>
+    }
+    <div class="relative">
+        <form (submit)="postComment()" [formGroup]="commentPostForm">
+            <input formControlName="Comentario" #commentInput type="text" placeholder="Escriba su propio comentario"
+                class="p-2 bg-transparent rounded-full w-full h-full border-2 border-main shadow ">
+            <button [disabled]="commentPostForm.invalid" type="submit" #submitButton
+                class="border-2 {{commentPostForm.invalid? 'cursor-not-allowed' : 'hover:bg-secondary hover:text-main-grey transition hover:scale-x-110' }} rounded-r-full text-secondary border-secondary shadow absolute right-0 h-full w-auto aspect-square text-center  ">
+                <div class="h-full aspect-square flex items-center justify-center bg-transparent" #sendButton>
+                    @if (isLoadingPost()) {
+                    <img src="assets/img/loading_wheel.png" class="p-2 animate-spin aspect-square" alt="">
+                    } @else {
+                    <span class="material-icons text-center  transition">send</span>
+                    }
+                </div>
+            </button>
+
+        </form>
+    </div>
+    <div class="h-0" #focusCommentInput></div>
+</section>

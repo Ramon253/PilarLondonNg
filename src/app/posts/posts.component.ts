@@ -27,7 +27,7 @@ export class PostsComponent {
     posts = signal<Post[]>([]);
     files = signal<FileR[]>([])
 
-
+    showPublic = signal<boolean>(false)
 
     constructor(
         private injector: EnvironmentInjector,
@@ -39,24 +39,24 @@ export class PostsComponent {
         public postSvc: PostService,
         private validator: ValidationsService
     ) {
-        if (!this.loginSvc.isLogged()) {
-            router.navigate(['/login'])
-        }
-        this.getPosts()
+        this.getPosts(this.showPublic())
     }
 
     createPost(post: Post) {
         this.posts().push(post);
     }
 
-    getPosts() {
-        this.postSvc.getPosts().subscribe(
+    getPosts(showPublic: boolean) {
+        this.showPublic.set(showPublic)
+        this.isLoading.set(true)
+
+        this.postSvc.getPosts(this.showPublic()).subscribe(
             (res) => {
+                console.log(res.posts as Post[]);
+
                 this.groups.set(res.groups as { name: string, id: string }[])
 
-                this.posts.set(res.posts.map(post => {
-                    return this.postSvc.mapPost(post)
-                }))
+                this.posts.set(res.posts.map(post => this.postSvc.mapPost(post)))
 
                 this.isLoading.set(false)
             },
@@ -79,19 +79,8 @@ export class PostsComponent {
     }
 
 
-
-    async deletePost(post: Post) {
-
-        await this.loginSvc.getCsrf()
-        this.postSvc.deletePost(post).subscribe(res => {
-
-            if (res.error) {
-
-                return
-            }
-            alert('sifufo')
-            this.posts().splice(this.posts().indexOf(post), 1)
-        })
+    deletePost(post: Post) {
+        this.posts().splice(this.posts().indexOf(post), 1)
     }
 
     Unauthenticated(status: number): boolean {
@@ -102,6 +91,10 @@ export class PostsComponent {
             return false
         }
         return true
+    }
+
+    filter(){
+        alert('en proceso')
     }
 
 }

@@ -1,23 +1,48 @@
 <div class="bg-main-grey">
-    <div
-        class="min-h-[90vh] mt-[10vh] max-w-screen-lg bg-transparent flex flex-col mx-auto items-center p-10 gap-10">
-        <h1 class="text-7xl text-main font-bold m-10">Public posts</h1>
-        @if (isLoading()) {
-            <div class="w-full max-w-screen-xl bg-gray-400 animate-pulse h-[70vh] rounded-lg"></div>
-            <div class="w-full max-w-screen-xl bg-gray-400 animate-pulse h-[50vh] rounded-lg"></div>
-        }@else {
-            <div #postsContainer class="flex flex-col w-full gap-5">
-                @for (post of posts(); track $index) {
-                <app-post-card [post]="post"></app-post-card>
-                }
+    <div class="min-h-[90vh] mt-[10vh] max-w-screen-lg bg-transparent flex flex-col mx-auto items-center p-10 gap-10">
+        <h1 class="text-7xl text-main font-bold m-10">{{showPublic()? 'Public posts' :'Tus posts'}}</h1>
+        <div class="border-b-2 border-font-grey w-full flex justify-between">
+            <div class="w-1/2 flex">
+                <div class="border-b px-6 font-medium cursor-pointer transition relative" (click)="getPosts(false)">
+                    Tus posts
+                    <div
+                        class="absolute -bottom-[3px] left-0 h-[3px] transition ease-in-out bg-secondary w-full shadow {{showPublic()? 'translate-x-full': 'translate-x-0'}}">
+                    </div>
+                </div>
+                <div class=" px-6 font-medium cursor-pointer transition " (click)="getPosts(true)">
+                    Public posts
+                </div>
             </div>
+            <div class="flex items-center">
+                <span (click)="getPosts(showPublic()); refreshButton.classList.toggle('rotate-[360deg]')" #refreshButton
+                    class="duration-300 p-1 material-icons flex items-center text-main hover:text-main-white hover:bg-main rounded-full transition cursor-pointer ">refresh</span>
+            </div>
+        </div>
+
+        <div class="w-full flex -translate-y-8 items-start justify-between">
+            <button (click)="filter()"
+                class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
+                <span class="material-icons-outlined">filter_alt</span> Filtrar por <span class="material-icons-outlined">arrow_drop_up</span>
+
+            </button>
+            @if (loginSvc.user()?.role === 'teacher') {
+            <button (click)="openForm(formContainer)"
+                class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
+                <span class="material-icons">add</span> | Crear post
+            </button>
+            }
+        </div>
+        @if (isLoading()) {
+        <div class="w-full max-w-screen-xl bg-gray-300 animate-pulse h-[70vh] rounded-lg"></div>
+        <div class="w-full max-w-screen-xl bg-gray-300 animate-pulse h-[70vh] rounded-lg"></div>
+        }@else {
+        <div #postsContainer class="flex flex-col w-full gap-5">
+            @for (post of posts(); track $index) {
+            <app-post-card (delete)="deletePost($event)" [post]="post"></app-post-card>
+            }
+        </div>
         }
 
-
-        <button (click)="openForm(formContainer)"
-            class="bg-green-500 rounded p-2 text-white hover:bg-white hover:text-green-500 hover:border-2 hover:border-green-500 hover:scale-110 transition">
-            Crear post
-        </button>
     </div>
 
     <div #formContainer class="hidden">

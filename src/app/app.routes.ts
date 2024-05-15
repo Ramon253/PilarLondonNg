@@ -5,6 +5,7 @@ import { PostsComponent } from './posts/posts.component';
 import { RegisterComponent } from './login/register/register.component';
 import {PostCardComponent} from "./posts/post-card/post-card.component";
 import {PostComponent} from "./posts/post/post.component";
+import { AssignmentComponent } from './assignments/assignment/assignment.component';
 
 
 export const routes: Routes = [
@@ -31,6 +32,10 @@ export const routes: Routes = [
     {
         path : 'post/:post',
         component : PostComponent
+    },
+    {
+        path : 'assignment/:assignment',
+        component : AssignmentComponent
     }
 
 ];

@@ -56,7 +56,7 @@ export class PostCreationFormComponent {
 
         let formData = undefined
         const post = this.postForm.getRawValue() as Post
-        post.description = description.value.replaceAll(' ', '') !== '' ? description.value : undefined
+        post.description = description.value 
 
         post.links = (this.links().length !== 0) ? this.links() : undefined;
         post.files = (this.files().length !== 0) ? this.files() : undefined;
@@ -77,9 +77,9 @@ export class PostCreationFormComponent {
                 }
             }
         }
+        
 
-
-        this.postSvc.postPost(post, formData)
+        this.postSvc.postPost(post, formData , this.postForm.get('group_id')?.value === 'public')
             .subscribe(
                 res => {
                     post.links = this.links()
