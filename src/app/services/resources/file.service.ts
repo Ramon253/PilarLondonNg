@@ -73,8 +73,9 @@ export class FileService {
 		)
 	}
 
-	mapFiles(files: FileR[]) {
-		let multimedia: FileR[] = []
+	mapFiles(files: FileR[]): {files : FileR[], multimedia: FileR[]} {
+        console.log(files)
+        let multimedia: FileR[] = []
 		files = files.filter((fileLink: FileR) => {
 			if (!this.validator.checkFile(fileLink.mime_type)) {
 				return true
@@ -83,7 +84,7 @@ export class FileService {
 			return false
 		})
 
-		return { files: files, multimedia: multimedia }
+		return { files : files, multimedia: multimedia }
 	}
 
 }

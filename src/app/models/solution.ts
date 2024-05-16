@@ -7,8 +7,10 @@ export interface Solution {
     fileLinks ? : FileR[],
     links? : Link[],
     multimedia ?: FileR[],
-    user_id ?: string,
-    user_name ? : string,
+    student_id ?: string,
+    student_name ? : string,
     note ?: string,
-    updated_at? : Date
+    user_id?: string,
+    updated_at? : Date  ,
+    description? : string
 }

@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-4 p-2">
+    <div class="w-full h-fit p-2">
+        <p>{{ solution().description }}</p>
+    </div>
+    @if (solution().fileLinks) {
+        <span>Files</span>
+        <div class="flex flex-wrap">
+            @for (file of solution().fileLinks; track $index) {
+                <app-file [file]="file" parent="solution">
+                </app-file>
+            }
+        </div>
+    }
+</div>

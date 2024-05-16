@@ -2,26 +2,27 @@
 </section>
 
 <section class="w-full bg-main-grey">
-    <div class="mt-[10vh] min-h-[90vh] max-w-screen-xl mx-auto p-4 flex gap-10 bg-main-grey">
+    <div class="mt-[10vh] min-h-[90vh] max-w-screen-xl overflow-x-hidden mx-auto p-4 flex gap-10 bg-main-grey">
         @if (isLoading()) {
-        <div class="flex gap-4 w-full mt-20">
-            <div class="w-full flex max-h-screen flex-col  max-w-screen-lg  gap-4">
-                <div class="w-full h-[5rem] rounded-lg bg-gray-300 animate-pulse"></div>
-                <div class="w-full h-[2rem] rounded-lg bg-gray-300 animate-pulse"></div>
-                <div class="w-full h-full rounded-lg bg-gray-300 animate-pulse"></div>
+            <div class="flex gap-4 w-full mt-20">
+                <div class="w-full flex max-h-screen flex-col  max-w-screen-lg  gap-4">
+                    <div class="w-full h-[5rem] rounded-lg bg-gray-300 animate-pulse"></div>
+                    <div class="w-full h-[2rem] rounded-lg bg-gray-300 animate-pulse"></div>
+                    <div class="w-full h-full rounded-lg bg-gray-300 animate-pulse"></div>
+                </div>
+                <div class="w-[50rem] h-[7rem] rounded-lg bg-gray-300 animate-pulse"></div>
             </div>
-            <div class="w-[50rem] h-[7rem] rounded-lg bg-gray-300 animate-pulse"></div>
-        </div>
         } @else {
-        <div class="flex flex-col items-center max-w-screen-lg  w-max mx-auto gap-4 pt-10">
+            <div class="flex flex-col items-center max-w-screen-lg  w-2/3 mx-auto gap-4 pt-10">
 
-            <div class="pl-1 w-full flex justify-between">
+                <div class="pl-1 w-full flex justify-between">
                 <span class="flex items-center gap-4">Assignment/
                     @if (update().group_id) {
-                    <select #group_select class="bg-transparent autofill:disabled:">
+                        <select #group_select class="bg-transparent autofill:disabled:">
                         @for (group of groups(); track $index) {
 
-                        <option [attr.selected]="group.id == assignment().group_id ? true : null" value="{{group.id}}">
+                            <option [attr.selected]="group.id == assignment().group_id ? true : null"
+                                    value="{{group.id}}">
                             {{ group.name }}
                         </option>
 
@@ -29,242 +30,254 @@
                     </select>
                     } @else {
 
-                    {{ assignment().group_name }}
+                        {{ assignment().group_name }}
 
-                    @if (loginSvc.user()?.role === 'teacher') {
-                    <button (click)="update().group_id = true; updateAny.set(true)"
-                        class="rounded text-center p-1 text-main flex items-center justify-center h-fit aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main ">
+                        @if (loginSvc.user()?.role === 'teacher') {
+                            <button (click)="update().group_id = true; updateAny.set(true)"
+                                    class="rounded text-center p-1 text-main flex items-center justify-center h-fit aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main ">
                         <span class="material-icons w-fit">edit</span>
                     </button>
-                    }
+                        }
                     }
                 </span>
 
-                @if (updateAny()) {
-                <button (click)="updateAssignment()"
-                    class="p-2 rounded-lg border-2 border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition flex items-center gap-1">
-                    <span class="material-icons h-full">save</span> Save
-                </button>
-                } @else {
-                <span>
+                    @if (updateAny()) {
+                        <button (click)="updateAssignment()"
+                                class="p-2 rounded-lg border-2 border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition flex items-center gap-1">
+                            <span class="material-icons h-full">save</span> Save
+                        </button>
+                    } @else {
+                        <span>
                     {{ assignment().created_at }}
                 </span>
-                }
-
-            </div>
-
-
-            <div class="w-full border-b border-font-grey  pb-4">
-                <h1 class="text-secondary font-bold text-5xl flex items-center justify-between gap-4">
-                    @if (update().name) {
-                    <input #nameInput type="text" class="bg-transparent border-2 rounded p-1"
-                        [value]="assignment().name">
-                    } @else {
-                    {{ assignment().name }}
                     }
-                    @if (loginSvc.user()?.role === 'teacher') {
-                    <button (click)="update().name=true; updateAny.set(true)"
-                        class="rounded text-center p-1 h-full text-main flex items-center justify-center aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main">
-                        <span class="material-icons w-fit">edit</span>
-                    </button>
-                    }
-                </h1>
-                <div class="flex items-center justify-between w-full">
-                    @if (update().dead_line) {
-                    <div class="flex items-baseline gap-2 text-secondary-grey translate-y-3 pl-2">
-                        <label for="dead_line">Fecha de entrega : </label>
-                        <input #dead_line id="dead_line" type="datetime-local"
-                            class="bg-main-white shadow p-2 cursor-pointer mt-2 rounded appearance-none text-font-grey">
-                    </div>
 
-                    }@else {
-                    <span class="flex items-center gap-2 w-full text-secondary-grey translate-y-3 pl-2">
+                </div>
+
+
+                <div class="w-full border-b border-font-grey  pb-4">
+                    <h1 class="text-secondary font-bold text-5xl flex items-center justify-between gap-4">
+                        @if (update().name) {
+                            <input #nameInput type="text" class="bg-transparent border-2 rounded p-1"
+                                   [value]="assignment().name">
+                        } @else {
+                            {{ assignment().name }}
+                        }
+                        @if (loginSvc.user()?.role === 'teacher') {
+                            <button (click)="update().name=true; updateAny.set(true)"
+                                    class="rounded text-center p-1 h-full text-main flex items-center justify-center aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main">
+                                <span class="material-icons w-fit">edit</span>
+                            </button>
+                        }
+                    </h1>
+                    <div class="flex items-center justify-between w-full">
+                        @if (update().dead_line) {
+                            <div class="flex items-baseline gap-2 text-secondary-grey translate-y-3 pl-2">
+                                <label for="dead_line">Fecha de entrega : </label>
+                                <input #dead_line id="dead_line" type="datetime-local"
+                                       class="bg-main-white shadow p-2 cursor-pointer mt-2 rounded appearance-none text-font-grey">
+                            </div>
+
+                        } @else {
+                            <span class="flex items-center gap-2 w-full text-secondary-grey translate-y-3 pl-2">
                         <span class="font-bold">Fecha de entrega :
                         </span>
                         <span>
-                            {{assignment().show_dead_line}}
+                            {{ assignment().show_dead_line }}
                         </span>
                     </span>
-                    <button class="flex items-center translate-y-3"
-                        (click)="updateAny.set(true);update().dead_line = true">
+                            <button class="flex items-center translate-y-3"
+                                    (click)="updateAny.set(true);update().dead_line = true">
                         <span class=" material-icons p-1 flex items-center justify-center rounded-lg text-main
                         hover:bg-main hover:text-main-white transition">edit</span>
-                    </button>
-                    }
-                </div>
-            </div>
-            <div class="w-full min-h-3 flex items-start">
-                @if (update().description) {
-                <textarea (focus)="triggerResize(descriptionInput)" autofocus (input)="triggerResize(descriptionInput)"
-                    #descriptionInput class="border-2 rounded-lg w-[768px] h-fit p-2 bg-main-white"
-                    placeholder="description" id="">{{ assignment().description }}</textarea>
-                } @else {
-                <p class="{{ hasResources() ? 'w-[768px]' : 'w-[1024px]' }}">{{ assignment().description }}</p>
-                @if (loginSvc.user()?.role === 'teacher') {
-                <button (click)="update().description = true; updateAny.set(true)"
-                    class="rounded text-center p-1 text-main flex items-center justify-center h-fit aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main">
-                    <span class="material-icons w-fit">edit</span>
-                </button>
-                }
-                }
-            </div>
-            <div class="flex flex-col w-full gap-10">
-                <div class="w-full flex flex-col gap-10">
-                    @for (video of assignment().videos; track $index) {
-                    <app-youtube-video parent="assignment" [link]="video"
-                        (delete)="deleteLink($event.id, $event.isVideo)"></app-youtube-video>
-                    }
-                </div>
-                <div class="w-full flex flex-col gap-10">
-                    @for (multimedia of assignment().multimedia; track $index) {
-                    <app-multimedia parent="assignment" (delete)="deleteFile(multimedia.id.toString(), true)"
-                        [file]="multimedia"></app-multimedia>
-                    }
-                </div>
-            </div>
-            @if (loginSvc.user()?.role === 'teacher') {
-            <div class="w-full">
-                <button (click)="showDeleteDialog.set(true)"
-                    class="font-bold flex items-center border-secondary gap-2 border-2 rounded-lg text-secondary p-2 hover:bg-secondary hover:text-main-white hover:scale-110 transition ease-in-out">
-                    <span class="material-icons">delete</span>
-                    | Delete assignment
-                </button>
-            </div>
-            }
-            @if (hasResources()) {
-            <div class="w-full pt-20">
-                <div class="p-4 rounded-xl  h-fit flex flex-col ">
-                    <div class="flex w-full flex-col gap-10">
-
-                        <div class="w-full space-y-4">
-                            <div class="w-full border-b border-secondary  pb-4  ">
-                                <h1 class="text-secondary font-bold text-2xl pl-4">Files</h1>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
-                                @for (file of assignment().fileLinks; track $index) {
-                                <app-file parent="assignment" [file]="file"
-                                    (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
-                                }
-                            </div>
-                        </div>
-
-
-                        <div class="w-full space-y-4">
-                            <div class="w-full border-b  border-main pb-4 ">
-                                <h1 class="text-main pl-4 font-bold text-2xl">Links</h1>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
-                                @for (link of assignment().links; track $index) {
-                                <app-link parent="post" (delete)="deleteLink($event.id, $event.isVideo)"
-                                    [link]="link"></app-link>
-                                }
-                            </div>
-                        </div>
-
+                            </button>
+                        }
                     </div>
-                    @if (loginSvc.user()?.role === 'teacher') {
-                    <div class="w-full flex p-2 items-center justify-center">
-                        <button (click)="showPostDialog.set(true)"
-                            class="flex p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
-                            <span class="material-icons">add</span> <span>|</span> Añadir link u archivo
-                        </button>
-                    </div>
+                </div>
+                <div class="w-full min-h-3 flex items-start">
+                    @if (update().description) {
+                        <textarea (focus)="triggerResize(descriptionInput)" autofocus
+                                  (input)="triggerResize(descriptionInput)"
+                                  #descriptionInput class="border-2 rounded-lg w-[768px] h-fit p-2 bg-main-white"
+                                  placeholder="description" id="">{{ assignment().description }}</textarea>
+                    } @else {
+                        <p class="{{ hasResources() ? 'w-[768px]' : 'w-[1024px]' }}">{{ assignment().description }}</p>
+                        @if (loginSvc.user()?.role === 'teacher') {
+                            <button (click)="update().description = true; updateAny.set(true)"
+                                    class="rounded text-center p-1 text-main flex items-center justify-center h-fit aspect-square hover:text-main-white hover:scale-105 transition hover:bg-main">
+                                <span class="material-icons w-fit">edit</span>
+                            </button>
+                        }
                     }
                 </div>
 
-            </div>
-            }
-            <div class="w-full">
+                <div class="h-fit flex flex-col w-full gap-10">
+                    <div class="w-full flex flex-col gap-10">
+                        @for (video of assignment().videos; track $index) {
+                            <app-youtube-video parent="assignment" [link]="video"
+                                               (delete)="deleteLink($event.id, $event.isVideo)"></app-youtube-video>
+                        }
+                    </div>
+                    <div class="w-full flex flex-col gap-10">
+                        @for (multimedia of assignment().multimedia; track $index) {
+                            <app-multimedia parent="assignment" (delete)="deleteFile(multimedia.id.toString(), true)"
+                                            [file]="multimedia"></app-multimedia>
+                        }
+                    </div>
+                </div>
 
-                <app-comments [comments]="commentSvc.mapComments(assignment().comments ?? [])"
-                    [parent]="{type : 'assignment', id : assignment().id?.toString() ?? ''}"
-                    (delete)="deleteComment($event)" (post)="postComment($event)"></app-comments>
-            </div>
+                @if (hasResources() || loginSvc.user()?.role === 'teacher') {
+                    <div class="w-full">
+                        <div class="py-4 pr-4 rounded-xl  h-fit flex flex-col ">
+                            <div class="flex w-full flex-col gap-10">
 
-        </div>
+                                <div class="w-full space-y-4">
+                                    <div class="w-full border-b border-secondary  pb-4  ">
+                                        <h1 class="text-secondary font-bold text-2xl pl-4">Files</h1>
+                                    </div>
+                                    <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
+                                        @for (file of assignment().fileLinks; track $index) {
+                                            <app-file parent="assignment" [file]="file"
+                                                      (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
+                                        }
+                                    </div>
+                                </div>
 
 
-        <!--Solutions-->
-        <div class="w-full pt-20">
-            <div class="p-4 rounded-xl border-2 border-main h-fit flex flex-col bg-main-white shadow">
-                <div class="w-full flex flex-col p-2 gap-4 items-center justify-center">
-                    @if (loginSvc.user()?.role === 'teacher') {
-                    <div class=" w-full flex flex-col gap-4 ">
-                        <h3 class="border-b w-full text-center font-bold text-main text-3xl border-secondary-grey pb-4">
-                            Entregas
-                        </h3>
-                        <div class="w-full text-center">
-                            @if (!assignment().solutions) {
-                                <span class="text-secondary-grey text-center w-full">No hay entregas todavia</span>
-                            }@else {
-                                @for (solution of assignment().solutions; track $index) {
-                                    
-                                }
+                                <div class="w-full space-y-4">
+                                    <div class="w-full border-b  border-main pb-4 ">
+                                        <h1 class="text-main pl-4 font-bold text-2xl">Links</h1>
+                                    </div>
+                                    <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
+                                        @for (link of assignment().links; track $index) {
+                                            <app-link parent="post" (delete)="deleteLink($event.id, $event.isVideo)"
+                                                      [link]="link"></app-link>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                            @if (loginSvc.user()?.role === 'teacher') {
+                                <div class="w-full flex p-2 items-center justify-center">
+                                    <button (click)="showPostDialog.set(true)"
+                                            class="flex p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
+                                        <span class="material-icons">add</span> <span>|</span> Añadir link u archivo
+                                    </button>
+                                </div>
                             }
                         </div>
+
                     </div>
-                    }@else {
-                    <div class=" w-full">
-                        <h3 class="border-b w-full text-center font-bold text-main text-3xl border-secondary-grey pb-4">
-                            Tu entrega</h3>
+                }
+                @if (loginSvc.user()?.role === 'teacher') {
+                    <div class="w-full">
+                        <button (click)="showDeleteDialog.set(true)"
+                                class="font-bold flex items-center border-secondary gap-2 border-2 rounded-lg text-secondary p-2 hover:bg-secondary hover:text-main-white hover:scale-110 transition ease-in-out">
+                            <span class="material-icons">delete</span>
+                            | Delete assignment
+                        </button>
                     </div>
-                    <button (click)="showPostDialog.set(true)"
-                        class="flex p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
-                        <span class="material-icons">add</span> <span>|</span> Añadir entrega
-                    </button>
-                    }
+                }
+                <div class="w-full">
+
+                    <app-comments [comments]="commentSvc.mapComments(assignment().comments ?? [])"
+                                  [parent]="{type : 'assignment', id : assignment().id?.toString() ?? ''}"
+                                  (delete)="deleteComment($event)" (post)="postComment($event)"></app-comments>
+                </div>
+
+            </div>
+
+
+            <!--Solutions-->
+            <div class="w-1/3 pt-20">
+                <div class="p-4 rounded-xl border-2 border-main h-fit flex flex-col bg-main-white shadow">
+                    <div class="w-full flex flex-col p-2 gap-4 items-center justify-center">
+                        @if (loginSvc.user()?.role === 'teacher') {
+                            <div class=" w-full flex flex-col gap-4 ">
+                                <h3 class="border-b  w-full text-center font-bold text-secondary text-3xl border-secondary-grey pb-4">
+                                    Entregas
+                                </h3>
+                                <div class="w-full text-center">
+                                    @if (!assignment().solutions) {
+                                        <span
+                                            class="text-secondary-grey text-center w-full">No hay entregas todavia</span>
+                                    } @else {
+                                        <div class="flex w-full flex-col gap-2">
+                                            @for (solution of assignment().solutions; track $index) {
+                                                <app-solution-card [solution]="solution"></app-solution-card>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        } @else {
+                            <div class=" w-full">
+                                <h3 class="border-b w-full text-center font-bold text-main text-3xl border-secondary-grey pb-4">
+                                    Tu entrega</h3>
+                            </div>
+                            @if (assignment().solution) {
+                                <div class="w-full">
+                                    <app-your-solution [solution]="assignment().solution ?? {}"></app-your-solution>
+                                </div>
+                            } @else {
+                                <button (click)="showPostDialog.set(true)"
+                                        class="flex p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
+                                    <span class="material-icons">add</span> <span>|</span> Añadir entrega
+                                </button>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
         }
     </div>
     @if (showDeleteDialog()) {
-    <app-dialog>
-        <form class="w-fit p-4 flex items-center gap-4 flex-col" method="dialog">
+        <app-dialog>
+            <form class="w-fit p-4 flex items-center gap-4 flex-col" method="dialog">
             <span class="w-fit">Seguro que quieres <span class="font-bold text-secondary">eliminar</span> el
                 post</span>
-            <div class="w-full flex items-center justify-center gap-4">
-                <button (click)="deleteAssignment();" type="submit"
-                    class="border-2 h-[3rem] flex items-center gap-2 py-2 px-4 rounded-lg border-secondary font-bold text-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition ease-in-out">
-                    @if (isLoadingDelete()) {
-                    <div class="h-full aspect-square">
-                        <app-loading-wheel></app-loading-wheel>
-                    </div>
-                    <span>Loading...</span>
-                    } @else {
-                    Si
-                    }
-                </button>
-                <button
-                    class="border-2 py-2 px-4 rounded-lg border-main font-bold text-main hover:scale-110 hover:bg-main hover:text-main-white transition ease-in-out"
-                    (click)="showDeleteDialog.set(false)" type="submit">
-                    No
-                </button>
-            </div>
-        </form>
-    </app-dialog>
+                <div class="w-full flex items-center justify-center gap-4">
+                    <button (click)="deleteAssignment();" type="submit"
+                            class="border-2 h-[3rem] flex items-center gap-2 py-2 px-4 rounded-lg border-secondary font-bold text-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition ease-in-out">
+                        @if (isLoadingDelete()) {
+                            <div class="h-full aspect-square">
+                                <app-loading-wheel></app-loading-wheel>
+                            </div>
+                            <span>Loading...</span>
+                        } @else {
+                            Si
+                        }
+                    </button>
+                    <button
+                        class="border-2 py-2 px-4 rounded-lg border-main font-bold text-main hover:scale-110 hover:bg-main hover:text-main-white transition ease-in-out"
+                        (click)="showDeleteDialog.set(false)" type="submit">
+                        No
+                    </button>
+                </div>
+            </form>
+        </app-dialog>
     }
     @if (showPostDialog()) {
-    <app-dialog>
-        <div class="max-w-screen-md w-full overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
-            <div class="w-fit aspect-square absolute right-0 top-0">
-                <button (click)="showPostDialog.set(false)"
-                    class="rounded-full hover:bg-secondary transition text-secondary hover:text-main-white p-1 flex items-center justify-center">
-                    <span class="material-icons">close</span>
+        <app-dialog>
+            <div class="max-w-screen-md w-full overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
+                <div class="w-fit aspect-square absolute right-0 top-0">
+                    <button (click)="showPostDialog.set(false)"
+                            class="rounded-full hover:bg-secondary transition text-secondary hover:text-main-white p-1 flex items-center justify-center">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <app-form-post (newLinks)="inputLinks.set($event)" (newFiles)="inputFiles.set($event)"></app-form-post>
+                <button
+                    class="flex items-center gap-2 p-2 border-2 border-secondary font-medium text-secondary hover:text-main-white hover:bg-secondary hover:scale-110 transition rounded-lg"
+                    (click)="postResource()">
+                    @if (isLoadingPostResource()) {
+                        <app-loading-wheel></app-loading-wheel> Loading...
+                    } @else {
+                        <span class="material-icons">save</span>
+                        Save
+                    }
                 </button>
             </div>
-            <app-form-post (newLinks)="inputLinks.set($event)" (newFiles)="inputFiles.set($event)"></app-form-post>
-            <button
-                class="flex items-center gap-2 p-2 border-2 border-secondary font-medium text-secondary hover:text-main-white hover:bg-secondary hover:scale-110 transition rounded-lg"
-                (click)="postResource()">
-                @if (isLoadingPostResource()) {
-                <app-loading-wheel></app-loading-wheel> Loading...
-                } @else {
-                <span class="material-icons">save</span>
-                Save
-                }
-            </button>
-        </div>
-    </app-dialog>
+        </app-dialog>
     }
 </section>

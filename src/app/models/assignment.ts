@@ -8,7 +8,7 @@ export interface Assignment {
     name : string,
     description? : string,
     dead_line ? : Date,
-    show_dead_line ?: string, 
+    show_dead_line ?: string,
     group_id : string | null,
     links? : Link[],
     videos? : Link[],
@@ -21,4 +21,5 @@ export interface Assignment {
     groups? : any,
     comments? : Comment[],
     solutions ? : Solution[]
+    solution ? : Solution
 }

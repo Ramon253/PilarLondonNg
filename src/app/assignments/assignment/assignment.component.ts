@@ -21,11 +21,14 @@ import 'cally';
 import { FormPostComponent } from "../../resources/form-post/form-post.component";
 import { DatePipe } from '@angular/common';
 import { SolutionService } from '../../services/solution.service';
+import {SolutionCardComponent} from "../../resources/solution-card/solution-card.component";
+import {Solution} from "../../models/solution";
+import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
 
 @Component({
 	selector: 'app-assignment',
 	standalone: true,
-	imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent],
+	imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent, SolutionCardComponent, YourSolutionComponent],
 	templateUrl: './assignment.component.html',
 	styles: ``,
 
@@ -70,8 +73,8 @@ export class AssignmentComponent {
 		if (this.update().group_id) {
 			console.log(this.assignment().group_id);
 			console.log(this.groupInput()?.nativeElement.value);
-			
-			
+
+
 			this.assignment().group_id = this.groupInput()?.nativeElement.value
 			this.assignment().group_name = this.groups().find((group) => this.assignment().group_id == group.id)?.name
 		}
@@ -112,6 +115,8 @@ export class AssignmentComponent {
 			this.groups.set(assignment.groups)
 		this.assignment.set(this.assignmentSvc.mapAssignment(assignment))
 	}
+
+
 
 	private restartUpdate() {
 		this.update.set(
