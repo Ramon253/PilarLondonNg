@@ -157,7 +157,7 @@
 
                     <app-comments
                         [comments]="commentSvc.mapComments(assignment().comments ?? [])"
-                        [parent]="{type : 'post', id : assignment().id?.toString() ?? ''}"
+                        [parent]="{type : 'assignment', id : assignment().id?.toString() ?? ''}"
                         (delete)="deleteComment($event)"
                         (post)="postComment($event)"></app-comments>
                 </div>

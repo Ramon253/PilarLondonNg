@@ -2,7 +2,8 @@
     <div class="flex w-full gap-10 items-center justify-between">
         <h3 class="text-3xl text-secondary font-bold">Comentarios</h3> <span
             class="material-icons text-main  rounded-full p-1 flex items-center justify-center transition  cursor-pointer {{isLoading()? '': 'hover:text-main-white hover:bg-main' }}"
-            (click)="getComments(refhreshButton)" #refhreshButton>@if (isLoading()){
+            (click)="getComments(refhreshButton)" #refhreshButton>
+            @if (isLoading()){
                 <app-loading-wheel></app-loading-wheel>
             }@else {refresh}</span>
     </div>
