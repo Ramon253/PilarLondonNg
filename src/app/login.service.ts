@@ -4,6 +4,13 @@ import { Observable } from 'rxjs';
 import { UserResponse } from './models/user/userResponse';
 import { Credentials } from './models/credentials';
 import { User } from './models/user/user';
+import axios, { AxiosResponse } from 'axios';
+
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.withXSRFToken = true;
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -29,14 +36,10 @@ export class LoginService {
     }
 
     private path = 'http://localhost:8000/api';
-    private csrfPath = `http://localhost:8000/sanctum/csrf-cookie`
 
-    getCsrf(): Observable<any> {
-        return this.http.get(this.csrfPath, { withCredentials: true })
-    }
-
-    login(credentials: Credentials): Observable<UserResponse> {
-        return this.http.post<UserResponse>(`${this.path}/login`, credentials, { withCredentials: true })
+    async login(credentials: Credentials): Promise<any> {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post<any, UserResponse>('/login', credentials)
     }
 
     register(credentials: Credentials): Observable<UserResponse> {

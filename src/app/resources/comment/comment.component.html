@@ -34,7 +34,7 @@
     @if (showAnswers()) {
 
     @for (curAnswerComment of ownAnswers(); track $index) {
-    <app-comment [comment]="curAnswerComment" (answer)="answer($event)"
+    <app-comment [parent]="parent()" [comment]="curAnswerComment" (answer)="answer($event)"
         [answerComments]="answerComments()"></app-comment>
     }
     }

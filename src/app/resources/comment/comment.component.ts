@@ -17,6 +17,7 @@ export class CommentComponent {
 	answer(answer?: {}) {
 		this.answerComment.emit(answer ?? { id: this.comment()?.id, name: this.comment()?.user_name })
 	}
+	parent = input.required<string>()
 
 	constructor(
 		public loginSvc : LoginService,
@@ -54,7 +55,7 @@ export class CommentComponent {
     deleteComment(){
 		this.isLoadingDelete.set(true)
 
-        this.commentSvc.deleteComment(this.comment()?.id ?? '', 'post').subscribe(
+        this.commentSvc.deleteComment(this.comment()?.id ?? '', this.parent()).subscribe(
             res => {
 				this.isLoadingDelete.set(false)
                 this.delete.emit(this.comment()?.id ?? '')

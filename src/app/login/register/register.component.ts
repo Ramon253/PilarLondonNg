@@ -35,10 +35,10 @@ export class RegisterComponent {
 		ev.preventDefault();
 
 		let credential = this.registerForm.getRawValue()
-		this.loginSvc.getCsrf().subscribe(res => {
-			this.loginSvc.register(credential as Credentials).subscribe(res => {
-				console.log(res);
-			});
+
+		this.loginSvc.register(credential as Credentials).subscribe(res => {
+			console.log(res);
 		});
+
 	}
 }

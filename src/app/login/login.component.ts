@@ -8,6 +8,7 @@ import { ValidationsService } from '../services/validations.service';
 import { Route, Router, RouterLink } from '@angular/router';
 import { UserResponse } from '../models/user/userResponse';
 import { ValidationErrorComponent } from '../validations/validation-error/validation-error.component';
+import { User } from '../models/user/user';
 
 @Component({
     selector: 'app-login',
@@ -47,77 +48,70 @@ export class LoginComponent {
     }
 
 
+    login(event: SubmitEvent) {
 
-    async login(event: SubmitEvent) {
         event.preventDefault();
 
         this.submitButton()?.nativeElement.classList.toggle('hidden')
         this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
 
-        this.loginSvc.getCsrf().subscribe(
+        this.loginSvc.login(this.loginForm.getRawValue() as Credentials).then(
             res => {
-                this.loginSvc
-                .login(this.loginForm.getRawValue() as Credentials)
-                .subscribe(
-                    (user: UserResponse) => {
-                        if (user.error) {
+                this.loginSvc.isLogged.set(true)
+                this.loginSvc.user.set(res.data.user)
+                localStorage.setItem('isLogged', JSON.stringify(true))
+                this.router.navigate(['/posts']);
+            }
 
-                            this.loginForm.get('name')?.setErrors({ invalidCredentials: true })
-                            this.loginForm.get('password')?.setErrors({ invalidCredentials: true })
-                            this.loginForm.get('email')?.setErrors({ invalidCredentials: true })
+        ).catch(
+            err => {
+                if (err.status === 500) {
+                    throw new Error()
+                    return
+                }
+                this.loginForm.get('name')?.setErrors({ invalidCredentials: true })
+                this.loginForm.get('password')?.setErrors({ invalidCredentials: true })
+                this.loginForm.get('email')?.setErrors({ invalidCredentials: true })
 
-                            this.submitButton()?.nativeElement.classList.toggle('hidden')
-                            this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
+                this.submitButton()?.nativeElement.classList.toggle('hidden')
+                this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
 
-                            return
-                        }
-
-                        this.loginSvc.isLogged.set(true)
-                        this.loginSvc.user.set(user.user)
-                        localStorage.setItem('isLogged', JSON.stringify(true))
-                        this.router.navigate(['/posts']);
-                    },
-                    error => {
-                        throw new Error()
-                    })
             })
-    
-}
 
 
+    }
+
+    hasErrors(field: string) {
+        return !this.loginForm.get(field)?.valid && this.loginForm.get(field)?.touched;
+    }
+    changeIdentifier() {
+        this.identifier.set(this.identifier() === 'name' ? 'email' : 'name')
+        this.arrowIcon()?.nativeElement.classList.toggle('rotate-[180deg]')
+    }
+
+    requireId = () => {
+
+        this.loginForm.get(this.identifier())?.setValidators(Validators.required)
+
+        if (this.identifier() === 'email')
+            this.loginForm.get('email')?.setValidators(Validators.email)
+
+        this.loginForm.get(this.identifier())?.updateValueAndValidity();
+        console.log('Form after ->' + this.identifier());
+        console.log(this.loginForm);
+
+        let before = this.identifier() === 'name' ? 'email' : 'name'
+
+        console.log(before);
+        console.log(this.loginForm.get(before));
 
 
-hasErrors(field: string) {
-    return !this.loginForm.get(field)?.valid && this.loginForm.get(field)?.touched;
-}
-changeIdentifier() {
-    this.identifier.set(this.identifier() === 'name' ? 'email' : 'name')
-    this.arrowIcon()?.nativeElement.classList.toggle('rotate-[180deg]')
-}
-
-requireId = () => {
-
-    this.loginForm.get(this.identifier())?.setValidators(Validators.required)
-
-    if (this.identifier() === 'email')
-        this.loginForm.get('email')?.setValidators(Validators.email)
-
-    this.loginForm.get(this.identifier())?.updateValueAndValidity();
-    console.log('Form after ->' + this.identifier());
-    console.log(this.loginForm);
-
-    let before = this.identifier() === 'name' ? 'email' : 'name'
-
-    console.log(before);
-    console.log(this.loginForm.get(before));
-
-
-    this.loginForm.get(before)?.removeValidators(Validators.required);
-    this.loginForm.get(before)?.updateValueAndValidity();
-    this.loginForm.get(before)?.setValue('')
-    console.log('form al final');
-    console.log(this.loginForm);
-}
+        this.loginForm.get(before)?.removeValidators(Validators.required);
+        this.loginForm.get(before)?.updateValueAndValidity();
+        this.loginForm.get(before)?.setValue('')
+        console.log('form al final');
+        console.log(this.loginForm);
+    }
 }
 
 

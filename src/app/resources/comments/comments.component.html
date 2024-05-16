@@ -33,8 +33,9 @@
         <app-comment [comment]="comment" [answerComments]="comments()" (answer)="
                 answerComment.set($event.id);
                 answerTo.set($event.name);
-                focusCommentInput.scrollIntoView({ block: 'center', behavior: 'smooth' })
-                " (delete)="deleteComment($event)" />
+                focusCommentInput.scrollIntoView({ block: 'center', behavior: 'smooth' })"
+                [parent]="parent().type"
+                (delete)="deleteComment($event)" />
 
         }
         }
