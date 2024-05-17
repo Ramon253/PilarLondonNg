@@ -11,6 +11,7 @@ export interface Solution {
     student_name ? : string,
     note ?: string,
     user_id?: string,
-    updated_at? : Date  ,
+    updated_at : Date,
+    videos? : Link[],
     description? : string
 }

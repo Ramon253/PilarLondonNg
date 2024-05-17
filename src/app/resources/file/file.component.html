@@ -1,7 +1,7 @@
-<a class="p-4 pr-2 gap-2 rounded-2xl border-2 border-secondary flex items-center justify-between max-w-[300px]"
+<a class="p-4 pr-2 gap-2 rounded-2xl border-2 border-{{color()}} flex items-center justify-between max-w-[300px]"
     href="http://localhost:8000/api/{{parent()}}/file/{{file()?.id}}/download" (click)="disableLink($event)">
     {{ file()?.file_name }}
-    @if (loginSvc.user()?.role === 'teacher') {
+    @if (loginSvc.user()?.role === 'teacher' || showControls()) {
     <div class="w-fit">
         <button (click)="deleteFile()" (mouseenter)="hoverCloseButton.set(true)"
             (mouseleave)="hoverCloseButton.set(false)"

@@ -11,6 +11,8 @@ import { FormPostComponent } from '../../resources/form-post/form-post.component
 import {AssignmentComponent} from "../../assignments/assignment/assignment.component";
 import {Post} from "../../models/post";
 import {Assignment} from "../../models/assignment";
+import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
+import {Solution} from "../../models/solution";
 
 @Injectable({
 	providedIn: 'root'
@@ -45,7 +47,7 @@ export class FileService {
 	}
 
 
-	createFiles(from: string, fromComponent: PostComponent | AssignmentComponent, post : Post|Assignment) {
+	createFiles(from: string, fromComponent: PostComponent | AssignmentComponent | YourSolutionComponent, post : Post|Assignment |Solution) {
 
 		fromComponent.isLoadingFile = true
 		const formData = new FormData

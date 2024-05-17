@@ -2,7 +2,7 @@
     href="{{link()?.link}}" target="_blank" (click)="disableLink($event)">
 
     {{link()?.link_name}}
-    @if (loginSvc.user()?.role === 'teacher') {
+    @if (loginSvc.user()?.role === 'teacher' || showControls()) {
     <div class="w-fit">
         <button (mouseenter)="hoverCloseButton.set(true)" (mouseleave)="hoverCloseButton.set(false)"
             (click)="deleteLink()"

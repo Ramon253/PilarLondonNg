@@ -24,11 +24,12 @@ import { SolutionService } from '../../services/solution.service';
 import {SolutionCardComponent} from "../../resources/solution-card/solution-card.component";
 import {Solution} from "../../models/solution";
 import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
+import {SolutionPostFormComponent} from "../../resources/solution-post-form/solution-post-form.component";
 
 @Component({
 	selector: 'app-assignment',
 	standalone: true,
-	imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent, SolutionCardComponent, YourSolutionComponent],
+	imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent, SolutionCardComponent, YourSolutionComponent, SolutionPostFormComponent],
 	templateUrl: './assignment.component.html',
 	styles: ``,
 
@@ -37,12 +38,16 @@ export class AssignmentComponent {
 	isLoadingFile = false
 	isLoadingLink = false
 
+	now = new Date()
+
 	isLoading = signal<boolean>(true)
 	isLoadingDelete = signal<boolean>(false)
 	isLoadingPostResource = signal<boolean>(false)
 	updateAny = signal<boolean>(false)
+
 	showDeleteDialog = signal<boolean>(false)
 	showPostDialog = signal<boolean>(false)
+    showSolutionDialog = signal<boolean>(false)
 
 	groups = signal<{ name: string, id: string }[]>([])
 	assignment = signal<Assignment>({
@@ -63,6 +68,7 @@ export class AssignmentComponent {
 	descriptionInput = viewChild<ElementRef>('descriptionInput')
 	dead_line = viewChild<ElementRef>('dead_line')
 
+
 	inputLinks = signal<Link[]>([])
 	inputFiles = signal<File[]>([])
 
@@ -71,10 +77,6 @@ export class AssignmentComponent {
 			this.assignment().name = this.nameInput()?.nativeElement.value
 		}
 		if (this.update().group_id) {
-			console.log(this.assignment().group_id);
-			console.log(this.groupInput()?.nativeElement.value);
-
-
 			this.assignment().group_id = this.groupInput()?.nativeElement.value
 			this.assignment().group_name = this.groups().find((group) => this.assignment().group_id == group.id)?.name
 		}
@@ -129,6 +131,7 @@ export class AssignmentComponent {
 				links: false
 			}
 		)
+        this.updateAny.set(false)
 	}
 
 
@@ -210,4 +213,6 @@ export class AssignmentComponent {
 		public datePipe: DatePipe,
 		private solutionSvc : SolutionService
 	) { }
+
+    protected readonly alert = alert;
 }

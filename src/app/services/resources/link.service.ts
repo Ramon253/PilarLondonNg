@@ -9,6 +9,8 @@ import { PostComponent } from '../../posts/post/post.component';
 import {AssignmentComponent} from "../../assignments/assignment/assignment.component";
 import {Post} from "../../models/post";
 import {Assignment} from "../../models/assignment";
+import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
+import {Solution} from "../../models/solution";
 
 @Injectable({
 	providedIn: 'root'
@@ -27,7 +29,7 @@ export class LinkService {
 		return this.http.delete(`${this.path}${from}/link/${id}`, { withCredentials: true })
 	}
 
-	destroyLink(from : string , LinkComponent: LinkComponent | YoutubeVideoComponent) {
+	destroyLink(from : string , LinkComponent: LinkComponent | YoutubeVideoComponent ) {
 		LinkComponent.isLoadingDelete.set(true)
 
 		this.deleteLink(from, LinkComponent.link()?.id ?? '').subscribe(
@@ -44,7 +46,7 @@ export class LinkService {
 		)
 	}
 
-	createLinks(from : string, fromComponent : PostComponent | AssignmentComponent, post : Post| Assignment){
+	createLinks(from : string, fromComponent : PostComponent | AssignmentComponent | YourSolutionComponent, post : Post| Assignment | Solution){
 		 fromComponent.isLoadingLink = true
 		this.postLink(from, post.id?.toString() ?? '', fromComponent.inputLinks()).subscribe(
 			(res: any) => {

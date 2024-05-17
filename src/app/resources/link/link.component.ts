@@ -14,8 +14,10 @@ import { LinkService } from '../../services/resources/link.service';
 export class LinkComponent {
 	hoverCloseButton = signal<boolean>(false)
 	link = input<Link>()
+	color = input<string>('main')
+	showControls = input<boolean>(false)
 	delete = output<{ id: string, isVideo: boolean }>()
-    parent = input.required<string>()
+	parent = input.required<string>()
 	isLoadingDelete = signal<boolean>(false)
 
 
@@ -24,7 +26,7 @@ export class LinkComponent {
 		private linkSvc: LinkService
 	) { }
 
-	deleteLink()  {
+	deleteLink() {
 		this.linkSvc.destroyLink(this.parent(), this as LinkComponent)
 	}
 

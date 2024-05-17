@@ -1,3 +1,42 @@
-<div class="">
+<div>
+    <form (submit)="createSolution($event)" [formGroup]="solutionForm"
+          class="flex flex-col gap-10 overflow-y-scroll max-h-[80vh] max-w-screen-md w-max p-5">
+        @if (loginSvc.user()?.role !== 'teacher') {
+            <div class="flex flex-col gap-2 items-start justify-center w-full">
+                <label class="font-medium text-main" for="description">Descripción</label>
+                <textarea #description class="border-2 border-main shadow rounded-lg p-2 h-full w-full "
+                          name="description"
+                          required id="description" rows="10"
+                          placeholder="Escribe en contenido de texto de el post"
+                          formControlName="description"
+                 ></textarea>
+            </div>
+            <div class="w-full max-w-[90vh]">
+                <app-form-post (newFiles)="files.set($event)" (newLinks)="links.set($event)"
+                               (open)='submitButton.scrollIntoView({ block: "end", behavior: "smooth" });'/>
+            </div>
 
+        } @else {
+            <div class="flex flex-col gap-2 ">
+                <input id="note" type="number" max="10" min="0"
+                       class="order-2 border-b-2 border-main bg-transparent cursor-text" placeholder=" ">
+                <label for="note" class="order-1">
+                    Nota
+                </label>
+                <div class="order-3"></div>
+            </div>
+        }
+
+        <div class="w-full flex justify-center items-center">
+            <button
+                class=" cursor-pointer hover:shadow-[5px_5px_0px_0px_rgba(200,16,46)] hover:bg-main hover:text-main-white hover:scale-105 px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent  transition-all "
+                #submitButton type="submit">
+                @if (isLoading()){
+                    <app-loading-wheel></app-loading-wheel> Loading ...
+                } @else {
+                    Hacer entrega
+                }
+            </button>
+        </div>
+    </form>
 </div>

@@ -14,7 +14,8 @@ import { FileService } from '../../services/resources/file.service';
 })
 export class FileComponent {
   file = input<FileR>()
-
+  color = input<string>('secondary')
+  showControls = input<boolean>(false)
   hoverCloseButton = signal<boolean>(false)
   delete = output<{ id: string, isMultimedia: boolean }>()
 

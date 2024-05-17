@@ -1,14 +1,99 @@
-<div class="flex flex-col gap-4 p-2">
-    <div class="w-full h-fit p-2">
-        <p>{{ solution().description }}</p>
+<div class="flex flex-col gap-4 p-2 relative">
+    <div class="h-fit  -translate-y-3">
+        @if (solution().updated_at >= dead_line()) {
+        <span class="text-secondary font-bold ">Entregado con retraso por : {{getDelay()}}</span>
+        }@else {
+        <span class="text-secondary-grey">{{showDate(solution().updated_at)}}</span>
+        }
     </div>
-    @if (solution().fileLinks) {
-        <span>Files</span>
-        <div class="flex flex-wrap">
-            @for (file of solution().fileLinks; track $index) {
-                <app-file [file]="file" parent="solution">
-                </app-file>
-            }
+    <div class="w-full h-fit  flex">
+        @if (updateDescription()) {
+        <textarea [value]="solution().description"></textarea>
+        <button
+            class="px-4 py-2 text-center text-secondary border-2 border-secondary transition hover:bg-secondary hover:text-main-white hover:scale-110">
+            <span class="material-icons">save</span><span> Guardar cambios</span>
+        </button>
+        }@else {
+        <p>{{ solution().description }}</p>
+        <div class="h-full">
+            <button
+                class="w-fit p-1 rounded-full flex items-center hover:bg-main text-main hover:text-main-white transition">
+                <span class="material-icons flex items-center w-full text-center">edit</span>
+            </button>
         </div>
-    }
+        }
+    </div>
+
+    <div class="flex w-full flex-col">
+
+        @if (solution().fileLinks?.length !== 0) {
+        <div class="w-full flex flex-col gap-4">
+            <span class="w-full py-4 border-b-2 border-secondary text-2xl text-secondary font-medium">Files</span>
+            <div class="flex flex-wrap justify-start items-center gap-4">
+                @for (file of solution().fileLinks; track $index) {
+                <app-file [file]="file" parent="solution" [showControls]="true">
+                </app-file>
+                }
+                @for (file of solution().multimedia; track $index) {
+                <app-file color="main" [file]="file" parent="solution" [showControls]="true">
+                </app-file>
+                }
+            </div>
+        </div>
+        }
+        @if (solution().links?.length !== 0) {
+        <div class="w-full flex flex-col gap-4">
+            <span class="w-full py-4 border-b-2 border-main text-2xl text-main font-medium">Links</span>
+            <div class="flex flex-wrap justify-start items-center">
+                @for (link of solution().links; track $index) {
+                <app-link [showControls]="true" [link]="link" parent="solution">
+                </app-link>
+                }
+            </div>
+        </div>
+        }
+    </div>
+    <div class=" bg-gray-50 shadow-[inset_0px_0px_30px_#46464620] flex w-full items-center p-4 rounded-xl">
+        @if (solution().note) {
+        @if (solution().note ?? 0 < 5) { <span class="font-bold text-secondary">Nota : {{solution().note}}</span>
+            }
+            @else {
+            <span class="font-bold text-main">Nota : {{solution().note}}</span>
+            }
+        }@else {
+            <span class="font-bold text-dark-font">Sin calificar</span>
+        }
+    </div>
+
+    <div class="w-full flex items-center justify-center">
+        <button (click)="showPostDialog.set(true)"
+                class="hover:shadow-[5px_5px_0px_0px_rgba(200,16,46)] flex p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
+            <span class="material-icons">add</span> <span>|</span> Añadir archivos o links
+        </button>
+    </div>
+
 </div>
+
+@if (showPostDialog()){
+    <app-dialog>
+        <div class="max-w-screen-md w-max overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
+            <div class="w-fit aspect-square absolute right-0 top-0">
+                <button (click)="showPostDialog.set(false)"
+                        class="rounded-full hover:bg-secondary transition text-secondary hover:text-main-white p-1 flex items-center justify-center">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <app-form-post (newLinks)="inputLinks.set($event)" (newFiles)="inputFiles.set($event)"></app-form-post>
+            <button
+                class="flex items-center gap-2 p-2 border-2 border-secondary font-medium text-secondary hover:text-main-white hover:bg-secondary hover:scale-110 transition rounded-lg"
+                (click)="postResource()">
+                @if (isLoadingPostResource()) {
+                    <app-loading-wheel></app-loading-wheel> Loading...
+                } @else {
+                    <span class="material-icons">save</span>
+                    Save
+                }
+            </button>
+        </div>
+    </app-dialog>
+}
