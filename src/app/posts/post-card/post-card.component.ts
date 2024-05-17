@@ -9,6 +9,7 @@ import { LinkComponent } from '../../resources/link/link.component';
 import { FileComponent } from '../../resources/file/file.component';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { LoadingWheelComponent } from '../../svg/loading-wheel/loading-wheel.component';
+import {group} from "@angular/animations";
 
 @Component({
     selector: 'app-post-card',
@@ -47,6 +48,7 @@ export class PostCardComponent {
         private postSvc: PostService
     ) {
     }
+
 
 
 }

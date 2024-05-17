@@ -34,7 +34,7 @@ export class AssignmentService {
     }
 
     deleteAssignment(id: string): Observable<Assignment> {
-        return this.http.get<Assignment>(this.path + 'assignment/' + id, {withCredentials: true})
+        return this.http.delete<Assignment>(this.path + 'assignment/' + id, {withCredentials: true})
     }
 
     putAssignment(assignment: Assignment): Observable<any> {

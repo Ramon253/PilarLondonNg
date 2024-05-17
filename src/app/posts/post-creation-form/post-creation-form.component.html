@@ -1,55 +1,65 @@
-<div class="flex rounded w-screen h-screen items-center justify-center bg-opacity-20 bg-font-grey flex-col fixed top-0 z-50 "
+<div
+    class="flex rounded w-screen h-screen items-center justify-center bg-opacity-20 bg-font-grey flex-col fixed top-0 z-50 "
     #formContainer>
 
     <form class="aspect-square max-w-screen-md w-full h-fit max-h-[90vh]" [formGroup]="postForm"
-        (submit)="createPost($event, description)" #form>
-        <div class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-main-white border-[4px] border-transparent gap-10 shadow-2xl px-20"
+          (submit)="createPost($event, description)" #form>
+        <div
+            class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-main-white border-[4px] border-transparent gap-10 shadow-2xl px-20"
             #formContent>
             <button (click)="toggleForm()"
-                class="absolute top-1 right-1 text-secondary border-2 border-secondary transition hover:text-main-white hover:bg-secondary rounded hover:scale-125 p-1 flex items-center justify-center">
+                    class="absolute top-1 right-1 text-secondary border-2 border-secondary transition hover:text-main-white hover:bg-secondary rounded hover:scale-125 p-1 flex items-center justify-center">
                 <span class="material-icons">close</span>
             </button>
             <div class="flex flex-col w-full gap-2 items-start justify-center ">
                 <input placeholder=" " #title id="title" type="text" formControlName="name"
-                    class="border-b-2 border-main peer bg-transparent order-2 p-2 w-full cursor-text" />
+                       class="border-b-2 border-main peer bg-transparent order-2 p-2 w-full cursor-text"/>
                 <label
                     class="w-full font-medium translate-x-0 text-main translate-y-0 order-1 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-font-grey transition ease-in-out cursor-text select-none"
                     for="title">Titulo</label>
                 <app-validation-error class="order-3 w-full" [form]="postForm" [errors]="['required']"
-                    [field]="'name'"></app-validation-error>
+                                      [field]="'name'"></app-validation-error>
             </div>
             <div class="flex flex-col gap-2 items-start justify-center w-full">
                 <label class="font-medium text-main" for="description">Descripción</label>
                 <textarea #description class="border-2 border-main shadow rounded-lg p-2 h-full w-full "
-                    name="description" required id="description" rows="10"
-                    placeholder="Escribe en contenido de texto de el post"></textarea>
+                          name="description" required id="description" rows="10"
+                          placeholder="Escribe en contenido de texto de el post"></textarea>
             </div>
             <div class="w-full flex flex-col">
                 <div class="flex items-baseline w-full gap-4">
                     <label class="font-medium text-main" for="group_id">Grupo del post</label>
                     <select #select class="border-main border-2 rounded-md" formControlName="group_id" id="group_id"
-                        autocomplete="off">
+                            autocomplete="off">
                         <option #default [attr.selected]="true" disabled hidden value="">Escoje grupo</option>
-                        @for (group of groups() ; track $index){
-                        <option value="{{group.id}}">{{group.name}}</option>
+                        @for (group of groups(); track $index) {
+                            <option value="{{group.id}}">{{ group.name }}</option>
                         }
                         <option value="public">Publico</option>
 
                     </select>
                 </div>
                 <app-validation-error class="" [form]="postForm" [errors]="['required']" field="group_id"
-                    [showError]="showError()"></app-validation-error>
+                                      [showError]="showError()"></app-validation-error>
             </div>
             <!-- Resources -->
             <div class="w-full">
+
                 <app-form-post (newFiles)="files.set($event)" (newLinks)="links.set($event)"
-                    (open)='submitButton.scrollIntoView({ block: "end", behavior: "smooth" });' />
+                               (open)='submitButton.scrollIntoView({ block: "end", behavior: "smooth" });'/>
             </div>
 
             <button
-                class="{{postForm.invalid ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-main hover:text-main-white hover:scale-105'}} px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent  transition "
-                #submitButton type="submit" [disabled]="postForm.invalid" (click)="tryPostPost()">
-                Crear post
+                class="{{postForm.invalid || isLoading()? 'cursor-not-allowed' : 'cursor-pointer hover:bg-main hover:text-main-white hover:scale-105'}} px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent  transition "
+                #submitButton type="submit" [disabled]="postForm.invalid || isLoading()" (click)="tryPostPost()">
+                @if (isLoading()) {
+                    <div class="flex items-center">
+                        <app-loading-wheel></app-loading-wheel>
+                        Loading ...
+                    </div>
+                } @else {
+                    Crear post
+                }
             </button>
         </div>
 

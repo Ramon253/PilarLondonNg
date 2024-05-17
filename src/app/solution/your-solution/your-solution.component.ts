@@ -64,6 +64,12 @@ export class YourSolutionComponent {
         let hours = Math.round(delay / 3600)
         return ` ${hours} h y ${minutes} m `
     }
+    deleteFile(event : {id : string, isMultimedia : boolean}){
+        this.solution().fileLinks = this.solution().fileLinks?.filter(fileLink => fileLink.id.toString() !== event.id)
+    }
+    deleteLink(event : {id: string, isVideo : boolean}){
+        this.solution().links = this.solution().links?.filter(link => link.id !== event.id)
+    }
 
     showDate(date: Date) {
         return this.datePipe.transform(date, 'HH:mm dd/MM/yyyy')

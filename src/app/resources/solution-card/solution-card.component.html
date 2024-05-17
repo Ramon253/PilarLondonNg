@@ -1,25 +1,25 @@
-<div class="h-fit p-4 rounded-md border-2 border-main shadow-sm w-full relative"
+<div class="h-fit rounded-2xl border-2 border-main bg-main-grey  shadow-[0_3px_10px_rgb(0,0,0,0.2)] w-full relative hover:scale-105 transition-all hover:border-4 hover:shadow-[5px_5px_0px_0px_rgba(200,16,46)] cursor-pointer"
      routerLink="/solution/{{solution().id}}">
-    <div class="h-fit w-full flex flex-wrap items-center justify-between gap-4 ">
-        <div class="flex  h-full  w-[65%] items-center gap-4">
-            <div class="aspect-square shadow rounded-full w-1/3">
+    <div class="h-fit w-full flex items-center justify-between gap-4 p-6">
+        <div class="flex h-full justify-between w-full items-center gap-4">
+            <div class="aspect-square shadow rounded-full h-14">
                 <img src="http://localhost:8000/api/user/{{solution().user_id}}/profile-picture"
                      class="h-full w-full rounded-full aspect-square"
                      alt="Profile foto">
             </div>
-            <div class="w-fit h-full flex flex-wrap items-center justify-between">
+            <div class="w-fit h-full ">
                 <h1 class="text-dark-font font-bold">
                     {{ solution().student_name }}
                 </h1>
             </div>
         </div>
-        <button
-            class="px-3 py-2 flex border-main border-2 rounded-lg text-main hover:scale-110 hover:bg-main hover:text-main-white transition ">
-            Ver mas
-        </button>
     </div>
     <div class="absolute top-1 right-1">
-        <span class="text-secondary-grey">{{ date.transform(solution().updated_at, 'HH:mm dd/MM/yyyy') }}</span>
+        @if(checkDate()){
+            <div class="rounded-full aspect-square size-5 bg-main "></div>
+        } @else {
+            <div class="rounded-full aspect-square size-5 bg-secondary animate "></div>
+        }
     </div>
 
 </div>

@@ -23,7 +23,7 @@ export class SolutionPostFormComponent {
     assignment = input.required<string>()
 
     solutionForm = this.formBuilder.group({
-        description: ['', Validators.maxLength(250)],
+        description: [' ', Validators.maxLength(250)],
     })
 
     newSolution = output<Solution>()
@@ -38,8 +38,7 @@ export class SolutionPostFormComponent {
                 formData.append(`files[${key}]`, this.files()[key])
             }
 
-            if (this.solution().description)
-                formData.append('description', this.solutionForm.get('description')?.value ?? '')
+            formData.append('description', this.solutionForm.get('description')?.value ?? ' ')
 
             if (this.links().length !== 0) {
                 for (const key in this.links()) {
@@ -57,6 +56,7 @@ export class SolutionPostFormComponent {
                     this.isLoading.set(false)
                 }
             )
+            return
         }
         this.solution().links = this.links()
         this.solution().description = this.solutionForm.get('description')?.value ?? ''

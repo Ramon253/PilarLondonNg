@@ -52,12 +52,12 @@ export class PostsComponent {
 
         this.postSvc.getPosts(this.showPublic()).subscribe(
             (res) => {
-                console.log(res.posts as Post[]);
-
                 this.groups.set(res.groups as { name: string, id: string }[])
-
-                this.posts.set(res.posts.map(post => this.postSvc.mapPost(post)))
-
+                this.posts.set(res.posts.map((post  :Post )=> {
+                    post = this.postSvc.mapPost(post);
+                    post.group_name = this.groups().find((group) => group.id === post.group_id)?.name
+                    return post
+                }))
                 this.isLoading.set(false)
             },
             err => {

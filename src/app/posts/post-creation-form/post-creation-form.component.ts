@@ -10,11 +10,12 @@ import { BehaviorSubject } from 'rxjs';
 import { ValidationErrorComponent } from '../../validations/validation-error/validation-error.component';
 import { Title } from '@angular/platform-browser';
 import { FormPostComponent } from '../../resources/form-post/form-post.component';
+import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
 
 @Component({
     selector: 'app-post-creation-form',
     standalone: true,
-    imports: [YoutubeVideoComponent, ReactiveFormsModule, ValidationErrorComponent, FormPostComponent],
+    imports: [YoutubeVideoComponent, ReactiveFormsModule, ValidationErrorComponent, FormPostComponent, LoadingWheelComponent],
     templateUrl: './post-creation-form.component.html',
     styles: ``,
 })
@@ -23,11 +24,9 @@ export class PostCreationFormComponent {
     @Output() close = new EventEmitter<boolean>();
 
     groups = input<{ name: string, id: string }[]>([])
-
-
+    isLoading = signal<boolean>(false)
     submitButton = viewChild<ElementRef>('submitButton')
     form = viewChild<ElementRef>('form')
-
     showError = signal<boolean>(false)
 
     links = signal<Link[]>([]);
@@ -54,9 +53,11 @@ export class PostCreationFormComponent {
     ) {
         event.preventDefault();
 
+        this.isLoading.set(true)
         let formData = undefined
         const post = this.postForm.getRawValue() as Post
-        post.description = description.value 
+        post.description = description.value
+        description.value = ''
 
         post.links = (this.links().length !== 0) ? this.links() : undefined;
         post.files = (this.files().length !== 0) ? this.files() : undefined;
@@ -77,14 +78,17 @@ export class PostCreationFormComponent {
                 }
             }
         }
-        
+
 
         this.postSvc.postPost(post, formData , this.postForm.get('group_id')?.value === 'public')
             .subscribe(
-                res => {
+                (res : any ) => {
                     post.links = this.links()
-                    this.post.emit(post as Post);
+                    this.post.emit(res.post as Post);
                     this.toggleForm()
+                    this.isLoading.set(false)
+
+                    this.postForm.reset()
                 }
             )
 

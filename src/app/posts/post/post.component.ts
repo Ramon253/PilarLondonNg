@@ -25,6 +25,7 @@ import { LinkComponent } from '../../resources/link/link.component';
 import { CommentsComponent } from '../../resources/comments/comments.component';
 
 
+
 @Component({
     selector: 'app-post',
     standalone: true,
@@ -81,7 +82,9 @@ export class PostComponent {
                 this.id = params['post']
                 this.postSvc.getPost(this.id).subscribe(
                     (post: any) => {
+
                         this.post.set(this.postSvc.mapPost(post))
+
                         this.isLoading.set(false)
                     },
                     error => {
@@ -139,6 +142,7 @@ export class PostComponent {
         if (this.update().description) {
             this.post().description = this.descriptionInput()?.nativeElement.value
         }
+
         this.postSvc.putPost(this.post()).subscribe(
             post => {
             },

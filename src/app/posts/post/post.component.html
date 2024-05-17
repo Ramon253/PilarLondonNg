@@ -19,13 +19,14 @@
                 <span class="flex items-center gap-4">POST/
                     @if (update().group_id) {
                     <select #group_select class="bg-transparent autofill:disabled:">
-                        @for (group of groups(); track $index) {
+                        @for (group of post().groups; track $index) {
 
                         <option [attr.selected]="group.id == post().group_id ? true : null" value="{{group.id}}">
                             {{group.name}}
                         </option>
 
                         }
+                        <option value="public" [attr.selected]="post().group_id !== null ? true : null">Public</option>
                     </select>
                     }@else {
 

@@ -41,7 +41,7 @@ export class PostService {
     }
 
     public postPost(post: Post, formData: FormData | undefined, isPublic : boolean): Observable<Post> {
-        
+
         const postPath = (isPublic)?this.path + 'post' : this.path + `group/${post.group_id}/post`
 
         if (formData) {
@@ -57,6 +57,7 @@ export class PostService {
 
 
     public putPost(post: Post): Observable<Post> {
+
         return this.http.put<Post>(this.path + `post/${post.id}`, post, { withCredentials: true })
     }
 
