@@ -1,0 +1,106 @@
+<div
+    class="shadow-assignment-card p-4 flex relative bg-main-white rounded-xl border-[3px] border-secondary pt-14 flex-col shadow-lg gap-10 max-w-screen-lg w-full max-h-[70vh] overflow-hidden items-center"
+>
+
+    @if (loginSvc.user()?.role === 'teacher' ) {
+        <div class="absolute right-4 top-4">
+            <button (click)="showDeleteDialog.set(true)"
+                    class=" flex items-center p-2 px-3 border-2 font-bold text-secondary hover:text-main-white border-secondary hover:bg-secondary hover:scale-110 transition-all rounded-lg">
+                <span class="material-icons cursor-pointer flex items-center">delete</span>
+                <span>| Delete Assignment </span>
+            </button>
+        </div>
+    } @else {
+        @if (assignment().resolved){
+            <div class="absolute top-0 right-0 p-2">
+                <div class="rounded-full aspect-square size-7 bg-main"></div>
+            </div>
+        }
+    }
+
+
+    <div class="w-full max-w-screen-md">
+        <h1 class="text-5xl font-bold text-main w-full text-center">
+            <a routerLink="/assignment/{{assignment().id}}">{{ assignment().name }}</a>
+        </h1>
+        <div class="flex items-center justify-between text-secondary-grey">
+            <span>Assignment / {{assignment().group_name ?? ''}}</span>
+            <span>Fecha entrega : {{assignment().dead_line}}</span>
+        </div>
+    </div>
+    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-20"
+         style="mask-image: linear-gradient(to bottom, white 95%, transparent 100%)">
+
+        <div class="w-full h-fit aspect-auto ">
+            <p class="max-w-screen-lg  h-fit text-dark-font">{{ assignment().description }}</p>
+        </div>
+
+        <div #multimedia class="h-fit">
+            @for (multimedia of assignment().multimedia; track $index) {
+                <app-multimedia parent="assignment" [file]="multimedia"></app-multimedia>
+            }
+        </div>
+
+        <div #youtube class="w-full h-fit">
+            @for (video of assignment().videos; track $index) {
+                <app-youtube-video parent="assignment" [link]="video"></app-youtube-video>
+            }
+        </div>
+
+        <section class="flex gap-4 w-full">
+            <div class="w-full flex gap-4 flex-col p-4 justify-center h-fit">
+                <h2 class="text-4xl  font-medium text-secondary w-full py-4 border-b-2 border-secondary">Links
+                </h2>
+                <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                    @for (link of assignment().links; track $index) {
+                        <app-link parent="assignment" [link]="link"></app-link>
+                    }
+                </div>
+            </div>
+            <div class="w-full flex gap-4 flex-col p-4 items-center h-fit">
+                <h2 class="text-4xl  font-medium text-main w-full py-4 border-b-2 border-main">Files
+                </h2>
+                <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                    @for (file of assignment().fileLinks; track $index) {
+                        <app-file parent="assignment" [file]="file"></app-file>
+                    }
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <div class="h-fit">
+        <button routerLink="/assignment/{{assignment().id}}"
+                class="p-2 rounded-lg border-2 px-4 border-main text-main font-medium hover:scale-110 hover:bg-main hover:text-main-white transition-all">
+            Ver mas
+        </button>
+    </div>
+
+</div>
+
+@if (showDeleteDialog()) {
+    <app-dialog>
+        <form class="w-fit p-4 flex items-center gap-4 flex-col" method="dialog">
+            <span class="w-fit">Seguro que quieres <span class="font-bold text-secondary">eliminar</span> la
+                tarea</span>
+            <div class="w-full flex items-center justify-center gap-4">
+                <button (click)="deleteAssignment();" type="submit"
+                        class="border-2 h-[3rem] flex items-center gap-2 py-2 px-4 rounded-lg border-secondary font-bold text-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition ease-in-out">
+                    @if (isLoadingDelete()) {
+                        <div class="h-full aspect-square">
+                            <app-loading-wheel></app-loading-wheel>
+                        </div>
+                        <span>Loading...</span>
+                    }@else {
+                        Si
+                    }
+                </button>
+                <button
+                    class="border-2 py-2 px-4 rounded-lg border-main font-bold text-main hover:scale-110 hover:bg-main hover:text-main-white transition ease-in-out"
+                    (click)="showDeleteDialog.set(false)" type="submit">
+                    No
+                </button>
+            </div>
+        </form>
+    </app-dialog>
+}

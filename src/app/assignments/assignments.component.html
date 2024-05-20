@@ -1,1 +1,66 @@
-<p>assignments works!</p>
+<div class="hidden translate-x-[110%] translate-x-[240%]"></div>
+<div class="bg-main-grey">
+    <div class="min-h-[90vh] mt-[10vh] max-w-screen-lg bg-transparent flex flex-col mx-auto items-center p-10 gap-10">
+        <h1 class="text-7xl text-main font-bold m-10">{{ loginSvc.user()?.role === 'teacher' ? 'Tareas' : 'Tus tareas' }}</h1>
+        <div class="border-b-2 border-font-grey w-full flex justify-between">
+            @if (loginSvc.user()?.role === 'teacher') {
+
+            } @else {
+                <div class="w-1/2 flex">
+                    <div class="border-b px-6 font-medium cursor-pointer transition relative"
+                         (click)="resetTabs(); show.all = true;changeFilter()">
+                        Tus tareas
+                        <div #underlineTab
+                             class="absolute -bottom-[3px] left-0 h-[3px] transition ease-in-out bg-secondary w-full shadow translate-x-[{{changeTab()}}]">
+                        </div>
+                    </div>
+                    <div class=" px-6 font-medium cursor-pointer transition "
+                         (click)="resetTabs(); show.answered = true;changeFilter()">
+                        Tareas hechas
+                    </div>
+                    <div class=" px-6 font-medium cursor-pointer transition " (click)="resetTabs(); show.toDo = true;changeFilter()">
+                        Tareas sin hacer
+                    </div>
+                </div>
+                <div class="flex items-center">
+                <span (click)="getAssignments(true);isLoading.set(true); refreshButton.classList.toggle('rotate-[360deg]')" #refreshButton
+                      class="duration-300 p-1 material-icons flex items-center text-main hover:text-main-white hover:bg-main rounded-full transition cursor-pointer ">refresh</span>
+                </div>
+            }
+        </div>
+
+        <div class="w-full flex -translate-y-8 items-start justify-between">
+            <button (click)="filter()"
+                    class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
+                <span class="material-icons-outlined">filter_alt</span> Filtrar por <span
+                class="material-icons-outlined">arrow_drop_up</span>
+
+            </button>
+            @if (loginSvc.user()?.role === 'teacher') {
+                <button
+                    (click)="showPostForm.set(true)"
+                        class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
+                    <span class="material-icons">add</span> | Crear tarea
+                </button>
+            }
+        </div>
+        @if (isLoading()) {
+            <div class="w-full max-w-screen-xl bg-gray-300 animate-pulse h-[70vh] rounded-lg"></div>
+            <div class="w-full max-w-screen-xl bg-gray-300 animate-pulse h-[70vh] rounded-lg"></div>
+        } @else {
+            <div #postsContainer class="flex flex-col w-full gap-5">
+                @for (assignment of assignments(); track $index) {
+                    <app-assignment-card (delete)="deleteAssignment($event)" [assignment]="assignment"></app-assignment-card>
+                }
+            </div>
+        }
+
+    </div>
+
+    @if (showPostForm()){
+        <app-dialog>
+            <app-assignment-form (close)="showPostForm.set(false)" [groups]="groups()" >
+            </app-assignment-form>
+        </app-dialog>
+    }
+</div>

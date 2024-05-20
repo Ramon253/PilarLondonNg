@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      boxShadow : {
+        'assignment-card' : 'box-shadow: 0 60px 80px rgba(0,0,0,0.60), 0 45px 26px rgba(0,0,0,0.14)'
+      },
       colors: {
         'main-white': '#FAFAFA',
         'font-grey': '#3E3E3E',

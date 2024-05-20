@@ -12,7 +12,7 @@ import {Link} from '../../models/properties/link';
     styleUrl: './youtube-video.component.css'
 })
 export class YoutubeVideoComponent {
-
+    showControls = input<boolean>(false)
     @ViewChild('container') container!: ElementRef
     parent = input.required<string>()
         link = input({id: '', link: '', link_name: ''}, {

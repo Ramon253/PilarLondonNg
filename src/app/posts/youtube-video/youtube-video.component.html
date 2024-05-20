@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-5">
     <div class="flex items-center justify-between">
         <span class="font-bold text-main text-3xl">{{ link().link_name }}</span>
-        @if (loginSvc.user()?.role === 'teacher') {
+        @if (loginSvc.user()?.role === 'teacher' && showControls()) {
         <button (click)="deleteLink()"
             class="flex items-center gap-2 h-full border-2 rounded-lg border-secondary text-secondary font-medium hover:bg-secondary hover:scale-110 hover:text-main-white transition ease-in-out p-2">
             @if (isLoadingDelete()) {

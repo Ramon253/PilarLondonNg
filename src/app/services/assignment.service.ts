@@ -25,8 +25,17 @@ export class AssignmentService {
 
     private path = 'http://localhost:8000/api/';
 
-    getAssignments(): Observable<Assignment[]> {
-        return this.http.get<Assignment[]>(this.path + 'asssignments', {withCredentials: true})
+    postAssignment(assignment: Assignment, formData: FormData | undefined): Observable<Assignment> {
+        if (formData)
+            return this.http.post<Assignment>(this.path + `group/${assignment.group_id}/assignment`, formData, {withCredentials: true})
+        return this.http.post<Assignment>(this.path + `group/${assignment.group_id}/assignment`, assignment, {withCredentials: true})
+    }
+
+    getAssignments(): Observable<{ assignments: Assignment[], groups?: any }> {
+        return this.http.get<{
+            assignments: Assignment[],
+            groups?: any
+        }>(this.path + 'assignments', {withCredentials: true})
     }
 
     getAssignment(id: string): Observable<Assignment> {
@@ -42,11 +51,7 @@ export class AssignmentService {
     }
 
     mapAssignment(assignment: any): Assignment {
-
-        assignment.fileLinks = assignment.files
-        assignment = assignment as Assignment
         assignment.created_at = this.datePipe.transform(assignment.created_at, 'HH:mm dd/MM/yyyy')
-
         assignment.updated_at = this.datePipe.transform(assignment.updated_at, 'HH:mm dd/MM/yyyy')
 
         assignment.show_dead_line = this.datePipe.transform(assignment.dead_line, 'HH:mm dd/MM/yyyy')
@@ -56,8 +61,10 @@ export class AssignmentService {
     }
 
     mapResources(assignment: Assignment): Assignment {
+
         const files = this.fileSvc.mapFiles(assignment.fileLinks ?? [])
         assignment.fileLinks = files.files
+
         assignment.multimedia = files.multimedia
 
         const links = this.linkSvc.mapLinks(assignment.links ?? [])

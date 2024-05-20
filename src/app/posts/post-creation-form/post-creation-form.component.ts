@@ -33,7 +33,7 @@ export class PostCreationFormComponent {
     videos = signal<Link[]>([]);
     files = signal<File[]>([]);
 
-    postForm = this.formBulider.group({
+    postForm = this.formBuilder.group({
         name: ['', Validators.required],
         description: ['', Validators.maxLength(500)],
         group_id: ['', Validators.required]
@@ -113,7 +113,7 @@ export class PostCreationFormComponent {
     constructor(
         private renderer: Renderer2,
         public postSvc: PostService,
-        private formBulider: FormBuilder
+        private formBuilder: FormBuilder
     ) {
     }
 

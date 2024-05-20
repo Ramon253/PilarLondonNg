@@ -49,6 +49,7 @@ export class SolutionPostFormComponent {
 
             this.solutionSvc.postSolution(this.assignment(), this.solution(), formData).subscribe(
                 res => {
+                    console.log(res.solution)
                     this.isLoading.set(false)
                     this.newSolution.emit(res.solution)
                 },

@@ -203,7 +203,7 @@
                             } @else {
                             <div class="flex w-full flex-col gap-2">
                                 @for (solution of assignment().solutions; track $index) {
-                                <app-solution-card [dead_line]="assignment().dead_line" [solution]="solution"></app-solution-card>
+                                <app-solution-card (click)="selectedSolution.set(solution.id ?? '');showSolutionDialog.set(true) " [dead_line]="assignment().dead_line" [solution]="solution"></app-solution-card>
                                 }
                             </div>
                             }
@@ -220,7 +220,7 @@
                             [solution]="assignment().solution ?? {updated_at : now}"></app-your-solution>
                     </div>
                     } @else {
-                    <button (click)="showSolutionDialog.set(true)"
+                    <button (click)="showSolutionFormDialog.set(true)"
                         class="flex  p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
                         <span class="material-icons">add</span> <span>|</span> Añadir entrega
                     </button>
@@ -280,11 +280,17 @@
         </div>
     </app-dialog>
     }
-    @if(showSolutionDialog()){
-        <h1>hOLA????</h1>
+    @if(showSolutionFormDialog()){
         <app-dialog>
             <div class="max-w-screen-md w-max">
-                <app-solution-post-form (newSolution)="this.assignment().solution = $event; showSolutionDialog.set(false)" [assignment]="this.assignment().id ?? ''"></app-solution-post-form>
+                <app-solution-post-form (newSolution)="this.assignment().solution = $event; showSolutionFormDialog.set(false)" [assignment]="this.assignment().id ?? ''"></app-solution-post-form>
+            </div>
+        </app-dialog>
+    }
+    @if (showSolutionDialog()){
+        <app-dialog>
+            <div class="w-full">
+                <app-solution (close)="showSolutionDialog.set(false)" [solutionId]="selectedSolution()"></app-solution>
             </div>
         </app-dialog>
     }

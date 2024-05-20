@@ -1,0 +1,89 @@
+@if (isLoading()) {
+    <section class="w-[500px] h-[250px] flex flex-col gap-4 p-10">
+        <div class="w-full h-[100px] rounded-lg  bg-gray-300 animate-pulse"></div>
+        <div class="w-full h-[50px] rounded-lg bg-gray-300 animate-pulse"></div>
+        <div class="w-full h-[50px] rounded-lg bg-gray-300 animate-pulse"></div>
+    </section>
+} @else {
+    <section class="max-w-screen-xl max-h-[80vh] w-[70vw] flex flex-col gap-4 p-10 relative overflow-y-scroll">
+        <div class="absolute top-0 right-0">
+            <span
+                class="material-icons cursor-pointer rounded-full p-1 hover:bg-secondary hover:text-main-white transition"
+                (click)="close.emit(true)">close</span>
+        </div>
+        <div class="w-full">
+            <h1 class="text-main text-6xl font-bold">{{ solution().student_name }}</h1>
+        </div>
+        <div class="w-full">
+            <p>{{ solution().description }}</p>
+        </div>
+
+        @if (hasResource('video')) {
+            <div class="w-full flex flex-col gap-6">
+                @for (video of solution().videos; track $index) {
+                    <app-youtube-video [showControls]="false" [link]="video" parent="solution"></app-youtube-video>
+                }
+            </div>
+        }
+        @if (hasResource('multimedia')) {
+            <div class="w-full flex flex-col gap-6">
+                @for (multimedia of solution().multimedia; track $index) {
+                    <app-multimedia [showControls]="false" [file]="multimedia" parent="solution"></app-multimedia>
+                }
+            </div>
+        }
+        @if (hasResource('files')) {
+            <div class="w-full flex flex-col gap-6">
+                <h2 class="w-full text-secondary pb-3 border-b-2 border-secondary font-medium text-2xl">Files</h2>
+                <div class="flex flex-wrap gap-4">
+                    @for (file of solution().fileLinks; track $index) {
+                        <app-file [file]="file" [showControls]="false" parent="solution"
+                                  color="secondary"></app-file>
+                    }
+                </div>
+            </div>
+        }
+        @if (hasResource('links')) {
+            <div class="w-full flex flex-col gap-6">
+                <h2 class="w-full pb-3 border-b-2 border-main text-main font-medium text-2xl">Links</h2>
+                <div class="flex flex-wrap gap-4">
+                    @for (link of solution().links; track $index) {
+                        <app-link [link]="link" [showControls]="false" parent="solution" color="main"></app-link>
+                    }
+                </div>
+            </div>
+        }
+        @if (!solution().note) {
+            <div class="w-full mt-10">
+                <form class="w-full flex gap-4 items-center justify-center" (submit)="grade($event, note )">
+                    <input type="number" #note max="10" min="0" step="any"
+                           class="border-2 border-secondary rounded-lg p-2">
+                    <button type="submit"
+                            class="items-center flex gap-2 text-main border-2 border-main rounded-lg px-4 py-2 hover:text-main-white hover:bg-main hover:scale-110 transition">
+                        <span class="material-icons-outlined">note_add</span>
+                        Calificar
+                    </button>
+                </form>
+            </div>
+        } @else {
+            <div class="w-full flex items-center text-3xl justify-center gap-2">
+                <h3 class=" font-medium text-secondary">Nota : </h3>
+                @if (editNote()){
+                    <form class="flex gap-2" (submit)="grade($event, updateNote )">
+                        <input type="number" #updateNote max="10" min="0" step="any"
+                               class="border-2 border-secondary rounded-lg p-2" [value]="solution().note">
+                        <button type="submit"
+                                class="items-center flex gap-2 text-main border-2 border-main rounded-lg px-4 py-2 hover:text-main-white hover:bg-main hover:scale-110 transition">
+                            <span class="material-icons-outlined">save</span>
+                            save
+                        </button>
+                    </form>
+                } @else {
+                    <span class="font-bold">{{ solution().note }}</span>
+                    <span (click)="editNote.set(true)" class="material-icons cursor-pointer p-1 rounded-full text-main hover:text-main-white hover:bg-main transition-all">edit</span>
+                }
+            </div>
+        }
+    </section>
+
+}

@@ -16,7 +16,7 @@ export class MultimediaComponent {
     delete = output<{ id: string, isMultimedia: boolean }>()
     isLoadingDelete = signal<boolean>(false)
     parent = input.required<string>()
-
+    showControls = input<boolean>(false)
     constructor(
         public loginSvc: LoginService,
         private fileSvc: FileService

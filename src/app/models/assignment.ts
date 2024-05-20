@@ -21,5 +21,6 @@ export interface Assignment {
     groups? : any,
     comments? : Comment[],
     solutions ? : Solution[]
-    solution ? : Solution
+    solution ? : Solution,
+    resolved ? : boolean
 }

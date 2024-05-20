@@ -25,11 +25,12 @@ import {SolutionCardComponent} from "../../resources/solution-card/solution-card
 import {Solution} from "../../models/solution";
 import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
 import {SolutionPostFormComponent} from "../../resources/solution-post-form/solution-post-form.component";
+import {SolutionComponent} from "../../solution/solution.component";
 
 @Component({
 	selector: 'app-assignment',
 	standalone: true,
-	imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent, SolutionCardComponent, YourSolutionComponent, SolutionPostFormComponent],
+	imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent, SolutionCardComponent, YourSolutionComponent, SolutionPostFormComponent, SolutionComponent],
 	templateUrl: './assignment.component.html',
 	styles: ``,
 
@@ -47,7 +48,9 @@ export class AssignmentComponent {
 
 	showDeleteDialog = signal<boolean>(false)
 	showPostDialog = signal<boolean>(false)
+    showSolutionFormDialog = signal<boolean>(false)
     showSolutionDialog = signal<boolean>(false)
+    selectedSolution = signal<string>('')
 
 	groups = signal<{ name: string, id: string }[]>([])
 	assignment = signal<Assignment>({
