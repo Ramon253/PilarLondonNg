@@ -11,7 +11,7 @@
                          (click)="resetTabs(); show.all = true;changeFilter()">
                         Tus tareas
                         <div #underlineTab
-                             class="absolute -bottom-[3px] left-0 h-[3px] transition ease-in-out bg-secondary w-full shadow translate-x-[{{changeTab()}}]">
+                             class="absolute -bottom-[3px] left-0 h-[3px] transition ease-in-out bg-secondary w-full shadow {{changeTab()}}">
                         </div>
                     </div>
                     <div class=" px-6 font-medium cursor-pointer transition "

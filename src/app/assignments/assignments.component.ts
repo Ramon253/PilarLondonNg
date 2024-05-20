@@ -80,11 +80,11 @@ export class AssignmentsComponent {
     }
 
     changeTab() {
-        let translate = '0'
+        let translate = ''
         if (this.show.answered) {
-            translate = '110%'
+            translate = 'translate-x-[110%]'
         } else if (this.show.toDo) {
-            translate = '240%'
+            translate = 'translate-x-[240%]'
         }
         return translate
     }
