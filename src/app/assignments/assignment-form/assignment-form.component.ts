@@ -32,7 +32,8 @@ export class AssignmentFormComponent {
     assignmentForm = this.formBuilder.group({
         name : ['', Validators.required],
         description : ['', Validators.maxLength(500)],
-        group_id : ['', Validators.required]
+        group_id : ['', Validators.required],
+        dead_line : [new Date(), Validators.required]
     })
     constructor(
         public assignmentSvc : AssignmentService,
@@ -49,11 +50,12 @@ export class AssignmentFormComponent {
         const assignment = this.assignmentForm.getRawValue() as Assignment
         assignment.description = description.value
         description.value = ''
-        assignment.dead_line = this.assignmentForm.get('dead_line')?.value
+        assignment.dead_line = this.assignmentForm.get('dead_line')?.getRawValue()
         assignment.group_id = this.assignmentForm.get('group_id')?.value ?? ''
         assignment.links = (this.links().length !== 0) ? this.links() : undefined;
         assignment.files = (this.files().length !== 0) ? this.files() : undefined;
 
+        console.log(this.assignmentForm.get('dead_line'))
         if (assignment.files) {
             formData = new FormData
             for (const key in assignment.files) {
@@ -61,7 +63,7 @@ export class AssignmentFormComponent {
             }
             formData.append('name', assignment.name)
             console.log(assignment)
-            formData.append('dead_line', assignment.dead_line ?? '')
+            formData.append('dead_line', assignment.dead_line?.toString() ?? '')
 
             if (assignment.description)
                 formData.append('description', assignment.description)
@@ -76,7 +78,8 @@ export class AssignmentFormComponent {
         this.assignmentSvc.postAssignment(assignment, formData )
             .subscribe(
                 assignment =>{
-                    this.newAssignment.emit(assignment)
+                    this.newAssignment.emit(this.assignmentSvc.mapAssignment( assignment))
+                    console.log('????????')
                     this.close.emit(true)
                 }
             )

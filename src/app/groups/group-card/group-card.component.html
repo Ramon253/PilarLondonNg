@@ -1,0 +1,14 @@
+<div class="w-full flex-col md:flex-row mx-auto  max-w-screen-lg flex items-start rounded-lg border-2 border-main ">
+    <div class="w-full md:w-2/3 h-full   flex items-center ">
+        <img class="h-full aspect-[16/4]" src="http://localhost:8000/api/group/{{ group().id }}/banner" alt="">
+    </div>
+    <div class="w-full md:w-fit flex flex-col items-center justify-center p-4 ">
+        <h1 class="text-main text-3xl font-bold ">{{group().name}}</h1>
+        <span class="w-full">Level : {{group().level}}</span>
+        <div class="w-full flex flex-col">
+            <span class="w-full text-center pb-2 border-b-2 border-main"> Horario </span>
+            <span>Dias : {{showDays()}}</span>
+            <span>Hora : {{datePipe.transform(group().lesson_time , 'HH:mm')}} </span>
+        </div>
+    </div>
+</div>

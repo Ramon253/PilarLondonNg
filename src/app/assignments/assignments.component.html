@@ -59,7 +59,7 @@
 
     @if (showPostForm()){
         <app-dialog>
-            <app-assignment-form (close)="showPostForm.set(false)" [groups]="groups()" >
+            <app-assignment-form (close)="showPostForm.set(false)" (newAssignment)="assignments().push($event)" [groups]="groups()" >
             </app-assignment-form>
         </app-dialog>
     }
