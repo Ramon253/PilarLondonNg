@@ -5,7 +5,6 @@ import {GroupService} from "../../services/group.service";
 import {PostService} from "../../services/post.service";
 import {AssignmentService} from "../../services/assignment.service";
 import {Group} from "../../models/group";
-import {DatePipe} from "@angular/common";
 import {AssignmentCardComponent} from "../../assignments/assignment-card/assignment-card.component";
 import {PostCardComponent} from "../../posts/post-card/post-card.component";
 import {StudentCardComponent} from "../../students/student-card/student-card.component";
@@ -50,5 +49,19 @@ export class GroupComponent {
                 );
             }
         )
+    }
+
+    getTab() {
+        switch (this.selectedContent()) {
+            case 'general' :
+                return 'translate-x-0';
+            case 'post' :
+                return 'translate-x-28';
+            case 'assignment':
+                return 'translate-x-56';
+            case 'student' :
+                return 'translate-x-[21rem]';
+        }
+        return ''
     }
 }
