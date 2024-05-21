@@ -1,4 +1,4 @@
-@if (isLoading()){
+@if (isLoading()) {
     <div class="w-full mt-[10vh] gap-10 flex flex-col items-center justify-center p-10 max-w-screen-xl mx-auto">
 
         <div class="w-full rounded-2xl h-[100px] bg-gray-300 animate-pulse"></div>
@@ -7,30 +7,17 @@
         <div class="w-full rounded-2xl h-[100px] bg-gray-300 animate-pulse"></div>
     </div>
 } @else {
-    <section class="w-full mt-[10vh] p-2 bg-main-grey h-screen">
-        <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
-            @if (loginSvc.user()?.role === 'teacher'){
-            <div>
-                <h1>Clases</h1>
-            </div>
-            <div>
-                @for(group of groups();track $index){
-                    <div class="w-full rounded-2xl h-fit flex flex-col">
-                        <span>{{group.name}}</span>
-                    </div>
-                }
-            </div>
-            }
-            @if (loginSvc.user()?.role === 'student'){
+    <section class="w-full mt-[10vh] min-h-screen p-2 bg-main-grey h-fit">
+        <div class="max-w-screen-lg mx-auto flex flex-col gap-4">
             <div class="w-full p-10 border-b-2 border-main">
-                <h1 class="w-full text-center text-5xl font-bold">Tus clases</h1>
+                <h1 class="w-full text-center text-5xl text-main font-bold">{{loginSvc.user()?.role === 'student' ? 'Tus clases' : 'Clases' }}</h1>
             </div>
             <div class="w-full flex flex-col gap-4">
-                @for(group of groups();track $index){
+                @for (group of groups(); track $index) {
                     <app-group-card [group]="group"></app-group-card>
                 }
             </div>
-            }
+
         </div>
     </section>
 }

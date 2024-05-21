@@ -8,6 +8,8 @@ import {PostComponent} from "./posts/post/post.component";
 import { AssignmentComponent } from './assignments/assignment/assignment.component';
 import {AssignmentsComponent} from "./assignments/assignments.component";
 import {GroupsComponent} from "./groups/groups.component";
+import {group} from "@angular/animations";
+import {GroupComponent} from "./groups/group/group.component";
 
 
 export const routes: Routes = [
@@ -46,5 +48,9 @@ export const routes: Routes = [
     {
         path : 'groups',
         component : GroupsComponent
+    },
+    {
+        path: 'group/:group',
+        component: GroupComponent
     }
 ];

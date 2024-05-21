@@ -1,4 +1,7 @@
 import {Time} from "@angular/common";
+import {Post} from "./post";
+import {Assignment} from "./assignment";
+import {Student} from "./student";
 
 export interface Group {
     id?: string,
@@ -6,6 +9,11 @@ export interface Group {
     banner?: string,
     level?: string,
     capacity?: number,
-    lesson_time?: Date,
-    lesson_days?: string
+    lessons_time?: string,
+    lesson_days?: string,
+    studentNumber ? : number,
+    posts ?: Post[],
+    assignments ?: Assignment[],
+    content ? : any [],
+    students ?: Student[]
 }

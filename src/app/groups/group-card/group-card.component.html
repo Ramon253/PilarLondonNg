@@ -1,14 +1,28 @@
-<div class="w-full flex-col md:flex-row mx-auto  max-w-screen-lg flex items-start rounded-lg border-2 border-main ">
-    <div class="w-full md:w-2/3 h-full   flex items-center ">
-        <img class="h-full aspect-[16/4]" src="http://localhost:8000/api/group/{{ group().id }}/banner" alt="">
+<div
+    routerLink="/group/{{group().id}}"
+    class="relative w-full flex-col bg-main-white lg:flex-row mx-auto group max-w-screen-lg flex items-stretch rounded-lg border-[3px] border-main cursor-pointer hover:shadow-button-hover transition-all hover:-translate-y-1 hover:-translate-x-1 shadow-assignment-card">
+    <div class="w-full  h-full lg:w-2/3   flex items-center ">
+        <img class="h-full w-full aspect-[16/4]" src="http://localhost:8000/api/group/{{ group().id }}/banner" alt="">
     </div>
-    <div class="w-full md:w-fit flex flex-col items-center justify-center p-4 ">
-        <h1 class="text-main text-3xl font-bold ">{{group().name}}</h1>
-        <span class="w-full">Level : {{group().level}}</span>
-        <div class="w-full flex flex-col">
-            <span class="w-full text-center pb-2 border-b-2 border-main"> Horario </span>
-            <span>Dias : {{showDays()}}</span>
-            <span>Hora : {{datePipe.transform(group().lesson_time , 'HH:mm')}} </span>
+    <div class="w-full lg:w-1/3 flex flex-col gap-1 items-center justify-center p-4 ">
+        <h1 class="text-main lg:w-full  text-xl sm:text-2xl lg-text-3xl font-bold ">{{ group().name }}</h1>
+        <span class="lg:w-full text-lg text-main">Level : {{ group().level }}</span>
+        <div class="lg:w-full flex flex-col text-font-grey pt-2 border-t-2 border-main">
+            <span>{{ showDays() }} de {{ groupSvc.getDate(group())[0] }} a {{ groupSvc.getDate(group())[1] }}</span>
+            @if (loginSvc.user()?.role === 'none') {
+                <span #capacity class="flex items-center gap-2 font-medium ">Plazas {{ group().studentNumber }}
+                    /{{ group().capacity }} <span class="material-icons">group</span></span>
+            }
         </div>
     </div>
+
+    @if (loginSvc.user()?.role === 'none') {
+        <div
+            class="absolute hidden top-0 left-0 w-full h-full bg-opacity-70 group-hover:flex transition-all items-center justify-center bg-gray-300">
+            <button
+                class="hover:text-main-white text-main border-2 border-main font-bold hover:bg-main rounded-lg hover:scale-110 transition px-4 py-2">
+                Unirse lista de espera
+            </button>
+        </div>
+    }
 </div>

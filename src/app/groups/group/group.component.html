@@ -1,0 +1,133 @@
+@if (isLoading()) {
+    <section class="w-full h-screen mt-[10vh] bg-main-grey">
+        <div class="max-w-screen-2xl mx-auto flex-col flex gap-4">
+            <div class="aspect-[16/4] w-full bg-gray-300 animate-pulse">
+            </div>
+            <div class="w-full flex flex-col items-center">
+                <div class="max-w-screen-lg w-full rounded-lg h-[30vh] bg-gray-300 animate-pulse"></div>
+                <div class="max-w-screen-lg w-full rounded-lg h-[30vh] bg-gray-300 animate-pulse"></div>
+            </div>
+        </div>
+    </section>
+} @else {
+
+
+    <section class="w-full mt-[10vh] pt-1 min-h-[90vh] h-fit bg-main-grey pb-10">
+        <div class="max-w-screen-2xl  w-full mx-auto gap-10 flex min-h-screen flex-col">
+            <div class="w-full relative appearance-[16/4] ">
+                <img class="w-full rounded-b" src="http://localhost:8000/api/group/{{group().id}}/banner" #banner
+                     (load)="isLoading.set(false)" alt="Banner">
+                <div class="w-fit h-2/3 flex flex-col justify-center pl-10 absolute bottom-0 left-0 ">
+                    <h1 class="text-5xl bg-main-grey p-4 rounded-t-lg rounded-r-lg text-main font-bold"
+                    >{{ group().name }}</h1>
+                    <span
+                        class="p-2 w-fit text-2xl font-bold rounded-b-lg bg-main text-main-white">Nivel {{ group().level }}</span>
+                </div>
+            </div>
+            <div class="w-full h-full flex gap-4">
+                <div class="basis-1/4 flex flex-col gap-4">
+                    <div class="flex-col flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold text-font-grey ">Horario</h2>
+                        </div>
+                        <div class="bg-main-grey w-fit rounded-md shadow flex items-center justify-evenly gap-2">
+                            <div
+                                class="flex items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : '' }}  h-fit">
+                                L
+                            </div>
+                            <div
+                                class="flex items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : '' }} h-fit">
+                                M
+                            </div>
+                            <div
+                                class="flex items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : '' }} h-fit">
+                                X
+                            </div>
+                            <div
+                                class="flex items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : '' }} h-fit">
+                                J
+                            </div>
+                            <div
+                                class="flex items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'v'? 'bg-secondary text-main-white' : '' }} h-fit">
+                                V
+                            </div>
+                        </div>
+                        <div>
+                            <span class="font-medium text-font-grey text-lg">De <span
+                                class="px-2 py-1 bg-main text-main-white rounded-lg ">{{ groupSvc.getDate(group())[0] }}</span>
+                                a <span
+                                    class="px-2 py-1 rounded-lg bg-secondary text-main-white">{{ groupSvc.getDate(group())[1] }}</span></span>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-main-white flex flex-col items-center shadow">
+                        <div>
+                            <h2 class="text-2xl font-bold text-font-grey ">Tareas recientes</h2>
+                        </div>
+                        <!-- TODO-->
+                        <div class="">
+                            <span>Ultima calificacion </span>
+                            <div>
+
+                            </div>
+                        </div>
+                        <div>
+                            Proxima tarea
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="max-w-screen-lg w-screen border-t-2 border-dark-font flex flex-col gap-10  text-lg font-medium">
+                    <div class="flex gap-4 px-2">
+                        <div
+                            class="relative cursor-pointer flex px-2 py-1 items-center ml-2 bg-secondary text-main-white h-fit rounded-b-md"
+                            (click)="selectedContent.set('general')"
+                        >
+                            <span>General</span>
+                        </div>
+                        <div class="cursor-pointer flex items-center h-fit px-2 py-1"
+                             (click)="selectedContent.set('post')"
+                        >
+                            <span>Posts</span>
+                        </div>
+                        <div class="cursor-pointer flex items-center h-fit px-2 py-1"
+                             (click)="selectedContent.set('assignment')"
+                        >
+                            <span>Tareas</span>
+                        </div>
+                        @if (loginSvc.user()?.role === 'teacher'){
+                            <div class="cursor-pointer flex items-center h-fit px-2 py-1"
+                                 (click)="selectedContent.set('student')"
+                            >
+                                    <span>Students</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="w-full flex flex-col gap-4">
+                        @if (selectedContent() === 'general') {
+                            @for (element of group().content; track $index) {
+                                @if (element.dead_line) {
+                                    <app-assignment-card [assignment]="element"></app-assignment-card>
+                                } @else {
+                                    <app-post-card [post]="element"></app-post-card>
+                                }
+                            }
+                        } @else if (selectedContent() === 'post') {
+                            @for (post of group().posts; track $index) {
+                                <app-post-card [post]="post"></app-post-card>
+                            }
+                        } @else if (selectedContent() === 'assignment') {
+                            @for (assignment of group().assignments; track $index) {
+                                <app-assignment-card [assignment]="assignment"></app-assignment-card>
+                            }
+                        } @else if (selectedContent() === 'student'){
+                            @for (student of group().students ; track $index){
+                                <app-student-card [student]="student"></app-student-card>
+                            }
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+}

@@ -27,6 +27,7 @@ export class GroupsComponent {
     ngOnInit(){
         this.groupSvc.getGroups().subscribe(
             groups => {
+
                 this.groups.set(groups)
                 this.isLoading.set(false)
             }
