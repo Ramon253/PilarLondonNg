@@ -4,6 +4,7 @@ import {DatePipe} from "@angular/common";
 import {LoginService} from "../../login.service";
 import {RouterLink} from "@angular/router";
 import {GroupService} from "../../services/group.service";
+import {environment} from "../../../environments/environment.development";
 
 @Component({
     selector: 'app-group-card',
@@ -45,4 +46,6 @@ export class GroupCardComponent {
     ngOnInit() {
         this.capacity()?.nativeElement.classList.add(this.group().capacity ?? 1 < (this.group().studentNumber ?? 1) ? 'text-dark-font' : 'text-secondary')
     }
+
+    protected readonly environment = environment;
 }

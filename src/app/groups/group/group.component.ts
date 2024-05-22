@@ -8,6 +8,7 @@ import {Group} from "../../models/group";
 import {AssignmentCardComponent} from "../../assignments/assignment-card/assignment-card.component";
 import {PostCardComponent} from "../../posts/post-card/post-card.component";
 import {StudentCardComponent} from "../../students/student-card/student-card.component";
+import {environment} from "../../../environments/environment.development";
 
 
 @Component({
@@ -64,4 +65,6 @@ export class GroupComponent {
         }
         return ''
     }
+
+    protected readonly environment = environment;
 }

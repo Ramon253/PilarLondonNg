@@ -5,6 +5,7 @@ import {Group} from "../models/group";
 import {AssignmentService} from "./assignment.service";
 import {PostService} from "./post.service";
 import {DatePipe} from "@angular/common";
+import {environment} from "../../environments/environment.development";
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,7 @@ export class GroupService {
     ) {
     }
 
-    private path = 'http://localhost:8000/api/'
+    private path = environment.baseUrl +'api/'
 
     getGroups(): Observable<Group[]> {
         return this.http.get<Group[]>(this.path + 'groups', {withCredentials: true})

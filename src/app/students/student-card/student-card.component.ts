@@ -1,5 +1,6 @@
 import {Component, input} from '@angular/core';
 import {Student} from "../../models/student";
+import {environment} from "../../../environments/environment.development";
 
 @Component({
   selector: 'app-student-card',
@@ -12,4 +13,5 @@ export class StudentCardComponent {
     student = input.required<Student>()
 
 
+    protected readonly environment = environment;
 }

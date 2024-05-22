@@ -11,6 +11,7 @@ import { Link } from '../models/properties/link';
 import { FileService } from './resources/file.service';
 import { LinkService } from './resources/link.service';
 import { CommentService } from './resources/comment.service';
+import {environment} from "../../environments/environment.development";
 
 
 @Injectable({
@@ -27,7 +28,7 @@ export class PostService {
         private commentSvc: CommentService
     ) { }
 
-    private path = 'http://localhost:8000/api/'
+    private path = environment.baseUrl + 'api/'
 
     public getPosts(isPublic?: boolean): Observable<{ posts: Post[], groups?: [] }> {
         if (isPublic)

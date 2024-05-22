@@ -3,6 +3,7 @@ import { Comment } from '../../models/properties/comment';
 import { LoginService } from '../../login.service';
 import { CommentService } from '../../services/resources/comment.service';
 import { LoadingWheelComponent } from '../../svg/loading-wheel/loading-wheel.component';
+import {environment} from "../../../environments/environment.development";
 
 @Component({
 	selector: 'app-comment',
@@ -30,7 +31,7 @@ export class CommentComponent {
 		) ?? [])
 		if (!this.comment()?.public)
 			console.log(this.ownAnswers());
-		
+
 	}
 
 	ngOnInit() {
@@ -38,7 +39,7 @@ export class CommentComponent {
 			comment => comment.parent_id === this.comment()?.id
 		) ?? [])
 
-		
+
 	}
 
 
@@ -51,7 +52,7 @@ export class CommentComponent {
 	delete = output<string>()
 
 
-	
+
     deleteComment(){
 		this.isLoadingDelete.set(true)
 
@@ -62,4 +63,6 @@ export class CommentComponent {
             }
         )
     }
+
+    protected readonly environment = environment;
 }

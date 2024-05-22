@@ -7,6 +7,7 @@ import {LinkService} from './resources/link.service';
 import {CommentService} from './resources/comment.service';
 import {DatePipe} from '@angular/common';
 import {SolutionService} from './solution.service';
+import {environment} from "../../environments/environment.development";
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +24,7 @@ export class AssignmentService {
     ) {
     }
 
-    private path = 'http://localhost:8000/api/';
+    private path = environment.baseUrl+  'api/';
 
     postAssignment(assignment: Assignment, formData: FormData | undefined): Observable<Assignment> {
         if (formData)

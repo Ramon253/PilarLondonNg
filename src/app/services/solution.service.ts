@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {Solution} from '../models/solution';
 import {FileR} from "../models/properties/file";
 import {ValidationsService} from "./validations.service";
+import {environment} from "../../environments/environment.development";
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +21,7 @@ export class SolutionService {
     ) {
     }
 
-    private path = 'http://localhost:8000/api/'
+    private path = environment.baseUrl + 'api/'
 
     getSolution(id: string): Observable<Solution> {
         return this.http.get<Solution>(`${this.path}solution/${id}`)

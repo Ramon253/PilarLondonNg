@@ -11,13 +11,14 @@ import {Post} from "../../models/post";
 import {Assignment} from "../../models/assignment";
 import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
 import {Solution} from "../../models/solution";
+import {environment} from "../../../environments/environment.development";
 
 @Injectable({
 	providedIn: 'root'
 })
 export class LinkService {
 
-	private path = `http://localhost:8000/api/`
+	private path = environment.baseUrl + `api/`
 
 	constructor(private http: HttpClient, private validator: ValidationsService) { }
 

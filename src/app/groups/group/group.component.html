@@ -15,7 +15,7 @@
     <section class="w-full mt-[10vh] pt-1 min-h-[90vh] h-fit bg-main-grey pb-10">
         <div class="max-w-screen-2xl  w-full mx-auto gap-10 flex min-h-screen flex-col">
             <div class="w-full relative appearance-[16/4] ">
-                <img class="w-full rounded-b" src="http://localhost:8000/api/group/{{group().id}}/banner" #banner
+                <img class="w-full rounded-b" src="{{environment.baseUrl}}api/group/{{group().id}}/banner" #banner
                      (load)="isLoading.set(false)" alt="Banner">
                 <div class="w-fit h-2/3 flex flex-col justify-center pl-10 absolute bottom-0 left-0 ">
                     <h1 class="text-5xl bg-main-grey p-4 rounded-t-lg rounded-r-lg text-main font-bold"

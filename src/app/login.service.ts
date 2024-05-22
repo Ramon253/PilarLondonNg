@@ -5,9 +5,10 @@ import { UserResponse } from './models/user/userResponse';
 import { Credentials } from './models/credentials';
 import { User } from './models/user/user';
 import axios, { AxiosResponse } from 'axios';
+import {environment} from "../environments/environment.development";
 
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.baseURL = environment.baseUrl
 axios.defaults.withXSRFToken = true;
 
 
@@ -35,7 +36,7 @@ export class LoginService {
 
     }
 
-    private path = 'http://localhost:8000/api';
+    private path =  environment.baseUrl + 'api';
 
     async login(credentials: Credentials): Promise<any> {
         await axios.get('/sanctum/csrf-cookie')

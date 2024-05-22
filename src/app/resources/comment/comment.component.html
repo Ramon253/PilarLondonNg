@@ -1,7 +1,7 @@
 <div
     class="w-full {{loginSvc.user()?.id === comment()?.user_id ? 'border-green-500 ' : 'border-main'}} bg-main-white border-2 rounded-xl flex flex-col gap-4 text-font-grey shadow min-h-10 p-2 ">
     <div class="flex items-center gap-4 transition-all">
-        <img src="http://localhost:8000/api/user/{{comment()?.user_id}}/profile-picture" alt="profile-picture"
+        <img src="{{environment.baseUrl}}api/user/{{comment()?.user_id}}/profile-picture" alt="profile-picture"
             class="p-2 bg-main-grey aspect-square rounded-full h-[2.5rem] shadow">
         <div class=" flex flex-col h-full gap-2 w-full px-1">
             <div class="flex items-center justify-between">
@@ -12,8 +12,7 @@
             </div>
             <p class="">{{ comment()?.content }}</p>
             <div class="w-full flex items-center gap-20 font-medium text-main text-sm">
-                <button (click)="showAnswers.set(!showAnswers())">{{(showAnswers()? 'Cerrar respuestas' : 'Ver
-                    respuestas')}}
+                <button (click)="showAnswers.set(!showAnswers())">{{(showAnswers()? 'Cerrar respuestas' : 'Ver respuestas')}}
                 </button>
                 <button (click)="answer()">Responder</button>
             </div>

@@ -3,6 +3,7 @@ import { FileR } from '../../models/properties/file';
 import { LoginService } from '../../login.service';
 import { LoadingWheelComponent } from '../../svg/loading-wheel/loading-wheel.component';
 import { FileService } from '../../services/resources/file.service';
+import {environment} from "../../../environments/environment.development";
 
 
 @Component({
@@ -35,4 +36,6 @@ export class FileComponent {
     if (this.hoverCloseButton())
       event.preventDefault()
   }
+
+    protected readonly environment = environment;
 }

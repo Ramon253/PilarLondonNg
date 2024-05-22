@@ -1,6 +1,6 @@
 <section class="flex items-center gap-4 p-4 rounded-xl border-2 border-main h-36 shadow">
     <div class="aspect-square h-full">
-        <img src="http://localhost:8000/api/user/{{student().user_id}}/profile-picture" class="h-full rounded-full" alt="">
+        <img src="{{environment.baseUrl}}api/user/{{student().user_id}}/profile-picture" class="h-full rounded-full" alt="">
     </div>
     <div class="flex gap-2 text-xl font-medium text-font-grey">
         <span>{{student().full_name}}</span>

@@ -6,13 +6,14 @@ import { CommentComponent } from '../../resources/comment/comment.component';
 import { DatePipe } from '@angular/common';
 import { PostComponent } from '../../posts/post/post.component';
 import { CommentsComponent } from '../../resources/comments/comments.component';
+import {environment} from "../../../environments/environment.development";
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CommentService {
 
-	private path = `http://localhost:8000/api/`
+	private path = `${environment.baseUrl}api/`
 
 	constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
@@ -34,7 +35,7 @@ export class CommentService {
 
 		CommentsComponent.isLoadingPost.set(true)
 		let content = CommentsComponent.commentPostForm.get('Comentario')?.value
-		
+
 		const comment = {
 			content: content,
 			public: !CommentsComponent.privateComments(),
@@ -46,7 +47,7 @@ export class CommentService {
 		this.postComment(comment as Comment, from).subscribe(
 			(res: any) => {
 
-				CommentsComponent.post.emit(res.comments as Comment[]) 
+				CommentsComponent.post.emit(res.comments as Comment[])
 				CommentsComponent.isLoadingPost.set(false)
 				CommentsComponent.commentPostForm.get('Comentario')?.setValue('')
 				CommentsComponent.answerComment.set(undefined)
