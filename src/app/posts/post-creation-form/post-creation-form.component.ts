@@ -11,6 +11,7 @@ import { ValidationErrorComponent } from '../../validations/validation-error/val
 import { Title } from '@angular/platform-browser';
 import { FormPostComponent } from '../../resources/form-post/form-post.component';
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
+import {LoginService} from "../../login.service";
 
 @Component({
     selector: 'app-post-creation-form',
@@ -47,7 +48,7 @@ export class PostCreationFormComponent {
             this.files().push(inputFile)
     }
 
-    createPost(
+    async createPost(
         event: SubmitEvent,
         description: HTMLTextAreaElement
     ) {
@@ -78,8 +79,7 @@ export class PostCreationFormComponent {
                 }
             }
         }
-
-
+        await this.loginSvc.getCsrf()
         this.postSvc.postPost(post, formData , this.postForm.get('group_id')?.value === 'public')
             .subscribe(
                 (res : any ) => {
@@ -113,7 +113,8 @@ export class PostCreationFormComponent {
     constructor(
         private renderer: Renderer2,
         public postSvc: PostService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        public loginSvc : LoginService
     ) {
     }
 

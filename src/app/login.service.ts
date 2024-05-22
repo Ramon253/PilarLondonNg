@@ -38,6 +38,9 @@ export class LoginService {
 
     private path =  environment.baseUrl + 'api';
 
+    async getCsrf(){
+        return axios.get('/sanctum/csrf-cookie')
+    }
     async login(credentials: Credentials): Promise<any> {
         await axios.get('/sanctum/csrf-cookie')
         return axios.post<any, UserResponse>('/login', credentials)
