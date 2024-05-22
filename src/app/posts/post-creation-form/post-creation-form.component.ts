@@ -79,9 +79,8 @@ export class PostCreationFormComponent {
                 }
             }
         }
-        await this.loginSvc.getCsrf()
         this.postSvc.postPost(post, formData , this.postForm.get('group_id')?.value === 'public')
-            .subscribe(
+            .then(
                 (res : any ) => {
                     post.links = this.links()
                     this.post.emit(res.post as Post);

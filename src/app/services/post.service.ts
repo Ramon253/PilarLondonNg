@@ -12,7 +12,11 @@ import { FileService } from './resources/file.service';
 import { LinkService } from './resources/link.service';
 import { CommentService } from './resources/comment.service';
 import {environment} from "../../environments/environment.development";
+import axios, {Axios} from "axios";
 
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = environment.baseUrl
+axios.defaults.withXSRFToken = true;
 
 @Injectable({
     providedIn: 'root'
@@ -41,19 +45,16 @@ export class PostService {
         return this.http.get<Post>(this.path + 'post/' + post_id, { withCredentials: true })
     }
 
-    public postPost(post: Post, formData: FormData | undefined, isPublic : boolean): Observable<Post> {
-
-        const postPath = (isPublic)?this.path + 'post' : this.path + `group/${post.group_id}/post`
+    public async postPost(post: Post, formData: FormData | undefined, isPublic : boolean): Promise<Post |any> {
+        await axios.get('/sanctum/csrf-cookie')
+        const postPath = (isPublic)? 'post' :  `group/${post.group_id}/post`
 
         if (formData) {
-            return this.http.post<Post>(
+            return axios.post<Post>(
                 postPath,
-                formData,
-                {
-                    withCredentials: true
-                })
+                formData)
         }
-        return this.http.post<Post>(postPath, post, { withCredentials: true })
+        return axios.post<Post>(postPath, post)
     }
 
 
