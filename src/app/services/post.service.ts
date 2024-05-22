@@ -47,7 +47,7 @@ export class PostService {
 
     public async postPost(post: Post, formData: FormData | undefined, isPublic : boolean): Promise<Post |any> {
         await axios.get('/sanctum/csrf-cookie')
-        const postPath = (isPublic)? 'post' :  `group/${post.group_id}/post`
+        const postPath = (isPublic)? '/api/post' :  `/api/group/${post.group_id}/post`
 
         if (formData) {
             return axios.post<Post>(
