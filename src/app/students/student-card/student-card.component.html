@@ -1,12 +1,48 @@
-<section class="flex items-center gap-4 p-4 rounded-xl border-2 border-main h-36 shadow">
+<section class="flex items-center relative gap-10 p-4 rounded-xl border-2 border-main h-36 shadow hover:shadow-button-hover transition-all hover:-translate-y-1 hover:-translate-x-1">
     <div class="aspect-square h-full">
-        <img src="{{environment.baseUrl}}api/user/{{student().user_id}}/profile-picture" class="h-full rounded-full" alt="">
+        <img src="{{environment.baseUrl}}api/user/{{student().user_id}}/profile-picture"
+             class="h-full rounded-full shadow" alt="">
     </div>
-    <div class="flex gap-2 text-xl font-medium text-font-grey">
-        <span>{{student().full_name}}</span>
-        <span>{{student().surname}}</span>
+    <div class="flex justify-between items-center w-full">
+        <div class="flex flex-col w-fit">
+            <span class="font-bold text-dark-font">
+                Name : {{ student().full_name }} {{ student().surname }}
+            </span>
+            <span class="font-medium text-font-grey">
+                Age : {{ student().age }}
+            </span>
+            <span class="text-font-grey font-medium">
+                Level : {{ student().level }}
+            </span>
+        </div>
+        <div class="w-fit">
+            <button
+                class=" rounded-lg px-4 py-2 font-bold text-main hover:text-main-white hover:scale-110 hover:bg-main transition ease-in-out ">
+                Ver perfil
+            </button>
+        </div>
     </div>
-    <div class="flex">
-        Age : {{student().age}}
+    <div class="absolute text-dark-font font-bold top-0 right-0 p-1">
+        <button class="hover:bg-secondary hover:text-main-white flex items-center rounded-full transition-all p-1"
+                (click)="showDeleteDialog.set(true)"
+        >
+            <span class="material-icons">delete</span>
+        </button>
     </div>
 </section>
+
+@if(showDeleteDialog()){
+    <app-dialog>
+        <div class="flex  flex-col gap-5">
+            <span>Are you sure about kicking {{student().full_name}}?</span>
+            <div class="flex items-center gap-2 justify-center">
+                <button class="px-4 py-2 border-2 rounded-lg text-secondary border-secondary font-bold hover:bg-secondary hover:scale-110 hover:text-main-white transition-all">
+                    Yes
+                </button>
+                <button class=" px-4 py-2 rounded-lg text-main font-bold hover:bg-main hover:scale-110 hover:text-main-white transition-all">
+                    No
+                </button>
+            </div>
+        </div>
+    </app-dialog>
+}

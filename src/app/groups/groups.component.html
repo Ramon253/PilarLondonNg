@@ -13,6 +13,13 @@
                 <h1 class="w-full text-center text-5xl text-main font-bold">{{loginSvc.user()?.role === 'student' ? 'Tus clases' : 'Clases' }}</h1>
             </div>
             <div class="w-full flex flex-col gap-4">
+                @if (loginSvc.user()?.role === 'teacher') {
+                    <button
+                        (click)="showPostForm.set(true)"
+                        class="w-fit rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
+                        <span class="material-icons">add</span> | Create group
+                    </button>
+                }
                 @for (group of groups(); track $index) {
                     <app-group-card [group]="group"></app-group-card>
                 }
@@ -20,4 +27,9 @@
 
         </div>
     </section>
+}
+@if (showPostForm()){
+    <app-dialog>
+        <app-group-creation-form></app-group-creation-form>
+    </app-dialog>
 }

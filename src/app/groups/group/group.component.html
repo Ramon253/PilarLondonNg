@@ -30,25 +30,25 @@
                         <div>
                             <h2 class="text-2xl font-bold text-font-grey ">Horario</h2>
                         </div>
-                        <div class=" w-fit rounded-md  flex items-center justify-evenly gap-2">
+                        <div class=" w-fit rounded-md  flex items-stretch justify-evenly gap-2">
                             <div
-                                class="flex items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : 'bg-main-grey' }}  ">
+                                class="flex  h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : 'bg-main-grey' }}  ">
                                 L
                             </div>
                             <div
-                                class="flex items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
+                                class="flex h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
                                 M
                             </div>
                             <div
-                                class="flex items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
+                                class="flex h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
                                 X
                             </div>
                             <div
-                                class="flex items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
+                                class="flex h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
                                 J
                             </div>
                             <div
-                                class="flex items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'v'? 'bg-secondary text-main-white' : '' }} ">
+                                class="flex h-full justify-center items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'v'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
                                 V
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div
-                    class="max-w-screen-lg w-screen border-t-2 border-dark-font flex flex-col gap-10  text-lg font-medium">
+                    class="max-w-screen-lg w-screen border-t-2 border-dark-font flex flex-col gap-10  text-lg font-medium mr-4">
                     <div class="flex justify-between">
                         <div class="flex gap-4 px-2 relative pl-2">
                             <div

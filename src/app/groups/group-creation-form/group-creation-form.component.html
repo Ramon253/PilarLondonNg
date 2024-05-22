@@ -1,0 +1,45 @@
+<section class="max-w-screen-sm w-screen max-h-[80vh] p-4">
+    <form action="" class="flex flex-col gap-4 px-5 items-center justify-start h-full w-full">
+        <div class="flex flex-col w-full mb-4">
+            <input type="text" id="name" class="peer p-2 border-b-2 border-main order-2 bg-transparent" placeholder=" ">
+            <label for="name" class="order-1 px-2 peer-placeholder-shown:translate-y-9 cursor-pointer select-none transition-all peer-placeholder-shown:text-font-grey text-dark-font font-bold">
+                Nombre
+            </label>
+        </div>
+        <div class="grid grid-cols-2 grid-rows-2 gap-x-3 gap-y-5 justify-between items-center w-full px-5">
+            <div class="flex items-center justify-start w-fit">
+                <input type="file" id="banner" class="hidden" #banner>
+                <button (click)="getBanner($event)" class="flex items-center gap-2 px-4 w-fit py-2 border-2 border-main rounded-lg hover:scale-110 hover:bg-main hover:shadow-button-hover hover:text-main-white text-main transition-all ease-in-out">
+                    <span class="material-icons">image</span> Banner
+                </button>
+            </div>
+            <div class="flex gap-2 flex-col items-start justify-center  w-fit">
+                <label for="lesson_time" class="text-font-grey font-medium">Starting hour</label>
+                <input type="time" class="border-2 p-1 rounded-lg border-main" id="lesson_time">
+            </div>
+            <div class="flex gap-2 flex-col items-start justify-center w-fit">
+                <label for="lesson_days">Days</label>
+                <select class="" id="lesson_days">
+                    <option value="">lunes - miercoles</option>
+                    <option value="">martes - jueves</option>
+                    <option value="">Viernes</option>
+                </select>
+            </div>
+            <div class="flex items-start flex-col gap-2 justify-center w-fit">
+                <label for="level">Level</label>
+                <select name="" id="level">
+                    <option>A1</option>
+                    <option>A2</option>
+                    <option>B1</option>
+                    <option>B2</option>
+                    <option>C1</option>
+                </select>
+            </div>
+        </div>
+        <div class="flex w-fit items-center justify-center">
+            <button class="px-4 py-2 flex items-center rounded-lg bg-main text-main-white hover:-translate-x-1 hover:-translate-y-1 transition-all ease-in-out hover:shadow-button-hover hover:scale-105">
+                Create group
+            </button>
+        </div>
+    </form>
+</section>

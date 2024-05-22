@@ -6,5 +6,6 @@ export interface Student {
     birth_date ?: Date,
     created_at ?: Date,
     updated_at ?: Date,
-    age ?: string
+    age ?: string,
+    level ?: string
 }
