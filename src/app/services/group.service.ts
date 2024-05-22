@@ -6,6 +6,12 @@ import {AssignmentService} from "./assignment.service";
 import {PostService} from "./post.service";
 import {DatePipe} from "@angular/common";
 import {environment} from "../../environments/environment.development";
+import Axios from "axios";
+import axios from "axios";
+
+axios.defaults.baseURL = environment.baseUrl;
+axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +28,10 @@ export class GroupService {
 
     private path = environment.baseUrl +'api/'
 
+    async postGroup(group: FormData): Promise<Group> {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post('/api/group', group)
+    }
     getGroups(): Observable<Group[]> {
         return this.http.get<Group[]>(this.path + 'groups', {withCredentials: true})
     }

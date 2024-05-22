@@ -7,6 +7,7 @@ export interface Group {
     id?: string,
     name?: string,
     banner?: string,
+    inputBanner? : File,
     level?: string,
     capacity?: number,
     lessons_time?: string,

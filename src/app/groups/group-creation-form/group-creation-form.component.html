@@ -1,45 +1,60 @@
-<section class="max-w-screen-sm w-screen max-h-[80vh] p-4">
-    <form action="" class="flex flex-col gap-4 px-5 items-center justify-start h-full w-full">
+<section class="max-w-screen-sm w-screen max-h-[80vh] p-4 relative">
+    <form action="" class="flex flex-col gap-4 px-5 items-center justify-start h-full w-full" [formGroup]="form"
+          (submit)="createGroup($event)">
         <div class="flex flex-col w-full mb-4">
-            <input type="text" id="name" class="peer p-2 border-b-2 border-main order-2 bg-transparent" placeholder=" ">
-            <label for="name" class="order-1 px-2 peer-placeholder-shown:translate-y-9 cursor-pointer select-none transition-all peer-placeholder-shown:text-font-grey text-dark-font font-bold">
+            <input formControlName="name" type="text" id="name"
+                   class="peer p-2 border-b-2 border-main order-2 bg-transparent" placeholder=" ">
+            <label for="name"
+                   class="order-1 px-2 peer-placeholder-shown:translate-y-9 cursor-pointer select-none transition-all peer-placeholder-shown:text-font-grey text-dark-font peer-placeholder-shown:font-medium font-bold">
                 Nombre
             </label>
         </div>
         <div class="grid grid-cols-2 grid-rows-2 gap-x-3 gap-y-5 justify-between items-center w-full px-5">
             <div class="flex items-center justify-start w-fit">
-                <input type="file" id="banner" class="hidden" #banner>
-                <button (click)="getBanner($event)" class="flex items-center gap-2 px-4 w-fit py-2 border-2 border-main rounded-lg hover:scale-110 hover:bg-main hover:shadow-button-hover hover:text-main-white text-main transition-all ease-in-out">
+                <input type="file" formControlName="banner" id="banner" class="hidden" #banner>
+                <button (click)="showMenu($event)"
+                        class="flex items-center shadow-md gap-2 px-4 w-fit py-2 bg-main-white rounded-lg hover:scale-110 hover:border-main hover:border-2 hover:shadow-button-hover text-main transition-all ease-in-out">
                     <span class="material-icons">image</span> Banner
                 </button>
             </div>
             <div class="flex gap-2 flex-col items-start justify-center  w-fit">
                 <label for="lesson_time" class="text-font-grey font-medium">Starting hour</label>
-                <input type="time" class="border-2 p-1 rounded-lg border-main" id="lesson_time">
+                <input type="time" formControlName="lessons_time" class="p-1 rounded-lg shadow" id="lesson_time">
             </div>
-            <div class="flex gap-2 flex-col items-start justify-center w-fit">
-                <label for="lesson_days">Days</label>
-                <select class="" id="lesson_days">
-                    <option value="">lunes - miercoles</option>
-                    <option value="">martes - jueves</option>
-                    <option value="">Viernes</option>
-                </select>
+            <div class="flex gap-2  w-full">
+                <div class="flex flex-col items-start basis-1/2 justify-center">
+                    <label for="lesson_days">Days</label>
+                    <select #lesson_days (input)="form.get('lesson_days')?.setValue(lesson_days.value)"
+                            formControlName="lesson_days" class="p-1 rounded-lg bg-main-white shadow" id="lesson_days">
+                        <option value="l-m">lunes - miercoles</option>
+                        <option value="m-j">martes - jueves</option>
+                        <option value="v">Viernes</option>
+                    </select>
+                </div>
+                <div class="flex-col flex items-start basis-1/2 justify-center">
+                    <label class="font-medium text-font-grey" for="capacity">Capacity</label>
+                    <input formControlName="capacity" id="capacity" type="number" class="peer p-1 bg-main-white shadow">
+                </div>
             </div>
             <div class="flex items-start flex-col gap-2 justify-center w-fit">
                 <label for="level">Level</label>
-                <select name="" id="level">
-                    <option>A1</option>
-                    <option>A2</option>
-                    <option>B1</option>
-                    <option>B2</option>
-                    <option>C1</option>
+                <select name="" #level (input)="form.get('level')?.setValue(level.value)" formControlName="level"
+                        id="level" class="p-1 rounded-lg bg-main-white shadow">
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
                 </select>
             </div>
         </div>
         <div class="flex w-fit items-center justify-center">
-            <button class="px-4 py-2 flex items-center rounded-lg bg-main text-main-white hover:-translate-x-1 hover:-translate-y-1 transition-all ease-in-out hover:shadow-button-hover hover:scale-105">
+            <button [disabled]="form.invalid" type="submit"
+                    class="px-4 py-2 {{form.invalid ? 'cursor-not-allowed' : 'cursor-pointer' }} flex shadow items-center rounded-lg bg-main text-main-white transition-all ease-in-out hover:shadow-button-hover hover:scale-110">
                 Create group
             </button>
         </div>
     </form>
+    <span (click)="close.emit(true)"
+          class="flex items-center cursor-pointer text-secondary material-icons absolute top-0 right-0 p-1 hover:bg-secondary hover:text-main-white rounded-full duration-200 transition-all ease-in-out ">close</span>
 </section>
