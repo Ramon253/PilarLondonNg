@@ -36,7 +36,7 @@ export class RegisterComponent {
 
 		let credential = this.registerForm.getRawValue()
 
-		this.loginSvc.register(credential as Credentials).subscribe(res => {
+		this.loginSvc.register(credential as Credentials).then(res => {
 			console.log(res);
 		});
 

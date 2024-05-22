@@ -43,8 +43,9 @@ export class LoginService {
         return axios.post<any, UserResponse>('/login', credentials)
     }
 
-    register(credentials: Credentials): Observable<UserResponse> {
-        return this.http.post<UserResponse>(`${this.path}/user`, credentials, { withCredentials: true })
+    async register(credentials: Credentials): Promise<any> {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post<UserResponse>('api/user', credentials)
     }
 
     getUser(): Observable<UserResponse> {
