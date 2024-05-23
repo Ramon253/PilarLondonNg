@@ -22,9 +22,9 @@
                       name="description" required id="description" rows="10"
                       placeholder="Escribe en contenido de texto de el post"></textarea>
         </div>
-        @if (group() === null) {
-            <div class="w-full flex flex-col justify-between">
 
+        <div class="w-full flex flex-col justify-between">
+            @if (group() === null) {
                 <div class="flex  items-baseline  w-full gap-4">
                     <div class="flex flex-col items-baseline w-full gap-4">
                         <label class="font-medium text-main" for="group_id">Grupo del post</label>
@@ -38,17 +38,19 @@
 
                         </select>
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="dead_line" class=" text-main">Fecha de entrega</label>
-                        <input type="datetime-local" formControlName="dead_line" id="dead_line"
-                               class="border-2 border-main rounded-lg p-2">
-                    </div>
-                </div>
 
-                <app-validation-error class="" [form]="assignmentForm" [errors]="['required']" field="group_id"
-                                      [showError]="showError()"></app-validation-error>
+                </div>
+            }
+            <div class="flex basis-1/2 flex-col gap-2">
+                <label for="dead_line" class=" text-main">Fecha de entrega</label>
+                <input type="datetime-local" formControlName="dead_line" id="dead_line"
+                       class="border-2 border-main rounded-lg p-2">
             </div>
-        }
+            <app-validation-error class="" [form]="assignmentForm" [errors]="['required']" field="group_id"
+                                  [showError]="showError()"></app-validation-error>
+        </div>
+
+
         <!-- Resources -->
         <div class="w-full">
 
