@@ -1,40 +1,51 @@
 <section class="max-w-screen-sm w-screen max-h-[80vh] p-4 relative">
     <form action="" class="flex flex-col gap-4 px-5 items-center justify-start h-full w-full" [formGroup]="form"
           (submit)="createGroup($event)">
-        <div class="flex flex-col w-full mb-4">
-            <input formControlName="name" type="text" id="name"
-                   class="peer p-2 border-b-2 border-main order-2 bg-transparent" placeholder=" ">
-            <label for="name"
-                   class="order-1 px-2 peer-placeholder-shown:translate-y-9 cursor-pointer select-none transition-all peer-placeholder-shown:text-font-grey text-dark-font peer-placeholder-shown:font-medium font-bold">
-                Nombre
-            </label>
+        <div class="flex w-full gap-2 mb-4">
+            <div class=" flex basis-1/2 flex-col ">
+                <input formControlName="name" type="text" id="name"
+                       class="peer p-2 border-b-2 border-main order-2 bg-transparent" placeholder=" ">
+                <label for="name"
+                       class="order-1 px-2 peer-placeholder-shown:translate-y-9 cursor-pointer select-none transition-all peer-placeholder-shown:text-font-grey text-dark-font peer-placeholder-shown:font-medium font-bold">
+                    Nombre
+                </label>
+            </div>
+            <div class=" flex basis-1/2 flex-col ">
+                <input formControlName="capacity" type="number" min="0" id="capacity"
+                       class="peer p-2 border-b-2 border-main order-2 bg-transparent" placeholder=" ">
+                <label for="capacity"
+                       class="order-1 px-2 peer-placeholder-shown:translate-y-9 cursor-pointer select-none transition-all peer-placeholder-shown:text-font-grey text-dark-font peer-placeholder-shown:font-medium font-bold">
+                    Capacity
+                </label>
+            </div>
+<!--Errors TODO-->
         </div>
         <div class="grid grid-cols-2 grid-rows-2 gap-x-3 gap-y-5 justify-between items-center w-full px-5">
             <div class="flex items-center justify-start w-fit">
-                <input type="file" formControlName="banner" id="banner" class="hidden" #banner>
+                <input type="file" (change)="getBanner($event)" id="banner" class="hidden"  accept="image/*"
+                       #banner>
                 <button (click)="showMenu($event)"
                         class="flex items-center shadow-md gap-2 px-4 w-fit py-2 bg-main-white rounded-lg hover:scale-110 hover:border-main hover:border-2 hover:shadow-button-hover text-main transition-all ease-in-out">
-                    <span class="material-icons">image</span> Banner
+                    @if (form.get('banner')?.invalid) {
+                        <span class="material-icons">image</span> Banner
+                    } @else {
+                        <span>{{ bannerFile()?.name }}</span>
+                    }
                 </button>
             </div>
             <div class="flex gap-2 flex-col items-start justify-center  w-fit">
                 <label for="lesson_time" class="text-font-grey font-medium">Starting hour</label>
                 <input type="time" formControlName="lessons_time" class="p-1 rounded-lg shadow" id="lesson_time">
             </div>
-            <div class="flex gap-2  w-full">
-                <div class="flex flex-col items-start basis-1/2 justify-center">
-                    <label for="lesson_days">Days</label>
-                    <select #lesson_days (input)="form.get('lesson_days')?.setValue(lesson_days.value)"
-                            formControlName="lesson_days" class="p-1 rounded-lg bg-main-white shadow" id="lesson_days">
-                        <option value="l-m">lunes - miercoles</option>
-                        <option value="m-j">martes - jueves</option>
-                        <option value="v">Viernes</option>
-                    </select>
-                </div>
-                <div class="flex-col flex items-start basis-1/2 justify-center">
-                    <label class="font-medium text-font-grey" for="capacity">Capacity</label>
-                    <input formControlName="capacity" id="capacity" type="number" class="peer p-1 bg-main-white shadow">
-                </div>
+            <div class="flex gap-2  justify-center flex-col items-start  w-full">
+                <label for="lesson_days">Days</label>
+                <select #lesson_days (change)="form.get('lesson_days')?.setValue(lesson_days.value)"
+                        formControlName="lesson_days" class="p-1 rounded-lg bg-main-white shadow" id="lesson_days">
+                    <option value="l-m">lunes - miercoles</option>
+                    <option value="m-j">martes - jueves</option>
+                    <option value="v">Viernes</option>
+                </select>
+
             </div>
             <div class="flex items-start flex-col gap-2 justify-center w-fit">
                 <label for="level">Level</label>
@@ -51,10 +62,46 @@
         <div class="flex w-fit items-center justify-center">
             <button [disabled]="form.invalid" type="submit"
                     class="px-4 py-2 {{form.invalid ? 'cursor-not-allowed' : 'cursor-pointer' }} flex shadow items-center rounded-lg bg-main text-main-white transition-all ease-in-out hover:shadow-button-hover hover:scale-110">
-                Create group
+                @if (isLoading()) {
+                    <div class="flex items-center gap-2">
+                        <app-loading-wheel></app-loading-wheel>
+                        Loading ...
+                    </div>
+                } @else {
+                    Create group
+                }
             </button>
         </div>
     </form>
     <span (click)="close.emit(true)"
           class="flex items-center cursor-pointer text-secondary material-icons absolute top-0 right-0 p-1 hover:bg-secondary hover:text-main-white rounded-full duration-200 transition-all ease-in-out ">close</span>
+
+    @if (showCropper()) {
+        <div
+            #cropper
+            class=" fixed flex items-center justify-center top-0 left-0 w-screen h-screen z-[100] bg-gray-300 bg-opacity-50">
+            <div class="w-screen relative max-w-screen-lg max-h-[80vh] flex flex-col items-center gap-5 p-5 bg-main-white shadow h-screen rounded-lg overflow-y-scroll">
+                <div class="h-2/3 w-2/3 p-2 bg-main-white flex items-center justify-center bg-transparent shadow">
+                    <image-cropper
+                        [maintainAspectRatio]="true"
+                        [imageChangedEvent]="imageChangedEvent"
+                        [aspectRatio]="16 / 4"
+                        (imageCropped)="imageCropped($event)"
+                    ></image-cropper>
+                </div>
+                <div class="shadow w-2/3 h-fit">
+                    <img alt="croppedImage" class="w-full" [src]="croppedUrl"/>
+                </div>
+                <button (click)="endCrop()" class="border-2 border-main p-2 rounded-lg text-main hover:scale-110 hover:bg-main hover:text-main-white transition-all ease-in-out hover:shadow-button-hover">
+                    Upload
+                </button>
+                <span class="absolute top-1 right-1 rounded-full cursor-pointer hover:text-main-white p-1 text-secondary hover:bg-secondary transition-all duration-200 flex items-center material-icons">
+                    close
+                </span>
+            </div>
+
+        </div>
+    }
+
 </section>
+

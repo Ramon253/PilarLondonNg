@@ -30,6 +30,6 @@
 }
 @if (showPostForm()){
     <app-dialog>
-        <app-group-creation-form (newGroup)="groups().push($event)" (close)="showPostForm.set(false)"></app-group-creation-form>
+        <app-group-creation-form (newGroup)="groups().unshift($event)" (close)="showPostForm.set(false)"></app-group-creation-form>
     </app-dialog>
 }

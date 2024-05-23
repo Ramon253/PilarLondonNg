@@ -1,4 +1,5 @@
 export interface Student {
+    id? : string,
     full_name ?: string,
     surname? : string,
     phone_number? : string,

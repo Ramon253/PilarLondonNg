@@ -22,28 +22,33 @@
                       name="description" required id="description" rows="10"
                       placeholder="Escribe en contenido de texto de el post"></textarea>
         </div>
-        <div class="w-full flex flex-col justify-between">
-            <div class="flex  items-baseline  w-full gap-4">
-                <div class="flex flex-col items-baseline w-full gap-4">
-                    <label class="font-medium text-main" for="group_id">Grupo del post</label>
-                    <select #select class="border-main border-2 rounded-md" formControlName="group_id" id="group_id"
-                            autocomplete="off">
-                        <option #default [attr.selected]="true" disabled hidden value="">Escoje grupo</option>
-                        @for (group of groups(); track $index) {
-                            <option value="{{group.id}}">{{ group.name }}</option>
-                        }
-                        <option value="public">Publico</option>
+        @if (group() === null) {
+            <div class="w-full flex flex-col justify-between">
 
-                    </select>
+                <div class="flex  items-baseline  w-full gap-4">
+                    <div class="flex flex-col items-baseline w-full gap-4">
+                        <label class="font-medium text-main" for="group_id">Grupo del post</label>
+                        <select #select class="border-main border-2 rounded-md" formControlName="group_id" id="group_id"
+                                autocomplete="off">
+                            <option #default [attr.selected]="true" disabled hidden value="">Escoje grupo</option>
+                            @for (group of groups(); track $index) {
+                                <option value="{{group.id}}">{{ group.name }}</option>
+                            }
+                            <option value="public">Publico</option>
+
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="dead_line" class=" text-main">Fecha de entrega</label>
+                        <input type="datetime-local" formControlName="dead_line" id="dead_line"
+                               class="border-2 border-main rounded-lg p-2">
+                    </div>
                 </div>
-                <div class="flex flex-col gap-2">
-                    <label for="dead_line" class=" text-main">Fecha de entrega</label>
-                    <input type="datetime-local" formControlName="dead_line" id="dead_line" class="border-2 border-main rounded-lg p-2">
-                </div>
+
+                <app-validation-error class="" [form]="assignmentForm" [errors]="['required']" field="group_id"
+                                      [showError]="showError()"></app-validation-error>
             </div>
-            <app-validation-error class="" [form]="assignmentForm" [errors]="['required']" field="group_id"
-                                  [showError]="showError()"></app-validation-error>
-        </div>
+        }
         <!-- Resources -->
         <div class="w-full">
 

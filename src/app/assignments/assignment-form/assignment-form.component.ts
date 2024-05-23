@@ -23,6 +23,7 @@ import {Assignment} from "../../models/assignment";
 })
 export class AssignmentFormComponent {
     close = output<boolean>()
+    group = input<string | null>(null)
     groups = input<{ name: string, id: string }[]>([])
     newAssignment = output<Assignment>()
     isLoading = signal<boolean>(false)
@@ -35,11 +36,13 @@ export class AssignmentFormComponent {
         group_id : ['', Validators.required],
         dead_line : [new Date(), Validators.required]
     })
+
     constructor(
         public assignmentSvc : AssignmentService,
         private formBuilder: FormBuilder
     ) {
     }
+
     tryPost(){
         if (this.assignmentForm.get('group_id')?.invalid)
             this.showError.set(true)
@@ -67,6 +70,7 @@ export class AssignmentFormComponent {
 
             if (assignment.description)
                 formData.append('description', assignment.description)
+
             if (assignment.links) {
                 for (const key in assignment.links) {
                     formData.append(`links[${key}][link_name]`, assignment.links[key].link_name)
@@ -79,7 +83,6 @@ export class AssignmentFormComponent {
             .subscribe(
                 assignment =>{
                     this.newAssignment.emit(this.assignmentSvc.mapAssignment( assignment))
-                    console.log('????????')
                     this.close.emit(true)
                 }
             )
@@ -89,5 +92,12 @@ export class AssignmentFormComponent {
     }
     toggleForm(){
         this.close.emit(true)
+    }
+
+    ngOnInit(){
+        if (this.group() === null){
+            return
+        }
+        this.assignmentForm.get('group_id')?.setValue(this.group())
     }
 }

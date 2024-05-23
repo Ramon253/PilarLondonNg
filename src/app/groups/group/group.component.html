@@ -14,8 +14,9 @@
 
     <section class="w-full mt-[10vh] pt-1 min-h-[90vh] h-fit bg-main-grey pb-10">
         <div class="max-w-screen-2xl  w-full mx-auto gap-10 flex min-h-screen flex-col">
-            <div class="w-full relative appearance-[16/4] ">
-                <img class="w-full rounded-b" src="{{environment.baseUrl}}api/group/{{group().id}}/banner" #banner
+            <div class="w-full relative aspect-[16/4] ">
+                <img class="w-full rounded-b aspect-[16/4]" src="{{environment.baseUrl}}api/group/{{group().id}}/banner"
+                     #banner
                      (load)="isLoading.set(false)" alt="Banner">
                 <div class="w-fit h-2/3 flex flex-col justify-center pl-10 absolute bottom-0 left-0 ">
                     <h1 class="text-5xl bg-main-grey p-4 rounded-t-lg rounded-r-lg text-main font-bold"
@@ -123,13 +124,32 @@
                             }
 
                         </div>
-                        <div>
-                            <div class="w-full flex  items-center justify-end">
-                                <span class="material-icons flex items-center p-1 text-main cursor-pointer hover:text-main-white hover:bg-main transition rounded-full">refresh</span>
+                        <div class="flex flex-col lg:flex-row gap-2">
+
+                            <div class="w-full flex  items-center justify-end lg:order-2">
+                                <span
+                                    class="material-icons flex items-center p-1 text-main cursor-pointer hover:text-main-white hover:bg-main transition rounded-full">refresh</span>
+                            </div>
+                            <div class="relative h-1 w-1 lg:order-1">
+                                @if (loginSvc.user()?.role === 'teacher' && selectedContent() !== 'general') {
+                                    <button
+                                        (click)="create()"
+                                        class="flex absolute top-1 -right-5 lg:right-0 items-center gap-2 border-2 text-main border-main text-lg font-bold px-4 py-2 rounded-lg hover:bg-main hover:scale-110 hover:text-main-white hover:shadow-button-hover transition-all duration-200 ease-in-out">
+                                        <span class="material-icons">create</span> |
+                                        @if (selectedContent() === 'student') {
+                                            <span class="whitespace-nowrap">Add student</span>
+                                        } @else if (selectedContent() === 'post') {
+                                            <span class="whitespace-nowrap">Create post</span>
+                                        } @else if (selectedContent() === 'assignment') {
+                                            <span class="whitespace-nowrap">Create assignment</span>
+                                        }
+
+                                    </button>
+                                }
                             </div>
                         </div>
                     </div>
-                    <div class="w-full flex flex-col gap-4">
+                    <div class="w-full mt-5 flex flex-col gap-4">
                         @if (selectedContent() === 'general') {
                             @for (element of group().content; track $index) {
                                 @if (element.dead_line) {
@@ -148,8 +168,10 @@
                             }
                         } @else if (selectedContent() === 'student') {
                             @for (student of group().students; track $index) {
-                                <app-student-card [student]="student"></app-student-card>
+                                <app-student-card (leaveClass)="kickStudent($event)"
+                                                  [student]="student"></app-student-card>
                             }
+                            z
                         }
                     </div>
                 </div>
@@ -157,4 +179,61 @@
             </div>
         </div>
     </section>
+    @if (isLoadingKick()) {
+        <app-dialog>
+            <div class="p-5">
+                <app-loading-wheel></app-loading-wheel>
+            </div>
+        </app-dialog>
+    }
+    @if (showCreate().student) {
+        <app-dialog>
+            @if (isLoadingStudents()) {
+                <div class="flex p-20 items-center">
+                    <app-loading-wheel></app-loading-wheel>
+                </div>
+            } @else {
+                <div
+                    class="max-w-screen-lg w-fit flex flex-col gap-2 items-start justify-center p-10 max-h-[80vh] relative">
+                    <span
+                        class="p-1 flex items-center text-secondary rounded-full hover:bg-secondary hover:text-main-white transition-all duration-200 absolute top-0 right-0 material-icons cursor-pointer"
+                        (click)="showCreate().student = false">close</span>
+                    <label class="font-medium text-font-grey text-xl" for="student">Student</label>
+                    <select #student_id id="student" class="p-1 rounded-lg shadow">
+                        @for (student of students(); track $index) {
+                            <option [value]="student.id">{{ student.full_name }} {{ student.surname }}</option>
+                        }
+                    </select>
+                    <div class="w-full pt-5 flex justify-center">
+                        <button (click)="addStudent(student_id)"
+                                class="border-2 px-4 py-2 rounded-lg border-main text-main font-bold text-md hover:scale-110 hover:text-main-white hover:bg-main transition-all duration-200 ease-in-out">
+                            @if (isLoadingPost()) {
+                                <div class="flex items-center gap-2">
+                                    <app-loading-wheel></app-loading-wheel>
+                                    Loading ...
+                                </div>
+                            } @else {
+                                Add
+                            }
+                        </button>
+                    </div>
+
+                </div>
+            }
+
+
+        </app-dialog>
+    }
+    @if (showCreate().post) {
+        <app-post-creation-form [group]="group().id ?? ''" (close)="showCreate().post=false"></app-post-creation-form>
+    }
+    @if (showCreate().assignment) {
+        <app-dialog>
+            <div>
+                <app-assignment-form [group]="group().id ?? ''" (close)="showCreate().assignment=false"
+                                     (newAssignment)="group().assignments?.push($event)">
+                </app-assignment-form>
+            </div>
+        </app-dialog>
+    }
 }

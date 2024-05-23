@@ -26,15 +26,31 @@ export class GroupService {
     ) {
     }
 
-    private path = environment.baseUrl +'api/'
+    private path = environment.baseUrl + 'api/'
 
-    async postGroup(group: FormData): Promise<Group> {
+    async postGroup(group: FormData): Promise<Group | any> {
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/group', group)
     }
+
+    async joinGroup(group_id: string, student_id: string) {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post(`/api/group/${group_id}/join`, {student_id: student_id})
+    }
+
+    async leaveGroup(group_id: string, student_id: string) {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.delete(`/api/group/${group_id}/kick`, {
+            data: {
+                student_id: student_id
+            }
+        })
+    }
+
     getGroups(): Observable<Group[]> {
         return this.http.get<Group[]>(this.path + 'groups', {withCredentials: true})
     }
+
 
     getGroup(id: string): Observable<Group> {
         return this.http.get<Group>(this.path + `group/${id}`, {withCredentials: true})
@@ -52,7 +68,7 @@ export class GroupService {
 
         group.content?.push(...group.posts ?? [])
         group.content?.push(...group.assignments ?? [])
-        group.content.sort((a,b) => {
+        group.content.sort((a, b) => {
             console.log('a -------------')
             console.log(new Date(b.updated_at).getTime())
             console.log('b -------------')

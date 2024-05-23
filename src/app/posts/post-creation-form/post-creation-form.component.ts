@@ -25,6 +25,7 @@ export class PostCreationFormComponent {
     @Output() close = new EventEmitter<boolean>();
 
     groups = input<{ name: string, id: string }[]>([])
+    group = input<string | null>(null)
     isLoading = signal<boolean>(false)
     submitButton = viewChild<ElementRef>('submitButton')
     form = viewChild<ElementRef>('form')
@@ -115,6 +116,13 @@ export class PostCreationFormComponent {
         private formBuilder: FormBuilder,
         public loginSvc : LoginService
     ) {
+    }
+
+    ngOnInit(){
+        if (this.group() === null)
+            return
+
+        this.postForm.get('group_id')?.setValue(this.group())
     }
 
     protected readonly createFind = createFind;
