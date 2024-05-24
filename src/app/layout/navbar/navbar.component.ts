@@ -21,7 +21,7 @@ export class NavbarComponent {
 
 	@Output('darkMode') darkMode = new EventEmitter<boolean>(this.DarkMode())
 
-	constructor(private loginSvc: LoginService) {
+	constructor(public loginSvc: LoginService) {
 		if (this.user() === null &&  this.isLogged()){
 			this.loginSvc.getUser().subscribe(
 				user => {

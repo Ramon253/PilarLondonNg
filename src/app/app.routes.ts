@@ -10,6 +10,7 @@ import {AssignmentsComponent} from "./assignments/assignments.component";
 import {GroupsComponent} from "./groups/groups.component";
 import {group} from "@angular/animations";
 import {GroupComponent} from "./groups/group/group.component";
+import {StudentsComponent} from "./students/students.component";
 
 
 export const routes: Routes = [
@@ -52,5 +53,9 @@ export const routes: Routes = [
     {
         path: 'group/:group',
         component: GroupComponent
+    },
+    {
+        path : 'students',
+        component : StudentsComponent
     }
 ];

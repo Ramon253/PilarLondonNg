@@ -129,6 +129,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div
                     class="max-w-screen-lg w-screen border-t-2 border-dark-font flex flex-col gap-10  text-lg font-medium mr-4">
                     <div class="flex justify-between">
@@ -192,7 +193,7 @@
                                     class="material-icons flex items-center p-1 text-main cursor-pointer hover:text-main-white hover:bg-main transition rounded-full">refresh</span>
                             </div>
                             <div class="relative h-1 w-1 lg:order-1">
-                                @if (loginSvc.user()?.role === 'teacher' && selectedContent() !== 'general') {
+                                @if (loginSvc.user()?.role === 'teacher' && selectedContent() !== 'general' && selectedContent() !== 'settings' ) {
                                     <button
                                         (click)="create()"
                                         class="flex absolute top-1 -right-5 lg:right-0 items-center gap-2 border-2 text-main border-main text-lg font-bold px-4 py-2 rounded-lg hover:bg-main hover:scale-110 hover:text-main-white hover:shadow-button-hover transition-all duration-200 ease-in-out">
@@ -266,12 +267,25 @@
                                     This group was created
                                     on {{ datePipe.transform(group().created_at ?? '', 'dd/MM/yyyy') }}
                                 </div>
-                                <div class="w-full flex justify-center">
+                                <div>
                                     <button
-                                        class="flex w-fit items-center gap-2 px-4 py-2 rounded-lg font-bold text-xl {{settingsUpdateAny()?'border-2 text-main border-main hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover': 'text-font-grey'}} transition-all duration-300 ease-in-out">
-                                        <span class="material-icons">save</span> | Save
+                                        (click)="showDeleteDialog.set(true)"
+                                        class="px-4 -translate-x-4 py-2 rounded-lg text-secondary font-bold text-xl hover:scale-110 hover:bg-secondary hover:text-main-white transition-all duration-300 ease-in-out flex gap-2 items-center">
+                                        Delete group
                                     </button>
                                 </div>
+                                <div class="w-full flex justify-center">
+                                    <button
+                                        (click)="!isLoadingPut() ? putChanges() : '' "
+                                        class="flex w-fit items-center gap-2 px-4 py-2 rounded-lg font-bold text-xl {{settingsUpdateAny()?'border-2 text-main border-main hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover': 'text-font-grey'}} transition-all duration-300 ease-in-out">
+                                        @if(isLoadingPut()){
+                                            <div class="flex items-center gap-2 "> <app-loading-wheel></app-loading-wheel> Loading...</div>
+                                        } @else {
+                                            <span class="material-icons">save</span> | Save
+                                        }
+                                    </button>
+                                </div>
+
                             </div>
                         }
                     </div>
@@ -358,7 +372,10 @@
             <button (click)="!isLoadingPutBanner()? endCrop(): ''"
                     class="border-2 border-main p-2 rounded-lg text-main hover:scale-110 hover:bg-main hover:text-main-white transition-all ease-in-out hover:shadow-button-hover">
                 @if (isLoadingPutBanner()) {
-                    <div class="flex items-center gap-2"><app-loading-wheel></app-loading-wheel> Loading...</div>
+                    <div class="flex items-center gap-2">
+                        <app-loading-wheel></app-loading-wheel>
+                        Loading...
+                    </div>
                 } @else {
                     Upload
                 }
@@ -370,4 +387,29 @@
         </div>
 
     </div>
+}
+@if (showDeleteDialog()) {
+    <app-dialog>
+        <div class="flex flex-col gap-4 p-20 rounded-lg ring-transparent">
+            <div class="text-clip text-font-grey">
+                <span>Seguro que quieres eliminar esta clase?, se perderan todo lo que haya dentro</span>
+            </div>
+            <div class="flex items-center justify-evenly">
+                <button
+                    (click)="deleteGroup()"
+                    class="border-secondary border-2 rounded-lg text-xl font-bold px-4 py-2 text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition-all duration-300 ease-in-out">
+                     @if(isLoadingDelete()){
+                         <div class="flex gap-2"><app-loading-wheel></app-loading-wheel> Loading...</div>
+                     } @else {
+                         Confirm
+                     }
+                </button>
+                <button
+                    class="px-4 py-2 text-main text-xl font-bold hover:bg-main hover:text-main-white hover:scale-110 transition-all ease-in-out border-main  rounded-lg"
+                    (click)="showDeleteDialog.set(false)">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </app-dialog>
 }

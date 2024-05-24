@@ -33,6 +33,16 @@
                         </div>
                     </a>
                 </li>
+                @if(loginSvc.user()?.role === 'teacher'){
+                    <li class="overflow-hidden">
+                        <a routerLink="/students" class="group flex flex-col items-center">
+                            Students
+                            <div
+                                class="h-[2px] bg-font-grey transition -translate-x-full w-[150%] group-hover:translate-x-0 ">
+                            </div>
+                        </a>
+                    </li>
+                }
             </ul>
 
         </div>

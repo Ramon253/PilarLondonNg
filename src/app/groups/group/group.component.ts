@@ -44,6 +44,7 @@ export class GroupComponent {
     bannerUrl = signal<string>(``)
     banner = viewChild<ElementRef>('banner')
     showCropper = signal<boolean>(false)
+    showDeleteDialog = signal<boolean>(false)
     imageChangedEvent: Event | null = null
     croppedUrl: any = ''
     croppedImg: any = ''
@@ -70,6 +71,8 @@ export class GroupComponent {
     isLoadingKick = signal<boolean>(false)
     isLoadingPut = signal<boolean>(false)
     isLoadingPutBanner = signal<boolean>(false)
+    isLoadingDelete = signal<boolean>(false)
+
     update = signal<any>({
         name: false,
         level: false,
@@ -248,6 +251,14 @@ export class GroupComponent {
                 this.group.set(err.data.group)
             }
         )
+    }
+    deleteGroup(){
+        this.isLoadingDelete.set(true)
+        this.groupSvc.deleteGroup(this.group().id ?? '').then(
+            res => {
+                this.router.navigate(['/groups'])
+            }
+        ).finally(() => this.isLoadingDelete.set(false))
     }
 
     resetUpdates() {

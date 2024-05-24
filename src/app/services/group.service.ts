@@ -32,6 +32,7 @@ export class GroupService {
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/group', group)
     }
+
     async putGroup(group : Group, id : string){
         await axios.get('/sanctum/csrf-cookie')
         return axios.put(`/api/group/${id}`, group)
@@ -39,6 +40,11 @@ export class GroupService {
     async putBanner(formData : FormData, id : string){
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/group/' + id + '/banner', formData)
+    }
+
+    async deleteGroup(id : string){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.delete(`/api/group/${id}`)
     }
 
     async joinGroup(group_id: string, student_id: string) {
@@ -54,6 +60,7 @@ export class GroupService {
             }
         })
     }
+
 
     getGroups(): Observable<Group[]> {
         return this.http.get<Group[]>(this.path + 'groups', {withCredentials: true})
