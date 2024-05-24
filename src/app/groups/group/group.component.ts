@@ -166,13 +166,13 @@ export class GroupComponent {
     getTab() {
         switch (this.selectedContent()) {
             case 'general' :
-                return 'translate-x-0';
+                return 'translate-x-0 w-24';
             case 'post' :
-                return 'translate-x-28';
+                return 'translate-x-28 w-24';
             case 'assignment':
-                return 'translate-x-56';
+                return 'translate-x-56 w-24';
             case 'student' :
-                return 'translate-x-[21rem]';
+                return 'translate-x-[21rem] w-24';
             case 'settings':
                 return 'translate-x-[28rem] w-10'
         }
