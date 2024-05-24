@@ -32,6 +32,14 @@ export class GroupService {
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/group', group)
     }
+    async putGroup(group : Group, id : string){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.put(`/api/group/${id}`, group)
+    }
+    async putBanner(formData : FormData, id : string){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post('/api/group/' + id + '/banner', formData)
+    }
 
     async joinGroup(group_id: string, student_id: string) {
         await axios.get('/sanctum/csrf-cookie')
@@ -79,7 +87,7 @@ export class GroupService {
         return group
     }
 
-    getDate(group: Group) {
+    getTime(group: Group) {
         const [hours, minutes, seconds] = group.lessons_time?.split(':') ?? ''
         let from = new Date()
         from.setHours(+hours, +minutes)

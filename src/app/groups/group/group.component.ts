@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {Component, ElementRef, input, signal, viewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../login.service";
 import {GroupService} from "../../services/group.service";
@@ -16,6 +16,9 @@ import {StudentService} from "../../services/student.service";
 import {tryUnwrapForwardRef} from "@angular/compiler-cli/src/ngtsc/annotations/common";
 import {PostCreationFormComponent} from "../../posts/post-creation-form/post-creation-form.component";
 import {AssignmentFormComponent} from "../../assignments/assignment-form/assignment-form.component";
+import {DatePipe} from "@angular/common";
+import {ImageCroppedEvent, ImageCropperComponent} from "ngx-image-cropper";
+import {update} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
 
 
 @Component({
@@ -28,7 +31,8 @@ import {AssignmentFormComponent} from "../../assignments/assignment-form/assignm
         DialogComponent,
         LoadingWheelComponent,
         PostCreationFormComponent,
-        AssignmentFormComponent
+        AssignmentFormComponent,
+        ImageCropperComponent
     ],
     templateUrl: './group.component.html',
     styles: ``
@@ -36,16 +40,52 @@ import {AssignmentFormComponent} from "../../assignments/assignment-form/assignm
 export class GroupComponent {
 
     group = signal<Group>({})
+
+    bannerUrl = signal<string>(``)
+    banner = viewChild<ElementRef>('banner')
+    showCropper = signal<boolean>(false)
+    imageChangedEvent: Event | null = null
+    croppedUrl: any = ''
+    croppedImg: any = ''
+    cacheBuster = ''
+
+    capacity = viewChild<ElementRef>('capacityInput')
+    lesson_days = viewChild<ElementRef>('daysInput')
+    lessons_lime = viewChild<ElementRef>('timeInput')
+    name = viewChild<ElementRef>('nameInput')
+    level = viewChild<ElementRef>('levelInput')
+
+    inputs = signal<any>({
+        banner: ''
+    })
+
+    imageCropped(event: ImageCroppedEvent) {
+        this.croppedUrl = event.objectUrl
+        this.croppedImg = event.blob
+    }
+
     isLoading = signal<boolean>(true)
     isLoadingStudents = signal<boolean>(false)
     isLoadingPost = signal<boolean>(false)
     isLoadingKick = signal<boolean>(false)
+    isLoadingPut = signal<boolean>(false)
+    isLoadingPutBanner = signal<boolean>(false)
+    update = signal<any>({
+        name: false,
+        level: false,
+        banner: false,
+        lesson_days: false,
+        lessons_time: false,
+        capacity: false
+    })
+
     selectedContent = signal<string>('general')
     students = signal<Student[]>([])
     showCreate = signal<any>({
         post: false,
         assignment: false,
-        student: false
+        student: false,
+        banner: false
     })
 
     constructor(
@@ -56,6 +96,7 @@ export class GroupComponent {
         private postSvc: PostService,
         private assignmentSvc: AssignmentService,
         private router: Router,
+        public datePipe: DatePipe
     ) {
     }
 
@@ -66,6 +107,7 @@ export class GroupComponent {
                 this.groupSvc.getGroup(params['group']).subscribe(
                     res => {
                         this.group.set(this.groupSvc.mapGroup(res))
+                        this.bannerUrl.set(`${environment.baseUrl}api/group/${this.group().id ?? ''}/banner`)
                         this.isLoading.set(false)
                     }
                 );
@@ -83,7 +125,8 @@ export class GroupComponent {
             }
         )
     }
-    kickStudent(student_id : string){
+
+    kickStudent(student_id: string) {
         this.isLoadingKick.set(true)
         this.groupSvc.leaveGroup(this.group().id ?? '', student_id).then(
             res => {
@@ -130,8 +173,92 @@ export class GroupComponent {
                 return 'translate-x-56';
             case 'student' :
                 return 'translate-x-[21rem]';
+            case 'settings':
+                return 'translate-x-[28rem] w-10'
         }
         return ''
+    }
+
+    updateAny() {
+        return this.update().name
+            || this.update().level
+            || this.update().banner
+    }
+
+    settingsUpdateAny() {
+        return this.update().lesson_days
+            || this.update().lessons_time
+            || this.update().capacity
+    }
+
+
+    getBanner(event: any) {
+        if (event.target.files.item(0) === null) {
+            return
+        }
+        if (!event.target.files.item(0).type?.includes('image') || event.target.files.item(0).type?.includes('avif')) {
+            return;
+        }
+        this.showCropper.set(true)
+        this.imageChangedEvent = event
+    }
+    getBannerUr(){
+        return this.bannerUrl() + this.cacheBuster
+    }
+    endCrop() {
+
+        const formData = new FormData()
+        formData.append('banner', this.croppedImg)
+        this.isLoadingPutBanner.set(true)
+        this.groupSvc.putBanner(formData, this.group().id ?? '').finally(
+            () => {
+                this.isLoadingPutBanner.set(false)
+                this.showCropper.set(false)
+                this.cacheBuster =  `?cb=${new Date().getTime()}`
+            }
+        )
+    }
+
+    putChanges() {
+
+        if (this.update().name) {
+            this.group().name = this.name()?.nativeElement.value
+        }
+        if (this.update().level) {
+            this.group().level = this.level()?.nativeElement.value
+        }
+        if (this.update().lessons_time) {
+            this.group().lessons_time = this.lessons_lime()?.nativeElement.value
+        }
+        if (this.update().lesson_days) {
+            this.group().lesson_days = this.lesson_days()?.nativeElement.value
+        }
+        if (this.update().capacity) {
+            this.group().capacity = this.capacity()?.nativeElement.value
+        }
+        this.isLoadingPut.set(true)
+        this.groupSvc.putGroup(this.group(), this.group().id ?? '').then(
+            res => {
+                this.group.set(this.groupSvc.mapGroup(res.data.group.original))
+                this.resetUpdates()
+                this.isLoadingPut.set(false)
+            }
+        ).catch(
+            err => {
+                this.group.set(err.data.group)
+            }
+        )
+    }
+
+    resetUpdates() {
+        this.update.set({
+            name: false,
+            banner: false,
+            lesson_days: false,
+            lessons_time: false,
+            level: false,
+            capacity: false
+        })
     }
 
     protected readonly environment = environment;

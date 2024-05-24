@@ -4,12 +4,13 @@ import { LoginService } from '../../login.service';
 import { User } from '../../models/user/user';
 import {NgOptimizedImage} from "@angular/common";
 import {UserCardComponent} from "../user-card/user-card.component";
+import {FooterComponent} from "../footer/footer.component";
 
 
 @Component({
 	selector: 'app-navbar',
 	standalone: true,
-    imports: [RouterLink, RouterLinkActive, NgOptimizedImage, UserCardComponent],
+    imports: [RouterLink, RouterLinkActive, NgOptimizedImage, UserCardComponent, FooterComponent],
 	templateUrl: './navbar.component.html',
 	styles: ``
 })

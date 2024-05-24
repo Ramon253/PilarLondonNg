@@ -8,7 +8,7 @@
         <h1 class="text-main lg:w-full  text-xl sm:text-2xl lg-text-3xl font-bold ">{{ group().name }}</h1>
         <span class="lg:w-full text-lg text-main">Level : {{ group().level }}</span>
         <div class="lg:w-full flex flex-col text-font-grey pt-2 border-t-2 border-main">
-            <span>{{ showDays() }} de {{ groupSvc.getDate(group())[0] }} a {{ groupSvc.getDate(group())[1] }}</span>
+            <span>{{ showDays() }} de {{ groupSvc.getTime(group())[0] }} a {{ groupSvc.getTime(group())[1] }}</span>
             @if (loginSvc.user()?.role === 'none') {
                 <span #capacity class="flex items-center gap-2 font-medium ">Plazas {{ group().studentNumber }}
                     /{{ group().capacity }} <span class="material-icons">group</span></span>

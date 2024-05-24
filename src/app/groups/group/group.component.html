@@ -10,21 +10,74 @@
         </div>
     </section>
 } @else {
-
-
     <section class="w-full mt-[10vh] pt-1 min-h-[90vh] h-fit bg-main-grey pb-10">
         <div class="max-w-screen-2xl  w-full mx-auto gap-10 flex min-h-screen flex-col">
             <div class="w-full relative aspect-[16/4] ">
-                <img class="w-full rounded-b aspect-[16/4]" src="{{environment.baseUrl}}api/group/{{group().id}}/banner"
+                <img class="w-full rounded-b aspect-[16/4]" [src]="getBannerUr()"
                      #banner
                      (load)="isLoading.set(false)" alt="Banner">
+                @if (loginSvc.user()?.role === 'teacher') {
+                    <div class="absolute top-0 right-0">
+                        <span (click)="bannerInput.click()"
+                              class="material-icons text-main p-1 flex items-center rounded-full hover:bg-main hover:text-main-white transition-all duration-200 ease-in-out cursor-pointer bg-main-white m-1">edit</span>
+                        <input type="file" #bannerInput (change)="getBanner($event)" class="hidden">
+                    </div>
+                }
                 <div class="w-fit h-2/3 flex flex-col justify-center pl-10 absolute bottom-0 left-0 ">
-                    <h1 class="text-5xl bg-main-grey p-4 rounded-t-lg rounded-r-lg text-main font-bold"
-                    >{{ group().name }}</h1>
-                    <span
-                        class="p-2 w-fit text-2xl font-bold rounded-b-lg bg-main text-main-white">Nivel {{ group().level }}</span>
+                    @if (loginSvc.user()?.role === 'teacher' && update().name) {
+                        <input type="text" #nameInput
+                               class="text-5xl bg-main-grey p-4 rounded-t-lg rounded-r-lg text-main font-bold"
+                               [value]="group().name">
+                    } @else {
+                        <h1 class="text-5xl flex gap-3 bg-main-grey p-4 rounded-t-lg rounded-r-lg text-main font-bold w-fit"
+                        >{{ group().name }}
+                            @if (loginSvc.user()?.role === 'teacher') {
+                                <span (click)="update().name = true"
+                                      class="material-icons flex items-center p-1 text-main hover:bg-main hover:text-main-white cursor-pointer transition-all duration-200 ease-in-out rounded-full">edit</span>
+                            }</h1>
+                    }
+                    @if (update().level) {
+                        <div
+                            class="p-2 w-fit items-center text-2xl font-bold rounded-b-lg bg-main text-main-white flex gap-2">
+                            Nivel
+                            <select #levelInput
+                                    class="p-2 w-fit text-2xl font-bold rounded-b-lg bg-main text-main-white">
+
+                                <option value="A1">A1</option>
+                                <option value="A2">A2</option>
+                                <option value="B1">B1</option>
+                                <option value="B2">B2</option>
+                                <option value="C1">C1</option>
+                            </select>
+                        </div>
+                    } @else {
+                        <span
+                            class="p-2 flex gap-2 w-fit text-2xl font-bold rounded-b-lg bg-main text-main-white">Nivel {{ group().level }}
+                            @if (loginSvc.user()?.role === 'teacher') {
+                                <span (click)="update().level = true"
+                                      class="material-icons flex items-center p-1 text-main-white hover:bg-main-white hover:text-main cursor-pointer transition-all duration-200 ease-in-out rounded-full">edit</span>
+                            }
+                    </span>
+                    }
+
                 </div>
             </div>
+            @if (updateAny()) {
+                <div class="w-full flex items-center justify-end">
+                    <button
+                        (click)="putChanges()"
+                        class="px-4 py-2 rounded-lg border-2 border-secondary text-secondary font-bold text-lg flex items-center gap-2 hover:bg-secondary hover:text-main-white hover:scale-110 transition-all duration-200 ease-in-out">
+                        @if (isLoadingPut()) {
+                            <div class="flex items-center gap-2 ">
+                                <app-loading-wheel></app-loading-wheel>
+                                Loading...
+                            </div>
+                        } @else {
+                            <span class="material-icons">save</span> | Save
+                        }
+                    </button>
+                </div>
+            }
             <div class="w-full h-full flex gap-20">
                 <div class="basis-1/4 flex flex-col gap-4">
                     <div class="flex-col flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
@@ -55,9 +108,9 @@
                         </div>
                         <div>
                             <span class="font-medium text-font-grey text-lg">De <span
-                                class="px-2 py-1 bg-main text-main-white rounded-lg ">{{ groupSvc.getDate(group())[0] }}</span>
+                                class="px-2 py-1 bg-main text-main-white rounded-lg ">{{ groupSvc.getTime(group())[0] }}</span>
                                 a <span
-                                    class="px-2 py-1 rounded-lg bg-secondary text-main-white">{{ groupSvc.getDate(group())[1] }}</span></span>
+                                    class="px-2 py-1 rounded-lg bg-secondary text-main-white">{{ groupSvc.getTime(group())[1] }}</span></span>
                         </div>
                     </div>
                     <div class="p-4 rounded-lg bg-main-white flex flex-col items-center shadow">
@@ -81,7 +134,7 @@
                     <div class="flex justify-between">
                         <div class="flex gap-4 px-2 relative pl-2">
                             <div
-                                class="h-full rounded-b-lg bg-secondary w-24 z-[5] absolute top-0 left-2  transition-all duration-300 ease-in-out {{getTab()}}"></div>
+                                class="h-[90%] rounded-b-lg bg-secondary w-24 z-[5] absolute top-0 left-2  transition-all duration-300 ease-in-out {{getTab()}}"></div>
                             <div
                                 class="relative cursor-pointer flex px-2 py-1 items-center h-fit rounded-b-md overflow-y-hidden  w-24 group"
                                 (click)="selectedContent.set('general')"
@@ -120,6 +173,14 @@
                                         class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
                                     <span
                                         class="w-full text-center group-hover:text-main-white duration-300 ease-in-out z-10 {{selectedContent()=== 'student'? 'text-main-white' : 'text-font-grey'}}">Students</span>
+                                </div>
+                                <div
+                                    (click)="selectedContent.set('settings');settingsIcon.classList.toggle('rotate-[180deg]')"
+                                    class="cursor-pointer w-fit flex items-center h-fit px-2 py-1 overflow-hidden  relative group">
+                                    <span #settingsIcon
+                                          class="material-icons z-50 transition-all duration-300 ease-in-out group-hover:text-main-white flex items-center {{selectedContent()=== 'settings'? 'text-main-white': 'text-font-grey'}} ">settings</span>
+                                    <div
+                                        class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
                                 </div>
                             }
 
@@ -171,7 +232,47 @@
                                 <app-student-card (leaveClass)="kickStudent($event)"
                                                   [student]="student"></app-student-card>
                             }
-                            z
+                        } @else if (selectedContent() === 'settings') {
+                            <div
+                                class="max-w-screen-md mx-auto p-10 w-screen rounded-md bg-main-white shadow-assignment-card gap-10 px-20 flex flex-col">
+                                <h1 class="text-4xl font-bold text-main w-full text-center flex items-center gap-3">
+                                    <span class="material-icons-two-tone text-2xl text-main">settings</span> Settings
+                                </h1>
+                                <div class="flex items-center gap-2 font-medium text-xl text-dark-font">
+                                    Capacity
+                                    <input #capacityInput (input)="update().capacity = true" type="number" min="0"
+                                           [value]="group().capacity"
+                                           class="p-1 rounded-lg bg-main-grey shadow max-w-20" required>
+                                </div>
+                                <div class="flex items-center gap-2 font-medium text-xl text-dark-font">
+                                    <span class="text-font-grey">Horario :</span>
+                                    <select #daysInput (change)="update().lesson_days = true"
+                                            class="p-1 rounded-lg bg-main-grey shadow">
+                                        <option value="l-m">Lunes y miercoles</option>
+                                        <option value="m-j">Martes y jueves</option>
+                                        <option value="v">Viernes</option>
+                                    </select>
+                                    de
+                                    <input type="time"
+                                           (change)="update().lessons_time = true ; group().lessons_time = timeInput.value"
+                                           [value]="groupSvc.getTime(group())[0]"
+                                           class="p-1 rounded-lg bg-main-grey shadow"
+                                           #timeInput>
+                                    a <span>{{ groupSvc.getTime(group())[1] }}</span>
+                                </div>
+                                <div class="flex flex-col gap-2 text-xl text-secondary-grey">
+                                    <span>Number of students : {{ group().students?.length }}
+                                        /{{ group().capacity }}</span>
+                                    This group was created
+                                    on {{ datePipe.transform(group().created_at ?? '', 'dd/MM/yyyy') }}
+                                </div>
+                                <div class="w-full flex justify-center">
+                                    <button
+                                        class="flex w-fit items-center gap-2 px-4 py-2 rounded-lg font-bold text-xl {{settingsUpdateAny()?'border-2 text-main border-main hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover': 'text-font-grey'}} transition-all duration-300 ease-in-out">
+                                        <span class="material-icons">save</span> | Save
+                                    </button>
+                                </div>
+                            </div>
                         }
                     </div>
                 </div>
@@ -236,4 +337,37 @@
             </div>
         </app-dialog>
     }
+}
+@if (showCropper()) {
+    <div
+        #cropper
+        class=" fixed flex items-center justify-center top-0 left-0 w-screen h-screen z-[100] bg-gray-300 bg-opacity-50">
+        <div
+            class="w-screen relative max-w-screen-lg max-h-[80vh] flex flex-col items-center gap-5 p-5 bg-main-white shadow h-screen rounded-lg overflow-y-scroll">
+            <div class="h-2/3 w-2/3 p-2 bg-main-white flex items-center justify-center bg-transparent shadow">
+                <image-cropper
+                    [maintainAspectRatio]="true"
+                    [imageChangedEvent]="imageChangedEvent"
+                    [aspectRatio]="16 / 4"
+                    (imageCropped)="imageCropped($event)"
+                ></image-cropper>
+            </div>
+            <div class="shadow w-2/3 h-fit">
+                <img alt="croppedImage" class="w-full" [src]="croppedUrl"/>
+            </div>
+            <button (click)="!isLoadingPutBanner()? endCrop(): ''"
+                    class="border-2 border-main p-2 rounded-lg text-main hover:scale-110 hover:bg-main hover:text-main-white transition-all ease-in-out hover:shadow-button-hover">
+                @if (isLoadingPutBanner()) {
+                    <div class="flex items-center gap-2"><app-loading-wheel></app-loading-wheel> Loading...</div>
+                } @else {
+                    Upload
+                }
+            </button>
+            <span (click)="showCropper.set(false)"
+                  class="absolute top-1 right-1 rounded-full cursor-pointer hover:text-main-white p-1 text-secondary hover:bg-secondary transition-all duration-200 flex items-center material-icons">
+                    close
+                </span>
+        </div>
+
+    </div>
 }

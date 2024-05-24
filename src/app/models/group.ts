@@ -16,5 +16,7 @@ export interface Group {
     posts ?: Post[],
     assignments ?: Assignment[],
     content ? : any [],
-    students ?: Student[]
+    students ?: Student[],
+    created_at ?: Date,
+    updated_at ?: Date,
 }

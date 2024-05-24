@@ -99,9 +99,6 @@ export class GroupCreationFormComponent {
         this.form.get('banner')?.setValue(this.croppedImg)
     }
 
-    ngOnInit() {
-        console.log(this.form)
-    }
 
     protected readonly alert = alert;
 }
