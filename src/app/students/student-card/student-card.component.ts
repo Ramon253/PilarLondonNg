@@ -4,13 +4,15 @@ import {environment} from "../../../environments/environment.development";
 import {DialogComponent} from "../../dialog/dialog.component";
 import {GroupService} from "../../services/group.service";
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-student-card',
   standalone: true,
     imports: [
         DialogComponent,
-        LoadingWheelComponent
+        LoadingWheelComponent,
+        RouterLink
     ],
   templateUrl: './student-card.component.html',
   styles: ``

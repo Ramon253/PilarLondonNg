@@ -2,7 +2,7 @@
     <header class="w-full h-[10vh] bg-main-white flex items-center justify-between max-w-screen-2xl mx-auto ">
         <div #logo class="w-1/3 cursor-pointer h-full flex items-center justify-start" routerLink="/">
             <div class="h-fit min-w-[320px]">
-            <img src="assets/img/logo.png" class="h-[8vh]" alt="">
+                <img src="assets/img/logo.png" class="h-[8vh]" alt="">
             </div>
         </div>
         <div #links class="h-full w-1/3 flex items-center flex-col">
@@ -18,12 +18,21 @@
 
                 </li>
                 <li class="overflow-hidden">
-                    <a routerLink="/assignments" class="group flex flex-col items-center">
-                        Tareas
-                        <div
-                            class="h-[2px] bg-font-grey transition -translate-x-full w-[150%] group-hover:translate-x-0 duration-300">
-                        </div>
-                    </a>
+                    @if (loginSvc.user()?.role === 'none') {
+                        <a routerLink="/create-student" class="group flex flex-col items-center">
+                            Unete
+                            <div
+                                class="h-[2px] bg-font-grey transition -translate-x-full w-[150%] group-hover:translate-x-0 duration-300">
+                            </div>
+                        </a>
+                    } @else {
+                        <a routerLink="/assignments" class="group flex flex-col items-center">
+                            Tareas
+                            <div
+                                class="h-[2px] bg-font-grey transition -translate-x-full w-[150%] group-hover:translate-x-0 duration-300">
+                            </div>
+                        </a>
+                    }
                 </li>
                 <li class="overflow-hidden">
                     <a routerLink="/posts" class="group flex flex-col items-center">
@@ -33,7 +42,7 @@
                         </div>
                     </a>
                 </li>
-                @if(loginSvc.user()?.role === 'teacher'){
+                @if (loginSvc.user()?.role === 'teacher') {
                     <li class="overflow-hidden">
                         <a routerLink="/students" class="group flex flex-col items-center">
                             Students

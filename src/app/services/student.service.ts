@@ -17,4 +17,24 @@ export class StudentService {
     getStudents() {
         return axios.get('/api/students')
     }
+
+    getStudent(id : string){
+        return axios.get('/api/student/' + id)
+    }
+
+    getProfile(){
+        return axios.get('/api/student')
+    }
+
+    async generateCode(){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post('/api/student/generate')
+    }
+    async activate(code : string){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post('/api/activate', {join_code : code})
+    }
+    isActivated(){
+        return axios.get('/api/isActivated')
+    }
 }

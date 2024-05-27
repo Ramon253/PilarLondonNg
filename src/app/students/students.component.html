@@ -1,8 +1,17 @@
-<div class="h-screen  mt-[10vh] min-h-[90vh] w-full bg-main-grey">
+<div class="h-fit  mt-[10vh] min-h-[90vh] w-full  bg-main-grey">
     <div class="max-w-screen-lg mx-auto flex flex-col gap-2 p-10">
         <h1 class="text-6xl text-main font-bold p-14 w-full text-center">
             Students
         </h1>
+        <div class="flex items-center relative">
+            <input type="search"
+                   class="p-3 pl-16 rounded-lg  bg-main-white shadow peer focus:border-main border-2 border-transparent w-fit transition-all focus:w-full"
+                   placeholder="Search student...">
+            <button class="h-full flex items-center text-secondary-grey peer-focus:text-main absolute left-4">
+                <span class="material-icons">search</span>
+            </button>
+        </div>
+
         <div class="w-full border-b-2 border-dark-font ">
         </div>
         <div class="w-full">
@@ -11,14 +20,63 @@
                     class="px-4 text-main flex items-center gap-2 py-2 rounded-lg text-xl font-bold border-main border-2 hover:bg-main hover:text-main-white hover:scale-110 hover:shadow-button-hover transition-all duration-200 ease-in-out">
                     <span class="material-icons">sort</span> Filter
                 </button>
-                <div class="flex gap-2 items-center">
-                    <input type="search" class="p-3 rounded-lg bg-main-white shadow peer focus:border-main border-2 border-transparent" placeholder="Search student...">
+                <div>
                     <button
-                        class="p-2 text-main flex items-center gap-2 peer-placeholder-shown:text-font-grey peer-placeholder-shown:hover peer-placeholder-shown:border-none rounded-lg text-xl font-bold border-main border-2 hover:bg-main hover:text-main-white hover:scale-110 hover:shadow-button-hover transition-all duration-200 ease-in-out">
-                        <span class="material-icons">search</span> | Search
+                        (click)="showGenerateDialog.set(true)"
+                        class="flex items-center gap-2 px-4 py-2 border-2 rounded-lg text-main text-xl font-bold hover:scale-110 hover:bg-main hover:shadow-button-hover hover:text-main-white border-main transition-all duration-300 ease-in-out">
+                        <span class="material-icons">add</span> Generate student code
                     </button>
                 </div>
             </div>
         </div>
+        @if (isLoading()) {
+            <div class="w-full pt-10 flex-col flex gap-5">
+                <div class="h-36 rounded-lg bg-gray-300 animate-pulse w-full"></div>
+                <div class="h-36 rounded-lg bg-gray-300 animate-pulse w-full"></div>
+                <div class="h-36 rounded-lg bg-gray-300 animate-pulse w-full"></div>
+                <div class="h-36 rounded-lg bg-gray-300 animate-pulse w-full"></div>
+            </div>
+        } @else {
+            <div class="w-full pt-10 flex flex-col gap-5 ">
+                @for (student of students(); track $index) {
+                    <app-student-card [student]="student"></app-student-card>
+                }
+            </div>
+        }
     </div>
 </div>
+@if (showGenerateDialog()) {
+    <app-dialog>
+        <div class="max-w-screen-md w-screen h-fit p-16 rounded-lg flex flex-col relative gap-5">
+            @if (showCode()) {
+                <h1 class="text-3xl font-bold w-full text-center">Codigo de activacion</h1>
+                <div class="p-2 rounded-lg flex bg-main-white items-center justify-between shadow">
+                    <span class="w-full">{{ code() }}</span>
+                    <button (click)="copyToClipboard()" class="p-2 border-2 border-transparent hover:border-main hover:text-main hover:scale-110 hover:bg-main-grey rounded-lg transition-all ease-in-out flex items-center gap-2">
+                        <span class="material-icons">content_copy</span> Copy
+                    </button>
+                </div>
+            } @else {
+                <h1 class="text-3xl font-bold w-full text-center">Generar codigo de estudiante</h1>
+                <div class="w-full flex items-center justify-evenly">
+                    <button
+                        class="px-4 py-2 rounded-lg border-2 text-main border-main hover:text-main-white hover:bg-main hover:scale-110 transition-all ease-in-out">
+                        Enviar por correo
+                    </button>
+                    <button
+                        (click)="getCode()"
+                        class="px-4 py-2 rounded-lg text-main hover:text-main-white hover:bg-main hover:scale-110 transition-all ease-in-out">
+                        @if (isLoadingCode()) {
+                            <app-loading-wheel></app-loading-wheel> Loading...
+                        } @else {
+                            Generar codigo
+                        }
+                    </button>
+                </div>
+            }
+            <span
+                (click)="showGenerateDialog.set(false)"
+                class="material-icons absolute top-0 right-0 flex items-center p-1 rounded-full hover:bg-secondary hover:text-main-white text-secondary cursor-pointer transition-all ease-in-out">close</span>
+        </div>
+    </app-dialog>
+}

@@ -1,4 +1,4 @@
-<section class="flex items-center relative gap-10 p-4 rounded-xl border-2 border-main h-36 shadow hover:shadow-button-hover transition-all hover:-translate-y-1 hover:-translate-x-1">
+<section class="flex bg-main-white shadow items-center relative gap-10 p-4 rounded-xl border-2 border-main h-36 shadow hover:shadow-button-hover transition-all hover:-translate-y-1 hover:-translate-x-1">
     <div class="aspect-square h-full">
         <img src="{{environment.baseUrl}}api/user/{{student().user_id}}/profile-picture"
              class="h-full rounded-full shadow" alt="">
@@ -17,6 +17,7 @@
         </div>
         <div class="w-fit">
             <button
+                routerLink="/student/{{student().id}}"
                 class=" rounded-lg px-4 py-2 font-bold text-main hover:text-main-white hover:scale-110 hover:bg-main transition ease-in-out ">
                 Ver perfil
             </button>

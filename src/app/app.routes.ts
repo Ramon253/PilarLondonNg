@@ -11,6 +11,8 @@ import {GroupsComponent} from "./groups/groups.component";
 import {group} from "@angular/animations";
 import {GroupComponent} from "./groups/group/group.component";
 import {StudentsComponent} from "./students/students.component";
+import {StudentComponent} from "./students/student/student.component";
+import {CreateStudentFormComponent} from "./students/create-student-form/create-student-form.component";
 
 
 export const routes: Routes = [
@@ -57,5 +59,17 @@ export const routes: Routes = [
     {
         path : 'students',
         component : StudentsComponent
+    },
+    {
+        path: 'student/:student',
+        component: StudentComponent
+    }
+    ,{
+        path:'profile',
+        component : StudentComponent
+    },
+    {
+        path : 'create-student',
+        component : CreateStudentFormComponent
     }
 ];
