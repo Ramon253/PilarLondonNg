@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import axios from "axios";
 import {environment} from "../../environments/environment.development";
+import {Student} from "../models/student";
 
 axios.defaults.baseURL = environment.baseUrl
 axios.defaults.withCredentials = true
@@ -34,6 +35,12 @@ export class StudentService {
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/activate', {join_code : code})
     }
+
+    async postStudent(student : FormData | Student){
+        await  axios.get('/sanctum/csrf-cookie')
+        return axios.post('/api/student', student)
+    }
+
     isActivated(){
         return axios.get('/api/isActivated')
     }

@@ -4,7 +4,7 @@
             <div class="w-[80%] mx-auto rounded-lg h-screen bg-gray-300 animate-pulse"></div>
         } @else {
             <h1 class="w-full text-5xl font-bold text-secondary text-center">Crea tu perfil</h1>
-            <form [formGroup]="createForm"
+            <form (submit)="createStudent($event)" [formGroup]="createForm"
                   class="max-w-screen-md w-screen rounded-lg mx-auto bg-main-white shadow p-20 gap-10 flex flex-col">
                 <div class="h-fit  w-full flex flex-col">
                     <input
@@ -37,9 +37,11 @@
                 </div>
                 <div class="w-full flex items-center justify-center">
                     <button
+                        (click)="inputFile.click()"
                         class="flex items-center gap-2 text-main border-2 rounded-lg px-4 py-2 bg-main-grey shadow border-transparent hover:scale-110 hover:border-main transition-all ease-in-out">
                         <span class="material-icons">image</span>Profile picture
                     </button>
+                    <input type="file" (change)="getProfilePic($event)" class="hidden" #inputFile >
                 </div>
                 <div class=" flex gap-4">
                     <div
@@ -56,7 +58,7 @@
                                 (change)="createForm.get('level')?.setValue(level.value)" #level>
                             <option value="" [defaultSelected]="true" [disabled]="true"></option>
                             <option value="A1">A1</option>
-                            <option value="A2">A2</option>
+                            <option value="A2">A2</option>0
                             <option value="B1">B1</option>
                             <option value="B2">B2</option>
                             <option value="C1">C1</option>
@@ -97,6 +99,30 @@
                     Activar cuenta
                 }
             </button>
+        </div>
+    </app-dialog>
+}
+@if (showCropper()){
+    <app-dialog>
+        <div class="max-w-screen-xl max-h-[80vh] items-center relative justify-center w-screen p-16 rounded-lg flex flex-col gap-10 overflow-scroll">
+            <div class="h-1/2 w-auto mt-[75%]">
+            <image-cropper
+                [imageChangedEvent]="originalImage"
+                [roundCropper]="true"
+                [aspectRatio]="1"
+                (imageCropped)="getImage($event)"
+            >
+            </image-cropper>
+            </div>
+            <div class="h-1/2 w-auto">
+                <img class="rounded-full" [src]="croppedImage.objectUrl" alt="">
+            </div>
+            <div>
+                <button (click)="this.profilePicture.set(croppedImage.blob)" class="flex gap-2 border-2 border-main px-4 py-2 rounded-lg text-xl text-main font-bold hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover transition-all ease-in-out">
+                     <span class="material-icons">upload</span> Subir imagen
+                </button>
+            </div>
+            <span class="material-icons p-1 flex items-center rounded-full text-secondary transition-all ease-in-out hover:bg-secondary hover:text-main-white absolute top-0 right-0 cursor-pointer" (click)="showCropper.set(false)">close</span>
         </div>
     </app-dialog>
 }
