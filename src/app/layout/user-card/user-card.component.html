@@ -2,11 +2,11 @@
     <div class="rounded-full bg-main-grey animate-pulse aspect-square size-16"></div>
 } @else {
     <details class="h-full relative rounded-full  items-center   bg-main-grey">
-        <summary class="flex items-center gap-4">
+        <summary class="flex h-[9vh] items-center gap-4">
             <div
-                class="rounded-full overflow-hidden flex items-center justify-center shadow-xl bg-main-grey aspect-square max-w-fit h-[110%] p-2 ">
-                <img src="assets/img/defaultProfile.png" alt="default_profile_photo"
-                     class="size-full min-w-8 aspect-square">
+                class="rounded-full overflow-hidden flex items-center justify-center shadow-xl bg-main-grey aspect-square max-w-fit h-full">
+                <img src="{{environment.baseUrl}}api/user/{{loginSvc.user()?.id}}/profile-picture" alt="default_profile_photo"
+                     class="h-full rounded-full min-w-8 aspect-square">
             </div>
             <div class="w-fit overflow-hidden text-center pr-4 font-bold text-main"> {{ user()?.name }}</div>
         </summary>

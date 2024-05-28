@@ -3,6 +3,7 @@ import {LoginService} from "../../login.service";
 import {NgOptimizedImage} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {Router} from "@angular/router";
+import {environment} from "../../../environments/environment.development";
 
 @Component({
   selector: 'app-user-card',
@@ -15,7 +16,7 @@ import {Router} from "@angular/router";
 })
 export class UserCardComponent {
     user = this.loginSvc.user
-    constructor(private loginSvc : LoginService , private router : Router ) {
+    constructor(public loginSvc : LoginService , private router : Router ) {
     }
 
     showOptions(options :HTMLDivElement){
@@ -32,4 +33,6 @@ export class UserCardComponent {
             }
         )
     }
+
+    protected readonly environment = environment;
 }
