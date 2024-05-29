@@ -8,6 +8,7 @@ import axios, {AxiosResponse} from 'axios';
 import {environment} from "../environments/environment.development";
 import {Router} from "@angular/router";
 import {FlashMessageService} from "./services/flash-message.service";
+import {FlashMessage} from "./models/flash-message";
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = environment.baseUrl
@@ -88,6 +89,12 @@ export class LoginService {
         this.isLogged.set(true)
         localStorage.setItem('isLogged', 'true')
         this.router.navigate(['/'])
+    }
+
+    serverErrorMessage : FlashMessage = {
+        message: 'Estamos teniendo problemas con el servidor, pruebe a recargar la pagina o conectese de nuevo mas tarde',
+        type: 'error',
+        duration : 20
     }
 
 }

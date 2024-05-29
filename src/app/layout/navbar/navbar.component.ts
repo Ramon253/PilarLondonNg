@@ -45,8 +45,4 @@ export class NavbarComponent {
 		window.localStorage.setItem('darkMode', JSON.stringify(this.DarkMode()))
 	}
 
-    add(){
-        this.fleshMessageSvc.messages().push({message : 'Hola', type :  'message', duration : 5})
-        console.log(this.fleshMessageSvc.messages())
-    }
 }

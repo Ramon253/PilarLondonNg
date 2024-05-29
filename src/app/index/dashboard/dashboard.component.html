@@ -1,0 +1,28 @@
+@if (isLoading()) {
+
+} @else {
+    <section class="w-full flex flex-col gap-10">
+        <h1 class="w-full text-center text-5xl p-10 flex justify-center flex-col gap-2 items-center  font-bold text-main">
+            Welcome back
+            <span routerLink="/profile"
+                  class="cursor-pointer text-3xl hover:px-2 transition-all text-secondary">{{ student().full_name }}</span>
+        </h1>
+        <div class="max-w-screen-xl mx-auto rounded-lg flex flex-col gap-10 bg-main-white shadow w-screen p-5">
+            <h2 class="text-4xl font-bold w-full text-center pt-5 text-main">Tareas</h2>
+            <div class="flex gap-10 w-full">
+                <div class=" flex flex-col gap-4 p-4 h-fit rounded bg-main-grey">
+                    <h3 class="w-full text-center text-dark-font text-2xl {{answered < 50 ? 'text-secondary' : 'text-dark-font'}} font-bold">Tienes entregadas un </h3>
+                    <div class="w-full overflow-hidden rounded-md bg-main-white shadow-lg h-10">
+                        <div #percentageBar class="h-full items-center p-2 text-main-white w-full bg-main -translate-x-full duration-300 flex justify-end transition-all ease-in-out">
+                            {{answered}}%
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col  gap-2 max-w-screen-md w-screen">
+                    <h4 class="text-secondary text-3xl font-bold w-full text-center">Proxima tarea </h4>
+                    <app-assignment-card [assignment]="assignments()[0]"></app-assignment-card>
+                </div>
+            </div>
+        </div>
+    </section>
+}

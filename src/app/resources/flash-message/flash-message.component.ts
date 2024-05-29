@@ -1,5 +1,7 @@
-import {Component, ElementRef, input, signal, viewChild} from '@angular/core';
+import {Component, ElementRef, input, Renderer2, signal, viewChild} from '@angular/core';
 import {FlashMessage} from "../../models/flash-message";
+import {FlashMessageService} from "../../services/flash-message.service";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-flash-message',
@@ -9,25 +11,28 @@ import {FlashMessage} from "../../models/flash-message";
     styleUrl: './flash-message.component.css'
 })
 export class FlashMessageComponent {
+
     message = input.required<FlashMessage>()
     duration = input<number>(10)
     messageElement = viewChild<ElementRef>('messageElement')
     timeBar = viewChild<ElementRef>('timeBar')
 
+    constructor(
+        private renderer : Renderer2,
+    ) {
+    }
+
     ngOnInit(){
         setTimeout(()=> {
-            this.messageElement()?.nativeElement.classList.add('bounce')
-        }, 300)
-        setTimeout(()=> {
-            this.messageElement()?.nativeElement.classList.remove('-translate-y-[150%]')
-            this.timeBar()?.nativeElement.classList.add(['-translate-x-full'])
+            this.renderer.setStyle(this.timeBar()?.nativeElement, 'transition-duration', this.duration() + 's')
+            this.renderer.setStyle(this.timeBar()?.nativeElement, 'transform', 'translateX(-110%)')
         }, 10)
 
         setTimeout(()=> {
             this.close()
         }, 1000 * this.duration())
-
     }
+
 
     close(){
         this.messageElement()?.nativeElement.classList.add('-translate-y-[150%]')

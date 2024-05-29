@@ -13,7 +13,8 @@ export class ValidationsService {
         'email': 'El campo email debe ser un email valido',
         'pattern': 'El campo @field debe tener al menos un numero y un simbolo',
         'minlength': 'El campo @field debe tener un minimo de @length caracteres',
-        'invalidCredentials' : 'Credenciales invalidas'
+        'invalidCredentials' : 'Credenciales invalidas',
+        'taken': 'El campo @field ya esta en uso'
     }
 
 

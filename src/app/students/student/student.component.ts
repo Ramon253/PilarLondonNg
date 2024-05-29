@@ -16,6 +16,7 @@ import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.compo
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Parent} from "../../models/parent";
 import {subscriptionLogsToBeFn} from "rxjs/internal/testing/TestScheduler";
+import {YourSolutionCardComponent} from "../../solution/your-solution-card/your-solution-card.component";
 
 @Component({
     selector: 'app-student',
@@ -27,7 +28,8 @@ import {subscriptionLogsToBeFn} from "rxjs/internal/testing/TestScheduler";
         DialogComponent,
         ImageCropperComponent,
         LoadingWheelComponent,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        YourSolutionCardComponent
     ],
     templateUrl: './student.component.html',
     styles: ``

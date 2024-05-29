@@ -1,14 +1,10 @@
-import { Component, ElementRef, NgZone, contentChild, effect, signal, viewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LoginService } from '../login.service';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validator, ValidatorFn, Validators } from "@angular/forms";
-import { ThisReceiver, identifierName } from '@angular/compiler';
-import { Credentials } from '../models/credentials';
-import { ValidationsService } from '../services/validations.service';
-import { Route, Router, RouterLink } from '@angular/router';
-import { UserResponse } from '../models/user/userResponse';
-import { ValidationErrorComponent } from '../validations/validation-error/validation-error.component';
-import { User } from '../models/user/user';
+import {Component, effect, ElementRef, signal, viewChild} from '@angular/core';
+import {LoginService} from '../login.service';
+import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Credentials} from '../models/credentials';
+import {ValidationsService} from '../services/validations.service';
+import {Router, RouterLink} from '@angular/router';
+import {ValidationErrorComponent} from '../validations/validation-error/validation-error.component';
 import {FlashMessageService} from "../services/flash-message.service";
 
 @Component({
@@ -44,7 +40,7 @@ export class LoginComponent {
         private formBuilder: FormBuilder,
         public validator: ValidationsService,
         private router: Router,
-        private flashMessageSvc : FlashMessageService
+        private flashMessageSvc: FlashMessageService
     ) {
         effect(this.requireId);
     }
@@ -62,20 +58,21 @@ export class LoginComponent {
                 this.loginSvc.loginFront()
                 this.loginSvc.user.set(res.data.user)
                 this.flashMessageSvc.messages().push({
-                    message : 'Logged in successfull',
-                    type : 'message',
-                    duration : 5
+                    message: 'Logged in successfull',
+                    type: 'message',
+                    duration: 5
                 })
             }
-
         ).catch(
             err => {
-                if (err.status === 500) {
-                    throw new Error()
+                if (err.status === 500 || err.code === 'ERR_NETWORK') {
+                    this.flashMessageSvc.messages().push(this.loginSvc.serverErrorMessage)
+                    this.submitButton()?.nativeElement.classList.toggle('hidden')
+                    this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
+                    return
                 }
-                this.loginForm.setErrors({ invalidCredentials: true })
-                this.flashMessageSvc.messages().push({message : 'Credenciales invalidas', type: 'error', duration : 10})
-                console.log(this.flashMessageSvc.messages())
+                this.loginForm.setErrors({invalidCredentials: true})
+                this.flashMessageSvc.messages().push({message: 'Credenciales invalidas', type: 'error', duration: 10})
                 this.submitButton()?.nativeElement.classList.toggle('hidden')
                 this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
             })
@@ -86,6 +83,7 @@ export class LoginComponent {
     hasErrors(field: string) {
         return !this.loginForm.get(field)?.valid && this.loginForm.get(field)?.touched;
     }
+
     changeIdentifier() {
         this.identifier.set(this.identifier() === 'name' ? 'email' : 'name')
         this.arrowIcon()?.nativeElement.classList.toggle('rotate-[180deg]')

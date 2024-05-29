@@ -1,5 +1,7 @@
 <div #messageElement
-     class="flex items-center justify-center transition-all duration-200 ease-in-out right-0 w-full pointer-events-none h-fit top-2 -translate-y-[150%] fixed z-50  ">
+     class="flex items-center justify-center transition-all duration-200 ease-in-out right-0 w-full pointer-events-none h-fit top-2 bounce fixed z-50  "
+>
+
     <span
         class="rounded-3xl overflow-hidden relative items-center pointer-events-auto flex flex-col gap-1 shadow {{message().type === 'error' ? 'bg-secondary': 'bg-main'}} text-xl p-4 text-main-white w-fit max-w-96 min-w-28 min-h-16">
         <div class="flex items-center gap-4">
@@ -13,9 +15,8 @@
             </span>
         </div>
         <div class="absolute w-full overflow-hidden flex px-4 items-center bottom-2 left-0 h-[2px] ">
-            <div class="w-[90%] mx-auto overflow-hidden">
-            <div #timeBar class="transition-all bg-main-white w-full h-[2px] ease-linear"
-
+            <div  class="w-[90%]  mx-auto  h-fit overflow-hidden">
+            <div #timeBar class="transition-all bg-main-white w-full  h-[2px] ease-linear "
             ></div>
             </div>
         </div>

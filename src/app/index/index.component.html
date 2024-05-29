@@ -1,5 +1,9 @@
 <section class="w-full bg-main-grey mt-[10vh] min-h-[90vh]">
-    <div>
-
+    <div class="max-w-screen-2xl mx-auto">
+        @if (loginSvc.user()?.role === 'none'){
+            <app-landing></app-landing>
+        } @else {
+            <app-dashboard></app-dashboard>
+        }
     </div>
 </section>

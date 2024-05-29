@@ -32,6 +32,11 @@ export class StudentService {
         return axios.post('/api/student/generate')
     }
 
+    async dashboard(){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.get('/api/dashboard')
+    }
+
     async putProfileImage(formData : FormData){
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/profile_picture', formData)
