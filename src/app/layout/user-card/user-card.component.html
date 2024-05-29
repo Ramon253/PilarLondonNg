@@ -3,38 +3,48 @@
 } @else {
     <div class="group" (click)="showMenu.set(true)">
         <div
-            class="{{classList()}} {{showMenu()? 'shadow -translate-x-full':''}} group-hover:shadow group-hover:-translate-x-full duration-200 ease-in-out  rounded-full h-fit peer transition-all aspect-square shadow flex items-center justify-center gap-2 bg-main-grey cursor-pointer z-50">
+            class="{{classList()}} {{showMenu()? 'shadow -translate-x-[10vh]':''}} group-hover:shadow group-hover:-translate-x-[10vh] duration-200 ease-in-out  rounded-full h-fit peer transition-all aspect-square shadow flex items-center justify-center gap-2 bg-main-grey cursor-pointer z-50">
 
-            <img class="h-[7vh] aspect-square rounded-full group-hover:"
+            <img class="h-[8vh] aspect-square rounded-full group-hover:"
                  src="{{environment.baseUrl}}api/user/{{loginSvc.user()?.id}}/profile-picture" alt="profile picture">
 
         </div>
         <div
-            class="{{classList()}} z-30 cursor-pointer rounded-full shadow-main duration-300 ease-in-out flex items-center justify-end text-xl font-bold text-font-grey group-hover:w-[14vh] {{showMenu()?'w-[14vh]':''}}  bg-main-grey">
-            <span class="w-[6vh]">{{ user()?.name }}</span>
+            class="absolute right-1 group-hover:h-[8vh] group-hover:top-[1vh] group-hover:bottom-[1vh]  z-30 shadow-none overflow-hidden cursor-pointer rounded-full shadow-main duration-300 ease-in-out flex items-center justify-end text-xl font-bold text-font-grey group-hover:w-[18vh] {{showMenu()?'w-[18vh] h-[8vh] top-[1vh] bottom-[1vh] ':'top-[2vh] bottom-[2vh]  w-[6vh]'}}  bg-main-grey">
+            <span class="w-[10vh] p-2">{{ user()?.name }}</span>
         </div>
     </div>
 }
 
 
 @if (showMenu()) {
-    <div class="fixed top-[11vh] right-1 gap-5 w-fit shadow-main bg-main-white rounded-lg p-10 flex flex-col">
-        <div class="w-full text-3xl font-bold text-main">
-            Bienvenido {{ user()?.name }}
-            <div class="w-full text-xl font-bold text-dark-font">{{ user()?.email }}</div>
-        </div>
+    <div class="fixed h-screen w-screen top-0 right-0 z-40" (click)="showMenu.set(false)"></div>
+    <div class="z-50 fixed top-[12vh] w-full right-0 ">
+        <div class="max-w-screen-2xl mx-auto  h-fit relative w-screen flex items-start   justify-end">
+            <div class="w-full h-[100%] top-0 absolute right-0 z-20" (click)="showMenu.set(false)"></div>
+            <div class="gap-5 w-fit shadow bg-main-white rounded-lg z-50 p-10 flex flex-col relative">
+                <div class="w-full text-3xl font-bold text-main">
+                    Bienvenido {{ user()?.name }}
+                    <div class="w-full text-xl font-bold text-dark-font">{{ user()?.email }}</div>
+                </div>
 
 
-        <div
-            class="p-2 text-xl rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-transparent text-dark-font hover:border-main hover:text-main hover:scale-110 transition-all">
-            <span class="material-icons">face</span>
-            Perfil
-        </div>
-        <div
-            class="p-2 text-xl rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition-all">
-            <span class="material-icons">logout</span>
-            Cerrar sesion
-        </div>
+                <div (click)="showMenu.set(false)"
+                    routerLink="/profile"
+                    class="p-2 cursor-pointer text-xl rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-transparent text-dark-font hover:border-main hover:text-main hover:scale-110 transition-all">
+                    <span class="material-icons">face</span>
+                    Perfil
+                </div>
+                <div
+                    (click)="loginSvc.logout(); loginSvc.logoutFront(); showMenu.set(false)"
+                    class="p-2 text-xl cursor-pointer rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition-all">
+                    <span class="material-icons">logout</span>
+                    Cerrar sesion
+                </div>
 
+                <span class="absolute top-0 right-0 rounded-lg p-1 text-secondary flex items-center transition-all ease-in-out hover:bg-secondary hover:text-main-white material-icons cursor-pointer" (click)="showMenu.set(false)">close</span>
+            </div>
+
+        </div>
     </div>
 }

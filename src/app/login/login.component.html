@@ -5,37 +5,40 @@
         </div>
         <div class="bg-main-white w-full rounded-3xl border-2 border-secondary shadow py-10 px-20">
             <form [formGroup]="loginForm" (submit)="login($event)"
-                class="flex flex-col gap-7 items-center justify-center mt-10 font-medium text-font-grey">
+                  class="flex flex-col gap-7 items-center justify-center mt-10 font-medium text-font-grey">
                 @if (identifier() === 'name') {
-                <!--Name-->
-                <div class="h-[32%] w-full flex flex-col">
-                    <input
-                        class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
-                        formControlName="name" #name type="text" name="name" id="name" placeholder=" ">
+                    <!--Name-->
+                    <div class="h-[32%] w-full flex flex-col">
+                        <input
+                            class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
+                            formControlName="name" #name type="text" name="name" id="name" placeholder=" ">
 
-                    <div
-                        class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
-                        <label class="" for="name">
-                            Nombre
-                        </label>
-                    </div>
-                    <app-validation-error class="order-3" [form]="loginForm" field="name" [errors]="['required', 'invalidCredentials']"></app-validation-error>
-                </div>
-
-                }@else {
-                <div class="h-[32%] w-full flex flex-col w-full">
-
-                    <input class="border-b-2 bg-main-white w-full border-main p-2 order-2 peer" formControlName="email"
-                        #email type="email" name="email" id="email" placeholder=" ">
-                    <div
-                        class="w-fit peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 transition-all peer-placeholder-shown:text-dark-grey order-1">
-                        <label for="email">
-                            Email
-                        </label>
+                        <div
+                            class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                            <label class="" for="name">
+                                Nombre
+                            </label>
+                        </div>
+                        <app-validation-error class="order-3" [form]="loginForm" field="name"
+                                              [errors]="['required', 'invalidCredentials']"></app-validation-error>
                     </div>
 
-                    <app-validation-error class="order-3" [errors]="['required', 'email', 'invalidCredentials']" [field]="'email'" [form]="loginForm"></app-validation-error>
-                </div>
+                } @else {
+                    <div class="h-[32%] w-full flex flex-col w-full">
+
+                        <input class="border-b-2 bg-main-white w-full border-main p-2 order-2 peer"
+                               formControlName="email"
+                               #email type="email" name="email" id="email" placeholder=" ">
+                        <div
+                            class="w-fit peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 transition-all peer-placeholder-shown:text-dark-grey order-1">
+                            <label for="email">
+                                Email
+                            </label>
+                        </div>
+
+                        <app-validation-error class="order-3" [errors]="['required', 'email', 'invalidCredentials']"
+                                              [field]="'email'" [form]="loginForm"></app-validation-error>
+                    </div>
 
                 }
 
@@ -43,7 +46,7 @@
 
                 <div class="h-[32%] w-full flex flex-col">
                     <input class=" border-b-2 w-full bg-main-white border-main p-2 peer order-2"
-                        formControlName="password" #password type="password" placeholder=" " id="password">
+                           formControlName="password" #password type="password" placeholder=" " id="password">
 
                     <div
                         class="w-fit peer-placeholder-shown:translate-y-8 peer-placeholder-shown:translate-x-2 peer-placeholder-shown:text-dark-grey order-1 transition-all">
@@ -52,19 +55,22 @@
                         </label>
                     </div>
 
-                    <app-validation-error class="order-3 h-fit" [form]="loginForm" [errors]="['required', 'minLength', 'pattern']" field="password"></app-validation-error>
+                    <app-validation-error class="order-3 h-fit" [form]="loginForm"
+                                          [errors]="['required', 'minLength', 'pattern']"
+                                          field="password"></app-validation-error>
                 </div>
                 <div class="flex flex-col w-full">
                     <div class="h-[32%] w-full flex justify-start gap-4 items-center">
                         <label for="remember_me">Recuerdame</label>
-                        <input formControlName="remember_me" class="border-secondary accent-secondary size-5" type="checkbox" id="remember_me"
-                            name="remember_me">
+                        <input formControlName="remember_me" class="border-secondary accent-secondary size-5"
+                               type="checkbox" id="remember_me"
+                               name="remember_me">
 
                     </div>
                     <div class="">
                         <button class="flex items-center gap-2" (click)="changeIdentifier()" type="button">
                             <span class="material-icons text-secondary transition ease-in-out duration-200" #arrowIcon>cached</span>
-                            Iniciar sesion con {{(identifier() === 'name'? 'email' : 'nombre de usuario')}}
+                            Iniciar sesion con {{ (identifier() === 'name' ? 'email' : 'nombre de usuario') }}
                         </button>
                     </div>
                 </div>
@@ -77,17 +83,17 @@
                             aqui
                         </span>
                     </div>
-
-                    <button
-                        class="{{loginForm.invalid ? 'cursor-not-allowed hover:bg-transparent  hover:text-secondary' : 'hover:scale-110 cursor-pointer'}} py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white transition flex items-center justify-center"
-                        [disabled]="loginForm.invalid" type="submit">
-                        <div #loadingAnimation class="animate-spin hidden justify-center items-center">
-                            <img class="aspect-square size-5" src="assets/img/loading_wheel.png" alt="loading">
-                        </div>
-                        <span #submitButton class="transition">Login</span>
-                    </button>
-
-
+                    <div class="w-full flex flex-col items-center">
+                        <button
+                            class="{{loginForm.invalid ? 'cursor-not-allowed hover:bg-transparent  hover:text-secondary' : 'hover:scale-110 cursor-pointer'}} relative  py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white transition flex items-center justify-center"
+                            [disabled]="loginForm.invalid" type="submit">
+                            <div #loadingAnimation class="animate-spin hidden justify-center items-center">
+                                <img class="aspect-square size-5" src="assets/img/loading_wheel.png" alt="loading">
+                            </div>
+                            <span #submitButton class="transition">Login</span>
+                        </button>
+                        <app-validation-error [form]="loginForm" [errors]="['invalidCredentials']"></app-validation-error>
+                    </div>
                 </div>
 
             </form>

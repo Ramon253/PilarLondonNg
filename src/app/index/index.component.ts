@@ -9,17 +9,5 @@ import { DogModelService } from '../dog-model.service';
   styles: ``
 })
 export class IndexComponent {
-   dog = signal<any>('no-image');
 
-  constructor(
-    private DogModel : DogModelService
-    ){ this.getDog()}
-    
-   getDog(){
-    this.DogModel.getDogs().subscribe(
-      res => {
-        this.dog.set(res.message)
-      }
-    )
-   }
 }

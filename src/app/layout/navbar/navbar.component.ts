@@ -5,12 +5,14 @@ import { User } from '../../models/user/user';
 import {NgOptimizedImage} from "@angular/common";
 import {UserCardComponent} from "../user-card/user-card.component";
 import {FooterComponent} from "../footer/footer.component";
-
+import {FlashMessageService} from "../../services/flash-message.service";
+import {FlashMessageComponent} from "../../resources/flash-message/flash-message.component";
+import {FlashMessage} from "../../models/flash-message";
 
 @Component({
 	selector: 'app-navbar',
 	standalone: true,
-    imports: [RouterLink, RouterLinkActive, NgOptimizedImage, UserCardComponent, FooterComponent],
+    imports: [RouterLink, RouterLinkActive, NgOptimizedImage, UserCardComponent, FooterComponent, FlashMessageComponent],
 	templateUrl: './navbar.component.html',
 	styles: ``
 })
@@ -21,7 +23,10 @@ export class NavbarComponent {
 
 	@Output('darkMode') darkMode = new EventEmitter<boolean>(this.DarkMode())
 
-	constructor(public loginSvc: LoginService) {
+	constructor(
+        public loginSvc: LoginService,
+        public fleshMessageSvc : FlashMessageService
+    ) {
 		if (this.user() === null &&  this.isLogged()){
 			this.loginSvc.getUser().subscribe(
 				user => {
@@ -39,4 +44,9 @@ export class NavbarComponent {
 		button.classList.toggle('rotate-[360deg]')
 		window.localStorage.setItem('darkMode', JSON.stringify(this.DarkMode()))
 	}
+
+    add(){
+        this.fleshMessageSvc.messages().push({message : 'Hola', type :  'message', duration : 5})
+        console.log(this.fleshMessageSvc.messages())
+    }
 }

@@ -25,16 +25,6 @@ export class UserCardComponent {
         options.classList.toggle('-bottom-16')
     }
 
-    logout(){
-        this.loginSvc.logout().subscribe(
-            res => {
-                this.loginSvc.isLogged.set(false)
-                localStorage.removeItem('isLogged')
-                this.loginSvc.user.set(null)
-                this.router.navigate(['/'])
-            }
-        )
-    }
 
     protected readonly environment = environment;
 }

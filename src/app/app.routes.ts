@@ -13,6 +13,7 @@ import {GroupComponent} from "./groups/group/group.component";
 import {StudentsComponent} from "./students/students.component";
 import {StudentComponent} from "./students/student/student.component";
 import {CreateStudentFormComponent} from "./students/create-student-form/create-student-form.component";
+import {SnoopyDogComponent} from "./index/resources/easter-egg/snoopy-dog/snoopy-dog.component";
 
 
 export const routes: Routes = [
@@ -71,5 +72,9 @@ export const routes: Routes = [
     {
         path : 'create-student',
         component : CreateStudentFormComponent
+    },
+    {
+        path : 'snoop-dog',
+        component: SnoopyDogComponent
     }
 ];

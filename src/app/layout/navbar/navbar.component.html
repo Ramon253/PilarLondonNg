@@ -74,7 +74,7 @@
             </div>
         } @else {
             <div class="w-1/3 h-full p-4 relative">
-                <app-user-card classList="absolute right-0 top-[1.5vh] bottom-[1.5vh]"/>
+                <app-user-card classList="absolute right-0 top-[1vh] bottom-[1vh]"/>
             </div>
         }
 
@@ -82,8 +82,14 @@
     </header>
 </nav>
 <main class="">
+    <button class="mt-[15vh]" (click)="add()">
+        Notify
+    </button>
     <ng-content></ng-content>
 </main>
 <app-footer>
-
 </app-footer>
+
+@for (message of fleshMessageSvc.messages(); track $index) {
+    <app-flash-message [duration]="message.duration" [message]="message"></app-flash-message>
+}
