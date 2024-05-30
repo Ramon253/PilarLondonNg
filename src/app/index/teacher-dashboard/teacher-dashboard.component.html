@@ -1,0 +1,53 @@
+@if (isLoading()) {
+
+} @else {
+    <section class="max-w-screen-xl mx-auto bg-main-white flex flex-col gap-10 pb-20">
+        <h1 class="w-full text-center text-7xl p-10 flex justify-center flex-col gap-2 items-center  font-bold text-main">
+            Welcome back
+            <span routerLink="/profile"
+                  class="cursor-pointer text-5xl hover:px-2 transition-all text-secondary">{{ teacher().full_name }}</span>
+        </h1>
+        <div class="max-w-screen-2xl mx-auto rounded-lg flex flex-col gap-16 bg-main-white w-screen p-5">
+            @if (assignments().length !== 0) {
+                <h2 class="text-5xl font-bold w-full text-center pt-5 text-main ">Tareas por calificar </h2>
+                <div class="flex justify-between gap-10 w-full ">
+                    <div class="w-fit flex flex-col gap-5 p-4 rounded-lg shadow-xl bg-main-grey h-fit">
+                        <div class=" flex flex-col gap-4 p-4 h-fit rounded bg-main-grey">
+                            <h3 class="w-full text-center text-dark-font text-2xl {{marked() < 50 ? 'text-secondary' : 'text-dark-font'}} font-bold">
+                                Tareas calificadas</h3>
+                            <div class="w-full overflow-hidden rounded-md bg-main-white shadow-lg h-10">
+                                <div #percentageBar
+                                     class="h-full text-main-white items-center p-2 w-full bg-main -translate-x-full duration-300 flex justify-end transition-all ease-in-out">
+                                <span
+                                    class="{{marked()<= 10 ? 'translate-x-[200%] text-dark-font' : ''}}">{{ marked() }}%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="max-w-screen-xl p-4 max-h-[90vh] overflow-y-scroll pr-10 bg-main-grey shadow rounded-lg w-fit gap-5 flex flex-col ">
+                        @for (assignment of assignments(); track $index) {
+                            <app-assignment-card [assignment]="assignment"></app-assignment-card>
+                        }
+                    </div>
+                </div>
+
+            } @else {
+                <h2 class="text-4xl font-bold w-full text-center pt-5 text-main ">No tienes tareas por calificar</h2>
+                <div class=" max-w-screen-sm w-screen mx-auto flex flex-col gap-4 p-4 h-fit rounded bg-main-grey">
+                    <h3 class="w-full text-center text-dark-font text-2xl {{marked() < 50 ? 'text-secondary' : 'text-dark-font'}} font-bold">
+                        Tareas calificadas</h3>
+                    <div class="w-full overflow-hidden rounded-md bg-main-white shadow-lg h-10">
+                        <div #percentageBar
+                             class="h-full text-main-white items-center p-2 w-full bg-main -translate-x-full duration-300 flex justify-end transition-all ease-in-out">
+                                <span
+                                    class="{{marked()<= 10 ? 'translate-x-[200%] text-dark-font' : ''}}">{{ marked() }}%
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}

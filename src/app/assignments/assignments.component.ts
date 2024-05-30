@@ -34,7 +34,8 @@ export class AssignmentsComponent {
     show = {
         all: true,
         answered: false,
-        toDo: false
+        toDo: false,
+        unmarked: false
     }
 
     constructor(
@@ -49,13 +50,14 @@ export class AssignmentsComponent {
     getAssignments(filter: boolean) {
         this.assignmentSvc.getAssignments().subscribe(
             (res) => {
-                if (res.groups){
+                if (res.groups) {
                     this.groups.set(res.groups)
                 }
                 if (filter) {
                     this.assignments.set(res.assignments.filter(assignment => {
                         if (this.show.all) return true
                         if (this.show.answered) return assignment.resolved
+                        if (this.show.unmarked) return (assignment.marked ?? 1) < (assignment.submitted ?? 1)
                         return !assignment.resolved
                     }))
                 } else
@@ -76,7 +78,6 @@ export class AssignmentsComponent {
     changeFilter() {
         this.isLoading.set(true)
         this.getAssignments(true)
-
     }
 
     changeTab() {
@@ -85,6 +86,8 @@ export class AssignmentsComponent {
             translate = 'translate-x-[110%]'
         } else if (this.show.toDo) {
             translate = 'translate-x-[240%]'
+        } else if (this.show.unmarked) {
+            translate = 'translate-x-[90%] w-[140%]'
         }
         return translate
     }
@@ -97,7 +100,8 @@ export class AssignmentsComponent {
         this.show = {
             all: false,
             answered: false,
-            toDo: false
+            toDo: false,
+            unmarked: false
         }
     }
 

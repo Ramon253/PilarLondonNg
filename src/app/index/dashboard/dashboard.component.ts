@@ -9,6 +9,8 @@ import {Router, RouterLink} from "@angular/router";
 import {FlashMessageService} from "../../services/flash-message.service";
 import {AssignmentComponent} from "../../assignments/assignment/assignment.component";
 import {AssignmentCardComponent} from "../../assignments/assignment-card/assignment-card.component";
+import {Solution} from "../../models/solution";
+import {YourSolutionCardComponent} from "../../solution/your-solution-card/your-solution-card.component";
 
 @Component({
     selector: 'app-dashboard',
@@ -16,7 +18,8 @@ import {AssignmentCardComponent} from "../../assignments/assignment-card/assignm
     imports: [
         RouterLink,
         AssignmentComponent,
-        AssignmentCardComponent
+        AssignmentCardComponent,
+        YourSolutionCardComponent
     ],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css'
@@ -27,7 +30,12 @@ export class DashboardComponent {
     groups = signal<Group[]>([])
     assignments = signal<Assignment[]>([])
     percentageBar = viewChild<ElementRef>('percentageBar')
+    percentageNoteBar = viewChild<ElementRef>('percentageNoteBar')
+    solutions = signal<Solution[]>([])
+    avgNote = 0
     answered = 0
+
+    showAssignments = signal<boolean>(false)
 
     constructor(
         public loginSvc: LoginService,
@@ -45,9 +53,12 @@ export class DashboardComponent {
                 this.student.set(res.data.student)
                 this.groups.set(res.data.groups)
                 res.data.assignments.forEach((assignment: Assignment) => this.assignments().push(this.assignmentSvc.mapAssignment(assignment)))
-                this.answered = res.data.answered
+                this.answered = Math.round(100 - parseFloat( res.data.answered))
+                this.solutions.set(res.data.solutions)
+                this.avgNote = this.getAvgNote()
                 setTimeout(() => {
                     this.renderer.setStyle(this.percentageBar()?.nativeElement, 'transform', `translateX(-${100 - this.answered}%)`)
+                    this.renderer.setStyle(this.percentageNoteBar()?.nativeElement, 'transform', `translateX(-${100 - this.avgNote * 10}%)`)
                 }, 10)
             }
         ).catch(
@@ -64,4 +75,17 @@ export class DashboardComponent {
 
     }
 
+    getAvgNote(){
+        let sum = 0
+        let number = 0
+        this.solutions().forEach((sol) => {
+            if (sol.note !== null){
+                sum += parseFloat(sol.note ?? '')
+                number++
+            }
+        })
+        return Math.round((number === 0)? 0 :sum / number)
+    }
+
+    protected readonly indexedDB = indexedDB;
 }

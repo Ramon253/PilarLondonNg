@@ -1,8 +1,18 @@
 <div
-    class="shadow-assignment-card p-4 flex relative bg-main-white rounded-xl border-[3px] border-secondary pt-14 flex-col shadow-lg gap-10 max-w-screen-lg w-full max-h-[70vh] overflow-hidden items-center"
+    class="shadow-assignment-card p-4 flex relative bg-main-white rounded-md border-[3px] border-secondary pt-14 flex-col shadow-lg gap-10 max-w-screen-lg w-screen max-h-[70vh] overflow-hidden items-center"
 >
 
-    @if (loginSvc.user()?.role === 'teacher' ) {
+    @if (loginSvc.user()?.role === 'teacher') {
+        <div class="absolute top-2 left-2 p-1 rounded-lg bg-main-grey shadow text-lg text-main flex flex-col gap-4">
+            <div class="flex items-center gap-2">
+                <span>Enviados</span>
+                <span class="text-dark-font">{{assignment().submitted}} / {{assignment().members}}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span>Calificado </span><span class="text-dark-font">{{ assignment().marked }}
+                /{{ assignment().submitted }}</span>
+            </div>
+        </div>
         <div class="absolute right-4 top-4">
             <button (click)="showDeleteDialog.set(true)"
                     class=" flex items-center p-2 px-3 border-2 font-bold text-secondary hover:text-main-white border-secondary hover:bg-secondary hover:scale-110 transition-all rounded-lg">
@@ -11,7 +21,7 @@
             </button>
         </div>
     } @else {
-        @if (assignment().resolved){
+        @if (assignment().resolved) {
             <div class="absolute top-0 right-0 p-2">
                 <div class="rounded-full aspect-square size-7 bg-main"></div>
             </div>
@@ -24,12 +34,13 @@
             <a routerLink="/assignment/{{assignment().id}}">{{ assignment().name }}</a>
         </h1>
         <div class="flex items-center justify-between text-secondary-grey">
-            <span>Assignment / {{assignment().group_name ?? ''}}</span>
-            <span>Fecha entrega : {{assignment().dead_line}}</span>
+            <span>Assignment / {{ assignment().group_name ?? '' }}</span>
+            <span>Fecha entrega : {{ assignment().dead_line }}</span>
         </div>
     </div>
-    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-20"
-         style="mask-image: linear-gradient(to bottom, white 95%, transparent 100%)">
+    <div
+        class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-20"
+        style="mask-image: linear-gradient(to bottom, white 95%, transparent 100%)">
 
         <div class="w-full h-fit aspect-auto ">
             <p class="max-w-screen-lg  h-fit text-dark-font">{{ assignment().description }}</p>
@@ -91,7 +102,7 @@
                             <app-loading-wheel></app-loading-wheel>
                         </div>
                         <span>Loading...</span>
-                    }@else {
+                    } @else {
                         Si
                     }
                 </button>

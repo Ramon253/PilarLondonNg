@@ -1,9 +1,11 @@
-<section class="w-full bg-main-grey mt-[10vh] min-h-[90vh]">
-    <div class="max-w-screen-2xl mx-auto">
-        @if (loginSvc.user()?.role === 'none'){
-            <app-landing></app-landing>
-        } @else {
+<section class="w-full bg-main-white mt-[10vh] min-h-[90vh]">
+    <div class="w-full">
+        @if (loginSvc.user()?.role === 'teacher'){
+            <app-teacher-dashboard></app-teacher-dashboard>
+        } @else if (loginSvc.user()?.role === 'student'){
             <app-dashboard></app-dashboard>
+        } @else {
+            <app-landing></app-landing>
         }
     </div>
 </section>
