@@ -9,21 +9,111 @@
                     Academia de ingles para todos los niveles
                 </p>
                 <button
-                    class="px-4 py-2 rounded-lg w-fit border-2 border-secondary text-secondary text-xl font-bold hover:scale-110 hover:text-main-white hover:bg-secondary transition-all duration-200 ease-in-out shadow-xl">
+                    class="px-4 py-2 rounded-lg w-fit border-[3px] border-secondary text-secondary text-xl font-bold hover:scale-110 hover:text-main-white hover:bg-secondary transition-all duration-200 ease-in-out shadow-xl">
                     Unete
                 </button>
             </div>
         </div>
         <div class="basis-1/2 flex justify-center items-center h-full">
             <div class="w-full relative aspect-[13/10]">
-                <img class="aspect-[13/10] w-full rounded-lg shadow-xl" src="assets/img/landingEjem.png" alt="Academy Photo">
-                <div class="absolute bottom-2 h-2 p-1 rounded-full shadow bg-main-grey flex justify-evenly">
-                    <div class="rounded-full bg-dark-grey shadow"></div>
-                    <div class="rounded-full bg-dark-grey shadow"></div>
-                    <div class="rounded-full bg-dark-grey shadow"></div>
-                    <div class="rounded-full bg-dark-grey shadow"></div>
+                <img class="aspect-[13/10] w-full rounded-lg shadow-xl" src="assets/img/landingEjem.png"
+                     alt="Academy Photo">
+                <div class="w-full h-fit flex justify-center items-center absolute bottom-2">
+                    <div
+                        class=" h-3 p-1 rounded-full gap-2 w-fit items-center max-w-[20%] shadow bg-main-grey flex justify-evenly">
+                        <div class="rounded-full bg-main h-1.5 aspect-square shadow"></div>
+                        <div class="rounded-full h-1.5 aspect-square bg-dark-grey shadow"></div>
+                        <div class="rounded-full h-1.5 aspect-square bg-dark-grey shadow"></div>
+                        <div class="rounded-full h-1.5 aspect-square bg-dark-grey shadow"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<div class="max-w-screen-2xl  w-screen h-fit bg-main-white mx-auto">
+    <div class="h-[90vh] flex gap-40 items-center snap-center  p-10">
+        <div class="basis-1/2 max-h-full sm:h-[90%]  flex items-center justify-end ">
+            <img #foto1 src="assets/img/landing2.webp"
+                 class=" transition-all rounded-lg shadow-xl ease-in-out duration-[400ms] -translate-x-[150%] w-auto h-full aspect-[4/6]"
+                 alt="landing image 2">
+        </div>
+        <div #text1
+             class="flex flex-col items-start justify-center gap-5 basis-1/2 transition-all duration-[400ms] ease-in-out">
+            <h2 class="text-5xl font-bold text-secondary">Todas las edades</h2>
+            <p class="text-dark-font text-lg max-w-[300px]">
+                Ofrecemos clases de ingles a todas las edades y niveles, desde los más pequeños (4 años) los cuales
+                aprenderan ingles con ejercicios y muchos juegos de forma practica y divertida para ellos, hasta los mas
+                grandes
+            </p>
+            <button
+                routerLink="groups"
+                class="px-4 py-2 rounded-lg w-fit border bg-main-grey border-main text-main text-xl hover:scale-110 hover:text-main-white hover:bg-main transition-all duration-200 ease-in-out shadow-xl">
+                Explorar clases
+            </button>
+        </div>
+    </div>
+    <div class="h-[90vh] flex items-center snap-center gap-40 p-10">
+        <div #text2
+             class="flex flex-col items-end justify-center gap-5 basis-1/2 transition-all duration-[400ms] ease-in-out">
+            <div class="w-fit space-y-5 ">
+                <h2 class="text-5xl font-bold text-main w-fit">Cambridge</h2>
+                <p class="text-dark-font text-lg max-w-[300px]">
+                    Ofrecemos una preparacion completa y fiable para conseguir una titulación de idiomas, la mas comun y
+                    recomendable siendo cambridge. Ofrecemos preparacion desde <span class="text-secondary font-bold">A2 o KET hasta C1 o Advanced</span>.
+                    Esta
+                    preparacion es practica y podras matricularte para el examen desde nuestra propia academia
+                </p></div>
+        </div>
+        <div #foto2
+             class="basis-1/2 transition-all duration-[400ms] ease-in-out max-h-full justify-start flex items-center sm:h-[90%] scale-0">
+            <img src="assets/img/landing2.jpg"
+                 class="transition-all rounded-lg shadow-xl ease-in-out duration-[400ms]  w-auto h-full aspect-[4/6]"
+                 alt="landing image 2">
+        </div>
+    </div>
+</div>
+
+<!--Hero-->
+<div class="w-full snap-center text-main-white font-medium h-[300px] bg-main py-20">
+    <div class="max-w-screen-lg w-screen mx-auto h-full flex items-center justify-between">
+        <div class="basis-1/2 flex items-center divide-main-white h-fit divide-x ">
+            <div class="hero relative aspect-square flex items-center justify-center px-10 basis-1/2">
+                <svg width="181" height="181" viewBox="0 0 181 181" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="cicle" cx="90.5" cy="90.5" r="73" stroke="#FEFEFE" stroke-width="35"/>
+                    <circle #heroCircle class="cicle2" cx="90.5" cy="90.5" r="73" stroke="#C8102E" stroke-width="35"/>
+                </svg>
+                <div class="absolute text-main-white text-3xl font-bold bg-transparent w-full h-full top-0 right-0 flex items-center justify-center">
+                    90%
+                </div>
+            </div>
+            <div class="basis-1/2 flex flex-col gap-5 items-center px-10 justify-center">
+                <span class="text-4xl w-full font-bold text-secondary">90 %</span>
+                <p class="text-main-grey  font-bold">
+                    De aprobados en examenes de cambridge
+                </p>
+            </div>
+        </div>
+        <div class="basis-1/2 flex items-center divide-main-white h-fit divide-x ">
+            <div class="aspect-square flex items-center justify-center px-10 basis-1/2">
+                <svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M115.035 28.6458L66.2848 12.3958C65.4508 12.1178 64.5492 12.1178 63.7152 12.3958L14.9652 28.6458C14.1563 28.9154 13.4528 29.4328 12.9542 30.1245C12.4557 30.8163 12.1874 31.6474 12.1875 32.5001V73.1251C12.1875 74.2025 12.6155 75.2358 13.3774 75.9977C14.1392 76.7596 15.1726 77.1876 16.25 77.1876C17.3274 77.1876 18.3608 76.7596 19.1226 75.9977C19.8845 75.2358 20.3125 74.2025 20.3125 73.1251V38.1368L37.3699 43.8192C32.838 51.1409 31.3969 59.9617 33.363 68.345C35.3291 76.7283 40.5417 83.9887 47.8563 88.5321C38.7156 92.1172 30.8141 98.602 25.0352 107.468C24.7346 107.915 24.5259 108.417 24.421 108.945C24.3162 109.473 24.3173 110.017 24.4245 110.545C24.5316 111.072 24.7425 111.573 25.045 112.019C25.3475 112.464 25.7354 112.845 26.1864 113.139C26.6373 113.433 27.1422 113.635 27.6718 113.732C28.2013 113.829 28.7449 113.82 29.2709 113.706C29.7969 113.591 30.2949 113.373 30.736 113.064C31.177 112.755 31.5522 112.362 31.8398 111.907C39.4926 100.166 51.5785 93.4376 65 93.4376C78.4215 93.4376 90.5074 100.166 98.1602 111.907C98.756 112.792 99.6764 113.408 100.722 113.62C101.769 113.833 102.856 113.625 103.75 113.042C104.644 112.458 105.273 111.547 105.5 110.504C105.727 109.461 105.535 108.371 104.965 107.468C99.1859 98.602 91.2539 92.1172 82.1437 88.5321C89.4513 83.9889 94.659 76.7332 96.6248 68.3561C98.5905 59.9789 97.154 51.1641 92.6301 43.8446L115.035 36.3797C115.844 36.1102 116.548 35.593 117.046 34.9012C117.545 34.2094 117.813 33.3782 117.813 32.5254C117.813 31.6727 117.545 30.8415 117.046 30.1497C116.548 29.4579 115.844 28.9407 115.035 28.6712V28.6458ZM89.375 60.9376C89.3761 64.7911 88.4635 68.59 86.7121 72.0226C84.9607 75.4552 82.4204 78.4236 79.2996 80.6843C76.1789 82.945 72.5666 84.4336 68.7591 85.0279C64.9516 85.6222 61.0575 85.3053 57.3963 84.1031C53.735 82.901 50.4109 80.848 47.6967 78.1124C44.9826 75.3769 42.9557 72.0368 41.7824 68.3662C40.609 64.6956 40.3227 60.7991 40.9469 56.9964C41.571 53.1937 43.0879 49.5932 45.373 46.4903L63.7152 52.584C64.5492 52.862 65.4508 52.862 66.2848 52.584L84.627 46.4903C87.7134 50.6746 89.3774 55.7381 89.375 60.9376ZM65 44.4692L29.0977 32.5001L65 20.5309L100.902 32.5001L65 44.4692Z"
+                        fill="#EDEDED"/>
+                </svg>
+            </div>
+            <div class="basis-1/2 flex flex-col gap-5 items-center px-10 justify-center">
+                <span class="text-4xl w-full font-bold text-secondary">+ 100</span>
+                <p class="text-main-grey max-w-[150px] font-bold">
+                    Alumnos matriculados
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="max-w-screen-2xl  w-screen h-fit bg-main-white mx-auto">
+    <h3 class="w-full text-center text-5xl text-secondary font-bold">Planes y precios</h3>
+    <div class="h-[90vh] flex  items-center gap-10 justify-center snap-center  p-10">
+
+    </div>
+</div>

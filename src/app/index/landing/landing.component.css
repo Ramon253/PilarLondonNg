@@ -1,0 +1,24 @@
+@keyframes load {
+    0%{
+        stroke-dasharray: 420;
+        stroke-dashoffset: 420;
+    }
+    100%{
+        stroke-dasharray: 450;
+        stroke-dashoffset: 0;
+    }
+}
+
+.hero svg circle {
+    fill: none;
+}
+.hero svg circle:nth-child(2){
+    fill: none;
+    stroke-dasharray: 450;
+    stroke-dashoffset: 0;
+}
+
+.heroAnimation{
+    animation: load 1s  ease-in-out ;
+}
+
