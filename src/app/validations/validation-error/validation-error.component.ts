@@ -17,6 +17,7 @@ export class ValidationErrorComponent {
 
     hasErrors(): boolean {
         if (this.showError()) return true
+        console.log(this.form())
         return (!this.form().get(this.field())?.valid && this.form().get(this.field())?.touched) ?? false;
     }
 

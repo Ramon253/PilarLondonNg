@@ -1,23 +1,46 @@
-import {Component, ElementRef, Renderer2, viewChild} from '@angular/core';
+import {Component, ElementRef, Renderer2, signal, viewChild} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {Router, RouterLink} from "@angular/router";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {LoginService} from "../../login.service";
+import {emit} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
+import {MailService} from "../../services/resources/mail.service";
+import {FlashMessageService} from "../../services/flash-message.service";
+import {ValidationErrorComponent} from "../../validations/validation-error/validation-error.component";
+import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
 
 @Component({
   selector: 'app-landing',
   standalone: true,
     imports: [
-        RouterLink
+        RouterLink, ReactiveFormsModule, ValidationErrorComponent, LoadingWheelComponent
     ],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
 
+    isLoadingMail = signal<boolean>(false)
+    contactForm = this.formBuilder.group({
+        name : ['', [Validators.required, Validators.maxLength(50)]],
+        email : ['', [Validators.required, Validators.email]],
+        subject : ['', Validators.maxLength(100)],
+        phone : [''],
+        message : ['', [Validators.required, Validators.maxLength(500)]],
+    })
     constructor(
         public scrollSvc : ScrollService,
         private router: Router,
-        private renderer : Renderer2
+        private renderer : Renderer2,
+        private formBuilder : FormBuilder,
+        public loginSvc : LoginService,
+        private mailSvc : MailService,
+        private flashMessageSvc : FlashMessageService
     ) {
+        if (this.loginSvc.isLogged()){
+            this.contactForm.get('email')?.setValue(this.loginSvc.user()?.email ?? '')
+            this.contactForm.get('name')?.setValue(this.loginSvc.user()?.name ?? '')
+        }
     }
 
     foto1 = viewChild<ElementRef>('foto1')
@@ -25,13 +48,92 @@ export class LandingComponent {
     text1 = viewChild<ElementRef>('text1')
     text2 = viewChild<ElementRef>('text2')
     heroCircle = viewChild<ElementRef>('heroCircle')
+    planHeader = viewChild<ElementRef>('planHeader')
+    plan1 = viewChild<ElementRef>('plan1')
+    plan2 = viewChild<ElementRef>('plan2')
+    plan3 = viewChild<ElementRef>('plan3')
+    street = viewChild<ElementRef>('street')
+    timeTable = viewChild<ElementRef>('timetable')
+    svgLocation = viewChild<ElementRef>('svgLocation')
+    locationShadow = viewChild<ElementRef>('locationShadow')
+    from = viewChild<ElementRef>('from')
+    email = viewChild<ElementRef>('email')
+    subject = viewChild<ElementRef>('subject')
+    phone = viewChild<ElementRef>('phone')
+    message = viewChild<ElementRef>('message')
 
     ngOnInit(){
         this.scrollSvc.scrollTop.subscribe((scrollTop) => {
             this.firstView(scrollTop)
             this.secondView(scrollTop)
             this.hero(scrollTop)
+            this.plans(scrollTop)
+            this.location(scrollTop)
+            this.contactFormTransition(scrollTop)
+            console.log(scrollTop)
         })
+    }
+    contactFormTransition(scrollTop : number){
+        if (scrollTop > 4500){
+            this.renderer.setStyle(this.subject()?.nativeElement, 'transform', 'translateX(0)')
+            this.renderer.setStyle(this.message()?.nativeElement, 'transform', 'translateY(0)')
+            return;
+        }
+        if (scrollTop > 4100 ){
+            this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(0)')
+            this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(0)')
+            this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(0)')
+            return
+        }
+        this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(-110%)')
+        this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(200%)')
+        this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(-210%)')
+        this.renderer.setStyle(this.subject()?.nativeElement, 'transform', 'translateX(110%)')
+        this.renderer.setStyle(this.message()?.nativeElement, 'transform', 'translateY(110%)')
+
+    }
+
+    location(scrollTop : number){
+        if (scrollTop >3450){
+            this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(0)')
+            this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(0)')
+            return
+        }
+        this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(200%)')
+        this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(-200%)')
+
+        if (scrollTop > 3300){
+            this.renderer.setStyle(this.svgLocation()?.nativeElement, 'transform', 'translateY(0)')
+            this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(100%)')
+            return;
+        }
+        this.renderer.setStyle(this.svgLocation()?.nativeElement, 'transform', 'translateY(-220%)')
+        this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(0)')
+    }
+
+    plans(scrollTop : number){
+        if (scrollTop > 2600){
+            this.renderer.setStyle(this.plan1()?.nativeElement, 'transform' ,'translateY(0)')
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform' ,'translateY(0)')
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform' ,'scale(105%)')
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity' ,'100%')
+            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform' ,'translateY(0)')
+            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform' ,'scale(95%)')
+            return;
+        }
+        this.renderer.setStyle(this.plan1()?.nativeElement, 'transform' ,'translateY(100%)')
+        this.renderer.setStyle(this.plan2()?.nativeElement, 'transform' ,'translateY(-200%)')
+        this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity' ,'0')
+        this.renderer.setStyle(this.plan3()?.nativeElement, 'transform' ,'translateY(100%)')
+
+        if (scrollTop > 2300){
+            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'translateY(0)')
+            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'scale(100%)')
+            return
+        }
+        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'translateY(-100%)')
+        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'scale(0)')
+
     }
     hero(scrollTop : number){
         if (scrollTop >2500) return;
@@ -71,4 +173,35 @@ export class LandingComponent {
         this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(0)')
         this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(0)')
     }
+
+
+    sendEmail(event : SubmitEvent){
+        event.preventDefault()
+        if (this.contactForm.invalid) return
+        this.isLoadingMail.set(true)
+        this.mailSvc.sendContact(this.contactForm.getRawValue()).then(
+            res => {
+                this.flashMessageSvc.messages().push({
+                    message : 'Email sent successfully',
+                    type : 'message',
+                    duration : 10
+                })
+                this.contactForm.reset()
+            }
+        ).catch(
+            err => {
+                if (err.status === 401){
+                    this.flashMessageSvc.messages().push({
+                        message : 'You need to be logged in',
+                        type : 'error',
+                        duration : 10
+                    })
+                }
+            }
+        ).finally(()=> {
+            this.isLoadingMail.set(false)
+        });
+    }
+
+    protected readonly navigator = navigator;
 }

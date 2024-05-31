@@ -83,7 +83,8 @@
                     <circle class="cicle" cx="90.5" cy="90.5" r="73" stroke="#FEFEFE" stroke-width="35"/>
                     <circle #heroCircle class="cicle2" cx="90.5" cy="90.5" r="73" stroke="#C8102E" stroke-width="35"/>
                 </svg>
-                <div class="absolute text-main-white text-3xl font-bold bg-transparent w-full h-full top-0 right-0 flex items-center justify-center">
+                <div
+                    class="absolute text-main-white text-3xl font-bold bg-transparent w-full h-full top-0 right-0 flex items-center justify-center">
                     90%
                 </div>
             </div>
@@ -112,8 +113,179 @@
     </div>
 </div>
 <div class="max-w-screen-2xl  w-screen h-fit bg-main-white mx-auto">
-    <h3 class="w-full text-center text-5xl text-secondary font-bold">Planes y precios</h3>
-    <div class="h-[90vh] flex  items-center gap-10 justify-center snap-center  p-10">
+    <div class="h-[90vh] flex flex-col gap-20 snap-center p-20 w-full overflow-hidden">
+        <h3 #planHeader class="transition-all duration-[400ms] w-full text-center text-7xl text-secondary font-bold ">
+            Planes y precios</h3>
+        <div class="flex h-full   items-center gap-10 justify-center snap-center">
+            <div #plan1
+                 class="transition-all duration-[400ms] ease-in-out basis-1/3 aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-auto p-10">
+                <div class="flex flex-col gap-5 w-full">
+                    <span class="w-full font-bold text-5xl text-main text-center pb-4 border-b-2 border-secondary-grey">Dia de prueba</span>
+                    <span class="w-full font-bold text-4xl text-secondary text-center ">0€</span></div>
+                <p class="w-full text-dark-font text-center max-w-[300px] font-medium text-lg">
+                    Contacte com nosotros y venga un dia de prueba completamente gratis, mire las clases disponibles y
+                    encuetre la que se adeque a usted, contacte con nosotros y venga a probar.
+                </p>
+                <button
+                    class="py-2 px-4 rounded-lg text-secondary text-xl font-bold border-2 border-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition-all ease-in-out">
+                    Contacta
+                </button>
+            </div>
+            <div #plan2
+                 class="transition-all duration-[400ms] ease-in-out  border-secondary border-t-[3px] rounded-t-none basis-1/3 aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-auto p-10">
+                <div class="flex flex-col gap-5 w-full">
+                    <span class="w-full font-bold text-5xl text-main text-center pb-4 border-b-2 border-secondary-grey">Plan familiar</span>
+                    <span class="w-full font-bold text-4xl text-secondary text-center ">40€/mes</span></div>
+                <p class="w-full text-dark-font text-center max-w-[300px] font-medium text-lg">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab delectus dignissimos esse ex in iure
+                    laborum maiores maxime minus, natus nesciunt obcaecati perferendis quas sed sequi sint suscipit
+                    tempore veritatis.o,
+                </p>
+                <button
+                    class="py-2 px-4 rounded-lg text-secondary text-xl font-bold border-2 border-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition-all ease-in-out">
+                    Contacta
+                </button>
+            </div>
+            <div #plan3
+                 class="transition-all duration-[400ms] ease-in-out basis-1/3 aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-auto p-10">
+                <div class="flex flex-col gap-5 w-full">
+                    <span class="w-full font-bold text-5xl text-main text-center pb-4 border-b-2 border-secondary-grey">Plan mensual</span>
+                    <span class="w-full font-bold text-4xl text-secondary text-center ">50 €/mes</span></div>
+                <p class="w-full text-dark-font text-center max-w-[300px] font-medium text-lg">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab delectus dignissimos esse ex in iure
+                    laborum maiores maxime minus, natus nesciunt obcaecati perferendis quas sed sequi sint suscipit
+                    tempore veritatis.o,
+                </p>
+                <button
+                    class="py-2 px-4 rounded-lg text-secondary text-xl font-bold border-2 border-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition-all ease-in-out">
+                    Contacta
+                </button>
+            </div>
 
+        </div>
+    </div>
+    <div
+        class="max-h-[90vh] overflow-hidden snap-center h-[90vh] flex flex-col items-center justify-center gap-20 p-20">
+        <h4 class="text-main  text-6xl font-bold flex items-center justify-center gap-2">
+            <div class="relative h-fit w-fit p-2">
+                <svg
+                    #svgLocation
+                    class=" border-b-2 border-transparent transition-all duration-[400ms] ease-in-out"
+                    xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 20 20">
+                    <path fill="#C8102E"
+                          d="M10 20S3 10.87 3 7a7 7 0 1 1 14 0c0 3.87-7 13-7 13m0-11a2 2 0 1 0 0-4a2 2 0 0 0 0 4"/>
+                </svg>
+                <div class="h-fit px-4 absolute bottom-0 w-full right-0">
+                    <div #locationShadow
+                         class="h-[3px] bg-dark-grey transition-all duration-[400ms] ease-in-out w-full"></div>
+                </div>
+            </div>
+            Ubicacion
+        </h4>
+        <div class="text-xl font-bold">
+            <div #timetable
+                 class="p-2 font-medium shadow-soft rounded-t-lg bg-main-white text-main w-full flex transition-all duration-[400ms] items-center justify-center">
+                <span>Abiertos de <span class="font-bold text-secondary">Lunes</span> a <span
+                    class="text-secondary font-bold">Viernes</span> de <span class="font-bold">16:30</span> a <span
+                    class="font-bold">21:00</span> </span>
+            </div>
+            <div #street
+                 class="p-2 shadow-card rounded-b-lg  bg-main text-main-white w-full flex transition-all duration-[400ms] items-center justify-center">
+                <span>Calle 5 C. Antonio de Ulloa</span>
+            </div>
+            <div class="bg-main-grey shadow-card">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1601.6303630943617!2d-6.247002461101953!3d36.596029146512926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDM1JzQ1LjciTiA2wrAxNCc0NC42Ilc!5e0!3m2!1ses!2ses!4v1717138959081!5m2!1ses!2ses"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- <span class="text-3xl font-bold py-4 text-main">Informacion de contacto</span>
+            <div class="rounded-lg gap-2 p-4 bg-main-white shadow flex flex-col items-center">
+                <div class="w-full flex items-center gap-2 text-secondary-grey justify-between">
+                    <div class="flex items-center gap-2"><span class="text-secondary font-bold">Telefono</span> : 601 14
+                        80 31
+                    </div>
+                    <button (click)="navigator.clipboard.writeText('601148031')">Copiar</button>
+                </div>
+                <div class="w-full flex items-center gap-2 justify-between text-secondary-grey">
+                    <div class="flex gap-2 items-center"><span class="text-secondary font-bold">Email</span>
+                        : {{ 'pilarlondon@gmail.com' }}
+                    </div>
+                    <button (click)="navigator.clipboard.writeText('pilarlondon@gmail.com')">Copiar</button>
+                </div>
+            </div>-->
+    <div class="min-h-[90vh] snap-center w-full flex flex-col items-center p-10 gap-10">
+        <h5 class="text-5xl font-medium text-secondary">Contacto</h5>
+        <form
+            (submit)="sendEmail($event)"
+            class="max-w-screen-md overflow-hidden w-screen rounded-lg bg-main-grey shadow-card flex flex-col gap-10 p-10 mx-auto"
+              [formGroup]="contactForm">
+
+            <div class="flex flex-col ">
+                <span class="text-4xl font-bold py-4 text-secondary">Contactanos</span>
+                <div #from class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                    <input formControlName="name" id="from" type="text"
+                           class="order-2 border-b-2 border-dark-font peer p-2 bg-transparent" placeholder=" ">
+                    <label for="from"
+                           class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">Tu
+                        nombre</label>
+                    <app-validation-error class="order-3" field="name" [errors]="['required','max']"
+                                          [form]="contactForm"></app-validation-error>
+                </div>
+                <div  class="w-full flex items-center gap-2">
+                    <div #email class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                        <input formControlName="email" id="email" type="email"
+                               class="order-2 border-b-2 border-dark-font peer p-2 bg-transparent" placeholder=" ">
+                        <label for="email"
+                               class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">Tu
+                            email</label>
+                        <app-validation-error class="order-3" field="email" [errors]="['required', 'email']"
+                                              [form]="contactForm"></app-validation-error>
+                    </div>
+                    <div #phone class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                        <input formControlName="phone" id="phone" type="text"
+                               class="order-2 border-b-2 border-dark-font peer p-2 bg-transparent" placeholder=" ">
+                        <label for="phone"
+                               class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                            Phone
+                        </label>
+                        <app-validation-error class="order-3" field="phone" [errors]="['pattern']"
+                                              [form]="contactForm"></app-validation-error>
+                    </div>
+                </div>
+                <div #subject class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                    <input formControlName="subject" id="subject" type="text"
+                           class="order-2 border-b-2 border-dark-font peer p-2 bg-transparent" placeholder=" ">
+                    <label for="subject"
+                           class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">subject</label>
+                    <app-validation-error class="order-3" field="subject" [errors]="['max']"
+                                          [form]="contactForm"></app-validation-error>
+                </div>
+                <div #message class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                    <textarea formControlName="message" id="message"
+                              rows="10"
+                              class="order-2 border-b-2 border-dark-font peer p-2 bg-transparent w-full"
+                              placeholder=" "></textarea>
+                    <label for="message"
+                           class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">Escriba
+                        aqui su mensaje</label>
+                    <app-validation-error class="order-3" field="message" [errors]="['required', 'max']"
+                                          [form]="contactForm"></app-validation-error>
+                </div>
+
+            </div>
+            <div #submit class="w-full items-center justify-center">
+                <button [disabled]="contactForm.invalid"
+                        class="px-4 py-2 text-main w-fit rounded-lg border-2 border-main text-xl font-bold {{contactForm.invalid? 'cursor-not-allowed' : 'hover:scale-110 hover:bg-main hover:text-main-white hover:shadow-button-hover transition-all duration-200 ease-in-out' }}">
+                    @if (isLoadingMail()){
+                        <div class="flex-col items-center gap-2"><app-loading-wheel></app-loading-wheel> Cargando...</div>
+                    } @else{
+                        Enviar email
+                    }
+                </button>
+            </div>
+        </form>
     </div>
 </div>

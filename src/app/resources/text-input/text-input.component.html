@@ -1,0 +1,14 @@
+<div [class]="classList()">
+    <input
+        class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
+        [formControlName]="input()" #name type="text" [name]="input()" [id]="input()" placeholder=" ">
+
+    <div
+        class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+        <label class="" [for]="input()">
+            {{label()}}
+        </label>
+    </div>
+    <app-validation-error class="order-3" [form]="form()" [field]="input()"
+                          [errors]="errors()"></app-validation-error>
+</div>
