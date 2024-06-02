@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {FormGroup, isFormGroup} from '@angular/forms';
+import {find} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,8 @@ export class ValidationsService {
         'pattern': 'El campo @field debe tener al menos un numero y un simbolo',
         'minlength': 'El campo @field debe tener un minimo de @length caracteres',
         'invalidCredentials' : 'Credenciales invalidas',
-        'taken': 'El campo @field ya esta en uso'
+        'taken': 'El campo @field ya esta en uso',
+        'phone' : 'El telefono debe ser valido',
     }
 
 
@@ -33,6 +35,17 @@ export class ValidationsService {
         }
 
         return ''
+    }
+    checkPhoneNumber(phone: HTMLInputElement, form : FormGroup) {
+        let value = phone.value.replaceAll(' ', '');
+        if (value.length === 0){
+            form.get('phone')?.enable()
+            return;
+        }
+        if (value.length !== 9) {
+            form.get('phone')?.setErrors({phone : true});
+            return
+        }
     }
 
     public checkLink(url: string): boolean {

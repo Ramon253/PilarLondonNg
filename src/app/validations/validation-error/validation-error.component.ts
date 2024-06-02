@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ValidationsService} from '../../services/validations.service';
 
@@ -14,11 +14,19 @@ export class ValidationErrorComponent {
     field = input<string>('')
     errors = input<string[]>([])
     showError = input<boolean>(false)
+    input = input<HTMLInputElement | HTMLTextAreaElement>()
+    hasError= output<boolean>()
 
     hasErrors(): boolean {
         if (this.showError()) return true
-        console.log(this.form())
-        return (!this.form().get(this.field())?.valid && this.form().get(this.field())?.touched) ?? false;
+        let hasError =(!this.form().get(this.field())?.valid && this.form().get(this.field())?.touched) ?? false
+        if (hasError) {
+            this.input()?.classList.replace('border-secondary-grey', 'border-secondary')
+            this.input()?.classList.replace('border-main', 'border-secondary')
+            this.hasError.emit(true)
+        } else
+            this.input()?.classList.replace( 'border-secondary', 'border-main')
+        return hasError
     }
 
     constructor(

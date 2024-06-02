@@ -1,12 +1,13 @@
-<div  class="snap-proximity snap-y h-screen min-h-screen max-h-screen overflow-x-hidden overflow-y-scroll" (scroll)="scrollEvent($event)">
+<div class="snap-proximity snap-y h-screen min-h-screen max-h-screen overflow-x-hidden overflow-y-scroll"
+     (scroll)="scrollEvent($event)">
     <nav #nav class="h-[10hv] transition-all ease-in-out bg-main-white fixed top-0 w-full z-50">
         <header class="w-full h-[10vh] bg-main-white flex items-center justify-between max-w-screen-2xl mx-auto ">
             <div #logo class="w-1/3 cursor-pointer h-full flex items-center justify-start" routerLink="/">
                 <div class="h-fit min-w-[320px]">
-                    <img src="assets/img/logo.png" class="h-[8vh]" alt="">
+                    <img src="assets/img/logo.png" class="max-h-[8vh] h-full  max-w-[70vw]" alt="">
                 </div>
             </div>
-            <div #links class="h-full w-1/3 flex items-center flex-col">
+            <div #links class="hidden nav:flex h-full w-1/3  items-center flex-col">
                 <ul
                     class="h-full list-none flex gap-9 w-full justify-center items-end text-lg font-medium text-font-grey p-[2px]">
                     <li class=" overflow-hidden">
@@ -59,7 +60,7 @@
 
 
             @if (!isLogged()) {
-                <div class="w-1/3 flex h-full gap-4 justify-end items-start pt-4">
+                <div class="w-1/3 hidden nav:flex h-full gap-4 justify-end items-start pt-4">
                     <div>
                         <button routerLink="/login"
                                 class="py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white hover:scale-105 transition">
@@ -74,13 +75,17 @@
                     </div>
                 </div>
             } @else {
-                <div class="w-1/3 h-full p-4 relative">
+                <div class="w-1/3 hidden nav:block h-full p-4 relative">
                     <app-user-card classList="absolute right-0 top-[1vh] bottom-[1vh]"/>
                 </div>
             }
+            <div class="w-1/3 flex nav:hidden ">
+
+            </div>
 
 
         </header>
+
     </nav>
     <main class="">
         <ng-content></ng-content>
@@ -92,4 +97,110 @@
     <app-flash-message [duration]="message.duration" [message]="message"></app-flash-message>
 }
 
-cxdvc
+<div (click)="toggleMenu()"
+     class="fixed {{navMenuOpen()?'flex' : 'hidden'}}  nav:hidden z-[50] bg-gray-300 top-0 right-0 w-full h-screen bg-opacity-60 ">
+
+</div>
+<div
+    class="{{navMenuOpen() ? 'translate-x-0' : 'translate-x-full'}} nav:hidden z-[60] transition-all duration-300 ease-in-out fixed h-screen flex flex-col top-0 right-0 min-w-96 w-1/2 max-w-screen-xs bg-main-white shadow">
+    <div class="h-[10vh] bg-main-grey flex items-center shadow w-full relative p-[2vh] ">
+        <div class="h-[9vh]  w-fit sticky top-[1vh] left-2 flex items-center justify-center gap-2 py-2 p-1 ">
+            @if (isLogged()) {
+
+                <div
+                    (click)="showUserMenu.set(!showUserMenu())"
+                    class="rounded-lg h-full flex items-center text-3xl font-bold text-main gap-2 px-4 shadow bg-main-white hover:border-main border-2 border-transparent hover:shadow-button-hover">
+                    @if (loginSvc.user()?.role === 'student') {
+                        <svg class="h-full" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 32 32"><path fill="#012169" d="m16 7.78l-.313.095l-12.5 4.188L.345 13L2 13.53v8.75c-.597.347-1 .98-1 1.72a2 2 0 1 0 4 0c0-.74-.403-1.373-1-1.72v-8.06l2 .655V20c0 .82.5 1.5 1.094 1.97c.594.467 1.332.797 2.218 1.093c1.774.59 4.112.937 6.688.937c2.576 0 4.914-.346 6.688-.938c.886-.295 1.624-.625 2.218-1.093C25.5 21.5 26 20.82 26 20v-5.125l2.813-.938L31.655 13l-2.843-.938l-12.5-4.187zm0 2.095L25.375 13L16 16.125L6.625 13zm-8 5.688l7.688 2.562l.312.094l.313-.095L24 15.562V20c0 .01.004.126-.313.375c-.316.25-.883.565-1.625.813C20.58 21.681 18.395 22 16 22c-2.395 0-4.58-.318-6.063-.813c-.74-.247-1.308-.563-1.624-.812C7.995 20.125 8 20.01 8 20z"/></svg>
+                    }
+                    @if (loginSvc.user()?.role === 'teacher') {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-full" viewBox="0 0 24 24">
+                            <path fill="none" stroke="#012169" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M15.59 17.74c-.629.422-2.277 1.282-1.273 2.358c.49.526 1.037.902 1.723.902h3.92c.686 0 1.233-.376 1.723-.902c1.004-1.076-.644-1.936-1.273-2.357a4.29 4.29 0 0 0-4.82 0M20 12.5a2 2 0 1 1-4 0a2 2 0 0 1 4 0M10 6h5m-5-3h8M7 9.5V14c0 .943 0 1.414-.293 1.707S5.943 16 5 16H4c-.943 0-1.414 0-1.707-.293S2 14.943 2 14v-2.5c0-.943 0-1.414.293-1.707S3.057 9.5 4 9.5zm0 0h5M6.5 5a2 2 0 1 1-4 0a2 2 0 0 1 4 0"
+                                  color="#012169"/>
+                        </svg>
+                    }
+                    {{ loginSvc.user()?.name }}
+                </div>
+
+            } @else {
+                <div>
+                    <button routerLink="/login"
+                            class="py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white hover:scale-105 transition">
+                        Login
+                    </button>
+                </div>
+                <div>
+                    <button routerLink="/register"
+                            class="py-1 px-2 rounded-lg border-[3px] border-main text-main font-bold bg-transparent hover:bg-main hover:text-main-white hover:scale-105 transition w-24">
+                        Register
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+    @if (showUserMenu()) {
+        <div class="gap-5 w-fit shadow bg-main-grey rounded-lg z-50 p-10 flex flex-col fixed top-[11vh] right-4">
+            <div class="w-full text-3xl font-bold text-main">
+                Bienvenido {{ user()?.name }}
+                <div class="w-full text-xl font-bold text-dark-font">{{ user()?.email }}</div>
+            </div>
+
+
+            <div (click)="showUserMenu.set(false)"
+                 routerLink="/profile"
+                 class="p-2 cursor-pointer text-xl rounded-lg bg-main-white shadow flex items-center gap-2 border-2 border-transparent text-dark-font hover:border-main hover:text-main hover:scale-110 transition-all">
+                <span class="material-icons">face</span>
+                Perfil
+            </div>
+            <div
+                (click)="loginSvc.logout(); loginSvc.logoutFront(); showUserMenu.set(false)"
+                class="p-2 text-xl cursor-pointer rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition-all">
+                <span class="material-icons">logout</span>
+                Cerrar sesion
+            </div>
+
+            <span
+                class="absolute top-0 right-0 rounded-lg p-1 text-secondary flex items-center transition-all ease-in-out hover:bg-secondary hover:text-main-white material-icons cursor-pointer"
+                (click)="showUserMenu.set(false)">close</span>
+        </div>
+    }
+    <div class="h-full sticky text-xl z-40 left-0 top-[10vh] max-w-screen-xs w-screen flex flex-col gap-5 py-10 p-1">
+        <div (click)="navigateTo('/groups')" class="p-4 w-1/2 flex items-center gap-2 relative group text-xl hover:bg-main-grey text-font-grey font-medium rounded-r-lg cursor-pointer ">
+            <div #mobileRouteMark class="absolute left-0 h-full top-0 w-[2px] bg-secondary  transition-all z-50 ease-in-out "></div>
+            <div class="h-full absolute top-0 group w-full left-0 overflow-hidden">
+                <div class="absolute left-0 h-full top-0 w-[2px] bg-secondary-grey -translate-y-full transition-all ease-in-out group-hover:translate-y-0"></div>
+            </div>
+            <span class="material-icons">groups</span>
+            <span #groupLink>Clases</span>
+        </div>
+        <div #postLink (click)="navigateTo('/posts')" class="p-4 w-1/2 flex items-center gap-2  overflow-hidden relative group text-xl hover:bg-main-grey text-font-grey font-medium rounded-r-lg cursor-pointer ">
+            <div class="h-full absolute top-0 group w-full left-0 overflow-hidden">
+                <div class="absolute left-0 h-full top-0 w-[2px] bg-secondary-grey -translate-y-full transition-all ease-in-out group-hover:translate-y-0"></div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.5rem] fill-font-grey" viewBox="0 0 24 24"><path d="M3 21V3h18v18zm15-4H6v1.5h12zM6 15.5h12V14H6zM6 12h12V6H6zm0 5v1.5zm0-1.5V14zM6 12V6zm0 2v-2zm0 3v-1.5z"/></svg>
+            <span >Posts</span>
+        </div>
+        <div #postLink class="p-4 w-1/2 flex items-center gap-2  overflow-hidden relative group text-xl hover:bg-main-grey text-font-grey font-medium rounded-r-lg cursor-pointer ">
+            <div class="h-full absolute top-0 group w-full left-0 overflow-hidden">
+                <div class="absolute left-0 h-full top-0 w-[2px] bg-secondary-grey -translate-y-full transition-all ease-in-out group-hover:translate-y-0"></div>
+            </div>
+            <span class="material-icons-outlined">group_add</span>
+            Unete
+        </div>
+    </div>
+
+</div>
+<div
+    class="h-[10vh] w-full pointer-events-none max-w-screen-nav  justify-end items-center px-4 flex nav:hidden fixed top-0 right-0 z-[100] ">
+    <div class="w-fit h-fit  pointer-events-auto">
+        <div (click)="toggleMenu()"
+             class="p-2 flex flex-col justify-evenly z-[60] bg-secondary-light aspect-square w-11 max-w-[8vh] rounded relative bg-main-grey overflow-hidden shadow cursor-pointer hover:shadow-lg transition-all ease-in-out">
+            <div #menu class="origin-top-left icon"></div>
+            <div #menu class="icon transition-all ease-in-out"></div>
+            <div #menu class="origin-bottom-left icon"></div>
+
+        </div>
+    </div>
+</div>

@@ -6,12 +6,17 @@ module.exports = {
     ],
     theme: {
         extend: {
+            screens: {
+                'nav': '850px',
+                'xs': '320'
+            },
             boxShadow: {
                 'assignment-card': '-10px -10px 30px 4px rgba(0,0,0,0.1), 10px 10px 30px 4px rgba(45,78,255,0.15)',
                 'button-hover': '5px 5px 0px 0px rgba(200, 16, 46, 1);',
+                'secondary-button-hover': '5px 5px 0px 0px rgba(1,33,105);',
                 'main': 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
-                'card' : 'rgba(0, 0, 0, 0.35) 0px 5px 15px;',
-                'soft' : 'rgba(0, 0, 0, 0.24) 0px 3px 8px;'
+                'card': 'rgba(0, 0, 0, 0.35) 0px 5px 15px;',
+                'soft': 'rgba(0, 0, 0, 0.24) 0px 3px 8px;'
             },
             colors: {
                 'main-white': '#FAFAFA',
@@ -31,8 +36,8 @@ module.exports = {
                 'landing-gradient': 'linear-gradient(135deg, rgba(250,250,250,1) 0%, rgba(250,250,250,1) 45%, rgba(1,33,105,1) 100%);'
                 // Add more gradients if needed
             }),
-            fontFamily : {
-                'landing' : 'judson, san-serif'
+            fontFamily: {
+                'landing': 'judson, san-serif'
             }
         },
     },

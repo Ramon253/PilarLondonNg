@@ -10,8 +10,7 @@
                     (click)="close()"
                     class="material-icons text-main-white p-1 rounded-full hover:bg-main-white hover:text-secondary cursor-pointer transition-all ease-in-out">close</span>
             </div>
-            <span class="overflow-hidden h-full">
-                {{ message().message }}
+            <span #messageElement [innerHTML]="message().message" class="overflow-hidden h-full">
             </span>
         </div>
         <div class="absolute w-full overflow-hidden flex px-4 items-center bottom-2 left-0 h-[2px] ">

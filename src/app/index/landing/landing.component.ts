@@ -1,43 +1,48 @@
 import {Component, ElementRef, Renderer2, signal, viewChild} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {Router, RouterLink} from "@angular/router";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {LoginService} from "../../login.service";
-import {emit} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
 import {MailService} from "../../services/resources/mail.service";
 import {FlashMessageService} from "../../services/flash-message.service";
 import {ValidationErrorComponent} from "../../validations/validation-error/validation-error.component";
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
+import {ValidationsService} from "../../services/validations.service";
+import {TimeInterval} from "rxjs";
 
 @Component({
-  selector: 'app-landing',
-  standalone: true,
+    selector: 'app-landing',
+    standalone: true,
     imports: [
         RouterLink, ReactiveFormsModule, ValidationErrorComponent, LoadingWheelComponent
     ],
-  templateUrl: './landing.component.html',
-  styleUrl: './landing.component.css'
+    templateUrl: './landing.component.html',
+    styleUrl: './landing.component.css'
 })
 export class LandingComponent {
 
     isLoadingMail = signal<boolean>(false)
+    isTouchedMail = signal<boolean>(false)
+    heroPercentage = signal<number>(100)
     contactForm = this.formBuilder.group({
-        name : ['', [Validators.required, Validators.maxLength(50)]],
-        email : ['', [Validators.required, Validators.email]],
-        subject : ['', Validators.maxLength(100)],
-        phone : [''],
-        message : ['', [Validators.required, Validators.maxLength(500)]],
+        name: ['', [Validators.required, Validators.maxLength(50)]],
+        email: ['', [Validators.required, Validators.email]],
+        subject: ['', Validators.maxLength(100)],
+        phone: [''],
+        message: ['', [Validators.required, Validators.maxLength(500)]],
     })
+
     constructor(
-        public scrollSvc : ScrollService,
+        public scrollSvc: ScrollService,
         private router: Router,
-        private renderer : Renderer2,
-        private formBuilder : FormBuilder,
-        public loginSvc : LoginService,
-        private mailSvc : MailService,
-        private flashMessageSvc : FlashMessageService
+        private renderer: Renderer2,
+        private formBuilder: FormBuilder,
+        public loginSvc: LoginService,
+        private mailSvc: MailService,
+        public flashMessageSvc: FlashMessageService,
+        public validationSvc : ValidationsService,
     ) {
-        if (this.loginSvc.isLogged()){
+        if (this.loginSvc.isLogged()) {
             this.contactForm.get('email')?.setValue(this.loginSvc.user()?.email ?? '')
             this.contactForm.get('name')?.setValue(this.loginSvc.user()?.name ?? '')
         }
@@ -61,8 +66,9 @@ export class LandingComponent {
     subject = viewChild<ElementRef>('subject')
     phone = viewChild<ElementRef>('phone')
     message = viewChild<ElementRef>('message')
+    nameInput = viewChild<ElementRef>('nameInput')
 
-    ngOnInit(){
+    ngOnInit() {
         this.scrollSvc.scrollTop.subscribe((scrollTop) => {
             this.firstView(scrollTop)
             this.secondView(scrollTop)
@@ -73,13 +79,14 @@ export class LandingComponent {
             console.log(scrollTop)
         })
     }
-    contactFormTransition(scrollTop : number){
-        if (scrollTop > 4500){
+
+    contactFormTransition(scrollTop: number) {
+        if (scrollTop > 4350) {
             this.renderer.setStyle(this.subject()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.message()?.nativeElement, 'transform', 'translateY(0)')
             return;
         }
-        if (scrollTop > 4100 ){
+        if (scrollTop > 4100) {
             this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(0)')
@@ -93,8 +100,8 @@ export class LandingComponent {
 
     }
 
-    location(scrollTop : number){
-        if (scrollTop >3450){
+    location(scrollTop: number) {
+        if (scrollTop > 3450) {
             this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(0)')
             return
@@ -102,7 +109,7 @@ export class LandingComponent {
         this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(200%)')
         this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(-200%)')
 
-        if (scrollTop > 3300){
+        if (scrollTop > 3300) {
             this.renderer.setStyle(this.svgLocation()?.nativeElement, 'transform', 'translateY(0)')
             this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(100%)')
             return;
@@ -111,49 +118,64 @@ export class LandingComponent {
         this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(0)')
     }
 
-    plans(scrollTop : number){
-        if (scrollTop > 2600){
-            this.renderer.setStyle(this.plan1()?.nativeElement, 'transform' ,'translateY(0)')
-            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform' ,'translateY(0)')
-            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform' ,'scale(105%)')
-            this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity' ,'100%')
-            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform' ,'translateY(0)')
-            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform' ,'scale(95%)')
+    plans(scrollTop: number) {
+        if (scrollTop > 2600) {
+            this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateY(0)')
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateY(0)')
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'scale(105%)')
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '100%')
+            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateY(0)')
+            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'scale(95%)')
             return;
         }
-        this.renderer.setStyle(this.plan1()?.nativeElement, 'transform' ,'translateY(100%)')
-        this.renderer.setStyle(this.plan2()?.nativeElement, 'transform' ,'translateY(-200%)')
-        this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity' ,'0')
-        this.renderer.setStyle(this.plan3()?.nativeElement, 'transform' ,'translateY(100%)')
+        this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateY(100%)')
+        this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateY(-200%)')
+        this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '0')
+        this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateY(100%)')
 
-        if (scrollTop > 2300){
-            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'translateY(0)')
-            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'scale(100%)')
+        if (scrollTop > 2300) {
+            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'translateY(0)')
+            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'scale(100%)')
             return
         }
-        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'translateY(-100%)')
-        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform' ,'scale(0)')
+        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'translateY(-100%)')
+        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'scale(0)')
 
     }
-    hero(scrollTop : number){
-        if (scrollTop >2500) return;
-        if (scrollTop >1800){
-            if (this.heroCircle()?.nativeElement.classList.contains('heroAnimation')){
+
+    hero(scrollTop: number) {
+        if (scrollTop > 2500) return;
+        let interval : any
+        if (scrollTop > 1800) {
+            if (this.heroCircle()?.nativeElement.classList.contains('heroAnimation')) {
                 return;
             }
+            let start = 0
+            interval = setInterval(() => {
+                this.heroPercentage.set(start ++ )
+                if (this.heroPercentage() === 90){
+                    clearInterval(interval)
+                }
+            },11)
+            setTimeout(()=> {
+                interval.clearInterval()
+                this.heroPercentage.set(90)
+            },1000)
             this.heroCircle()?.nativeElement.classList.add('heroAnimation')
             return
         }
+        this.heroPercentage.set(90)
         this.heroCircle()?.nativeElement.classList.remove('heroAnimation')
     }
-    secondView(scrollTop : number){
-        if (scrollTop > 1450){
-            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(100%)')
+
+    secondView(scrollTop: number) {
+        if (scrollTop > 1450) {
+            this.renderer.setStyle(this.foto2()?.nativeElement, 'transforms', 'scale(100%)')
             this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(100%)')
             return;
         }
 
-        if (scrollTop > 1300){
+        if (scrollTop > 1300) {
             this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(50%)')
             this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(50%)')
             return
@@ -162,10 +184,10 @@ export class LandingComponent {
         this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(0)')
         this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(0)')
     }
-    firstView(scrollTop : number){
+
+    firstView(scrollTop: number) {
         if (scrollTop >= 1200) return;
-        if (scrollTop < 600)
-        {
+        if (scrollTop < 600) {
             this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(-200%)')
             this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(200%)')
             return
@@ -175,30 +197,30 @@ export class LandingComponent {
     }
 
 
-    sendEmail(event : SubmitEvent){
+    sendEmail(event: SubmitEvent) {
         event.preventDefault()
         if (this.contactForm.invalid) return
         this.isLoadingMail.set(true)
         this.mailSvc.sendContact(this.contactForm.getRawValue()).then(
             res => {
                 this.flashMessageSvc.messages().push({
-                    message : 'Email sent successfully',
-                    type : 'message',
-                    duration : 10
+                    message: '<div class="flex items-center gap-2"><span class="material-icons">mail</span> Email enviado con exito</div>',
+                    type: 'message',
+                    duration: 10
                 })
                 this.contactForm.reset()
             }
         ).catch(
             err => {
-                if (err.status === 401){
+                if (err.status === 401) {
                     this.flashMessageSvc.messages().push({
-                        message : 'You need to be logged in',
-                        type : 'error',
-                        duration : 10
+                        message: '<span class="text-7xl">You need to be logged in</span>',
+                        type: 'error',
+                        duration: 10
                     })
                 }
             }
-        ).finally(()=> {
+        ).finally(() => {
             this.isLoadingMail.set(false)
         });
     }

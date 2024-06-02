@@ -18,6 +18,13 @@
     stroke-dashoffset: 0;
 }
 
+
+.focus{
+    @apply text-dark-grey translate-x-0 translate-y-0
+}
+.focusOut{
+    @apply peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-secondary-grey
+}
 .heroAnimation{
     animation: load 1s  ease-in-out ;
 }
