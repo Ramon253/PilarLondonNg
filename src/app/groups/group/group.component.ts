@@ -1,4 +1,4 @@
-import {Component, ElementRef, input, signal, SimpleChange, viewChild} from '@angular/core';
+import {Component, ElementRef, signal, viewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../login.service";
 import {GroupService} from "../../services/group.service";
@@ -17,6 +17,8 @@ import {PostCreationFormComponent} from "../../posts/post-creation-form/post-cre
 import {AssignmentFormComponent} from "../../assignments/assignment-form/assignment-form.component";
 import {DatePipe} from "@angular/common";
 import {ImageCroppedEvent, ImageCropperComponent} from "ngx-image-cropper";
+import {RoutingService} from "../../services/routing.service";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 
 @Component({
@@ -97,24 +99,40 @@ export class GroupComponent {
         private postSvc: PostService,
         private assignmentSvc: AssignmentService,
         private router: Router,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        public routingSvc: RoutingService
     ) {
     }
 
     windowSize = signal<number>(window.innerWidth)
+
     ngOnInit() {
+
         this.route.params.subscribe(
             params => {
-                this.groupSvc.getGroup(params['group']).subscribe(
-                    res => {
-                        this.group.set(this.groupSvc.mapGroup(res))
-                        this.bannerUrl.set(`${environment.baseUrl}api/group/${this.group().id ?? ''}/banner`)
-                        this.isLoading.set(false)
-                    }
-                );
+                if (!this.loginSvc.isLogged()) {
+                    this.routingSvc.intended.set(this.router.url)
+                    this.routingSvc.previous.set(this.router.url)
+                    this.router.navigate(['login'])
+                } else {
+                    this.groupSvc.getGroup(params['group']).subscribe(
+                        res => {
+                            this.group.set(this.groupSvc.mapGroup(res))
+                            this.bannerUrl.set(`${environment.baseUrl}api/group/${this.group().id ?? ''}/banner`)
+                            this.isLoading.set(false)
+                        },
+                        error => {
+                            if (error.status === 401) {
+                                this.routingSvc.intended.set(this.router.url)
+                                this.routingSvc.previous.set(this.router.url)
+                                this.router.navigate(['login'])
+                            }
+                        }
+                    );
+                }
             }
         )
-        window.addEventListener('resize' ,() => {
+        window.addEventListener('resize', () => {
             this.windowSize.set(this.window.innerWidth)
         })
     }
@@ -206,9 +224,11 @@ export class GroupComponent {
         this.showCropper.set(true)
         this.imageChangedEvent = event
     }
-    getBannerUr(){
+
+    getBannerUr() {
         return this.bannerUrl() + this.cacheBuster
     }
+
     endCrop() {
 
         const formData = new FormData()
@@ -218,7 +238,7 @@ export class GroupComponent {
             () => {
                 this.isLoadingPutBanner.set(false)
                 this.showCropper.set(false)
-                this.cacheBuster =  `?cb=${new Date().getTime()}`
+                this.cacheBuster = `?cb=${new Date().getTime()}`
             }
         )
     }
@@ -253,7 +273,8 @@ export class GroupComponent {
             }
         )
     }
-    deleteGroup(){
+
+    deleteGroup() {
         this.isLoadingDelete.set(true)
         this.groupSvc.deleteGroup(this.group().id ?? '').then(
             res => {

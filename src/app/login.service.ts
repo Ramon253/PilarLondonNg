@@ -27,6 +27,9 @@ export class LoginService {
         private router: Router,
         private flashMessageSvc : FlashMessageService
     ) {
+    }
+
+    ngOnInit(){
         if (this.isLogged())
             this.getUser().subscribe(
                 user => {
@@ -39,7 +42,6 @@ export class LoginService {
                     }
                 }
             );
-
     }
 
     private path = environment.baseUrl + 'api';

@@ -6,6 +6,7 @@ import {ValidationsService} from '../services/validations.service';
 import {Router, RouterLink} from '@angular/router';
 import {ValidationErrorComponent} from '../validations/validation-error/validation-error.component';
 import {FlashMessageService} from "../services/flash-message.service";
+import {RoutingService} from "../services/routing.service";
 
 @Component({
     selector: 'app-login',
@@ -40,7 +41,8 @@ export class LoginComponent {
         private formBuilder: FormBuilder,
         public validator: ValidationsService,
         private router: Router,
-        private flashMessageSvc: FlashMessageService
+        private flashMessageSvc: FlashMessageService,
+        public routingSvc: RoutingService
     ) {
         effect(this.requireId);
     }
@@ -58,10 +60,13 @@ export class LoginComponent {
                 this.loginSvc.loginFront()
                 this.loginSvc.user.set(res.data.user)
                 this.flashMessageSvc.messages().push({
-                    message: 'Logged in successfull',
+                    message: 'Logged in successfully',
                     type: 'message',
                     duration: 5
                 })
+                this.router.navigate([this.routingSvc.intended()]).then(
+                    () => this.routingSvc.intended.set('')
+                )
             }
         ).catch(
             err => {
@@ -71,10 +76,16 @@ export class LoginComponent {
                     this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
                     return
                 }
-                this.loginForm.setErrors({invalidCredentials: true})
-                this.flashMessageSvc.messages().push({message: 'Credenciales invalidas', type: 'error', duration: 10})
-                this.submitButton()?.nativeElement.classList.toggle('hidden')
-                this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
+                if (err.status === 401 || err.status === 422) {
+                    this.loginForm.setErrors({invalidCredentials: true})
+                    this.flashMessageSvc.messages().push({
+                        message: 'Credenciales invalidas',
+                        type: 'error',
+                        duration: 10
+                    })
+                    this.submitButton()?.nativeElement.classList.toggle('hidden')
+                    this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
+                }
             })
 
 

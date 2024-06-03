@@ -106,6 +106,7 @@
 
                     </div>
                 </div>
+
             }
             @if (updateAny()) {
                 <div class="w-full flex items-center justify-end">
@@ -173,181 +174,264 @@
                             Proxima tarea
                         </div>
                     </div>
+
                 </div>
-                <div class="overflow-hidden w-full h-full  hidden {{showTabMenu()? 'flex' : ''}}">
-                    <div class="h-full bg-main-white  w-full transition-all ease-in-out duration-300">
-                        hOLA
-                    </div>
-                </div>
-                <div
-                    class="max-w-screen-lg {{showTabMenu()? 'translate-y-36': ''}} transition-all ease-in-out w-screen border-t-2 border-dark-font flex flex-col gap-10 text-lg font-medium mr-4">
-                    <div class="flex pl-2 justify-between">
-                        <div (click)="showTabMenu.set(!showTabMenu())" class="px-3 group  cursor-pointer relative flex group:hidden overflow-hidden items-center gap-2 ">
-                            <span class="z-40 {{showTabMenu() ? 'text-main-white' : ''}} group-hover:text-main-white  w-fit flex items-center justify-center material-icons">menu</span>
+                <div class="flex flex-col w-full bg-main-grey relative">
+                    <div
+                        class="overflow-hidden w-full {{loginSvc.user()?.role === 'teacher' ? 'h-72' : 'h-56'}} flex-col gap-4 font-bold text-font-grey p-3 absolute top-0 right-0 bg-main-grey group:hidden {{showTabMenu()? 'flex' : 'hidden'}}">
+                        <div class="w-full flex justify-between items-center gap-2">
                             <div
-                                class="absolute {{showTabMenu()? '-translate-y-0 bg-secondary': '' }} w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
-
-                        </div>
-
-                        <div class="hidden group:flex gap-4 px-2 relative pl-2">
-                            <div
-                                class="h-[90%] rounded-b-lg bg-secondary z-[5] absolute top-0 left-2  transition-all duration-300 ease-in-out {{getTab()}} ">
-
+                                (click)="selectedContent.set('general');showTabMenu.set(false)"
+                                class=" {{loginSvc.user()?.role === 'teacher' ? 'basis-5/6' : 'basis-1'}} {{selectedContent()=== 'general' ? 'border-secondary text-secondary hover:text-secondary hover:border-secondary stroke-secondary fill-secondary' : 'hover:border-main border-transparent' }}  hover:text-main hover:scale-105 hover:shadow-button-hover border-2 gap-2 basis-1 p-3 bg-main-white shadow-lg rounded flex items-center  w-full transition-all ease-in-out duration-300">
+                                <span class="material-icons-round">home</span> General
                             </div>
-                            <div
-                                class="relative cursor-pointer flex px-2 py-1 items-center h-fit rounded-b-md overflow-y-hidden  w-24 group"
-                                (click)="selectedContent.set('general')">
+                            @if (loginSvc.user()?.role === 'teacher'){
                                 <div
-                                    class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
-                                <span
-                                    class="w-full text-center group-hover:text-main-white duration-300 ease-in-out z-10  {{selectedContent()=== 'general'? 'text-main-white' : 'text-font-grey'}}">General</span>
-
-                            </div>
+                                    (click)="selectedContent.set('settings');showTabMenu.set(false)"
+                                    class="w-fit group p-4 cursor-pointer border-2 {{selectedContent() === 'settings'?'border-secondary text-secondary':'hover:text-main border-transparent hover:border-main hover:shadow-lg'}} transition-all ease-in-out rounded-lg bg-main-white shadow  flex items-center">
+                                    <span class="material-icons group-hover:rotate-180 transition-all ease-in-out cursor-pointer ">settings</span>
+                                </div>
+                            }
+                        </div>
+                        <div
+                            (click)="selectedContent.set('post');showTabMenu.set(false)"
+                            class="  {{selectedContent()=== 'post' ? 'border-secondary text-secondary hover:text-secondary hover:border-secondary fill-secondary' : 'fill-font-grey hover:border-main border-transparent' }} hover:text-main hover:scale-105 hover:shadow-button-hover border-2  p-3 basis-1 bg-main-white shadow-lg rounded flex gap-2 items-center w-full transition-all ease-in-out duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.5rem] " viewBox="0 0 24 24">
+                                <path
+                                    d="M19 21H5q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21m-1-4H6v1.5h12zM6 15.5h12V14H6zM6 12h12V6H6zm0 5v1.5zm0-1.5V14zM6 12V6zm0 2v-2zm0 3v-1.5z"/>
+                            </svg>
+                            Posts
+                        </div>
+                        <div
+                            (click)="selectedContent.set('assignment');showTabMenu.set(false)"
+                            class=" {{selectedContent()=== 'assignment' ? 'border-secondary text-secondary hover:text-secondary hover:border-secondary stroke-secondary fill-secondary' : 'hover:border-main border-transparent' }}  hover:text-main hover:scale-105 hover:shadow-button-hover border-2  p-3 basis-1 bg-main-white shadow-lg rounded flex items-center gap-2 w-full transition-all ease-in-out duration-300">
+                            <span class="material-icons-outlined">task</span> Tareas
+                        </div>
+                        @if (loginSvc.user()?.role === 'teacher') {
                             <div
-                                class="cursor-pointer hidden  group:flex items-center bg-transparent h-fit px-2 py-1 overflow-hidden w-24 relative group"
-                                (click)="selectedContent.set('post')"
-                            >
+                                (click)="selectedContent.set('student');showTabMenu.set(false)"
+                                class=" {{selectedContent()=== 'student' ? 'border-secondary text-secondary hover:text-secondary hover:border-secondary stroke-secondary ' : 'stroke-font-grey hover:border-main border-transparent' }}  hover:text-main hover:scale-105 hover:shadow-button-hover border-2  p-3 basis-1 bg-main-white shadow-lg rounded flex items-center gap-2 w-full transition-all ease-in-out duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class=" h-[1.5rem]" viewBox="0 0 24 24">
+                                    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                       color="currentColor">
+                                        <path
+                                            d="M14 3.5c3.771 0 5.657 0 6.828 1.245S22 7.993 22 12s0 6.01-1.172 7.255S17.771 20.5 14 20.5h-4c-3.771 0-5.657 0-6.828-1.245S2 16.007 2 12s0-6.01 1.172-7.255S6.229 3.5 10 3.5z"/>
+                                        <path
+                                            d="M5 15.5c1.609-2.137 5.354-2.254 7 0m-1.751-5.25a1.75 1.75 0 1 1-3.5 0a1.75 1.75 0 0 1 3.5 0M15 9.5h4m-4 4h2"/>
+                                    </g>
+                                </svg>
+                                Student
+                            </div>
+                        }
+                    </div>
+                    <div
+                        class="max-w-screen-lg {{showTabMenu()? (loginSvc.user()?.role === 'teacher' ? 'translate-y-72' : 'translate-y-56') + ' pb-72' : ''}} transition-all  ease-in-out w-screen border-t-2 border-dark-font flex flex-col gap-10 text-lg font-medium mr-4">
+                        <div class="flex pl-2 justify-between">
+                            <div (click)="showTabMenu.set(!showTabMenu())"
+                                 class="px-3 group  cursor-pointer relative flex group:hidden overflow-hidden items-center gap-2 ">
+                                <span
+                                    class="z-40 {{showTabMenu() ? 'text-main-white' : ''}} group-hover:text-main-white  w-fit flex items-center justify-center material-icons">menu</span>
+                                <div
+                                    class="absolute {{showTabMenu()? '-translate-y-0 bg-secondary': '-translate-y-full group-hover:-translate-y-0' }} w-full h-full bg-font-grey left-0 transition-all top-0  rounded-b-lg duration-300 ease-in-out z-0">
+
+                                </div>
+                            </div>
+
+                            <div class="hidden group:flex gap-4 px-2 relative pl-2">
+                                <div
+                                    class="h-[90%] rounded-b-lg bg-secondary z-[5] absolute top-0 left-2  transition-all duration-300 ease-in-out {{getTab()}} ">
+
+                                </div>
+                                <div
+                                    class="relative cursor-pointer flex px-2 py-1 items-center h-fit rounded-b-md overflow-y-hidden  w-24 group"
+                                    (click)="selectedContent.set('general')">
+                                    <div
+                                        class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
+                                    <span
+                                        class="w-full text-center group-hover:text-main-white duration-300 ease-in-out z-10  {{selectedContent()=== 'general'? 'text-main-white' : 'text-font-grey'}}">General</span>
+
+                                </div>
+                                <div
+                                    class="cursor-pointer hidden  group:flex items-center bg-transparent h-fit px-2 py-1 overflow-hidden w-24 relative group"
+                                    (click)="selectedContent.set('post')"
+                                >
                             <span
                                 class="w-full z-10 text-center group-hover:text-main-white transition-all duration-300 ease-in-out {{selectedContent()=== 'post'? 'text-main-white' : 'text-font-grey'}}">Posts</span>
-                                <div
-                                    class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
-                            </div>
-                            <div
-                                class="cursor-pointer flex items-center h-fit px-2 py-1 overflow-hidden w-24 relative group"
-                                (click)="selectedContent.set('assignment')"
-                            >
-                                <div
-                                    class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
-                                <span
-                                    class="w-full text-center group-hover:text-main-white duration-300 ease-in-out z-10 {{selectedContent()=== 'assignment'? 'text-main-white' : 'text-font-grey'}}">Tareas</span>
-                            </div>
-                            @if (loginSvc.user()?.role === 'teacher') {
+                                    <div
+                                        class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
+                                </div>
                                 <div
                                     class="cursor-pointer flex items-center h-fit px-2 py-1 overflow-hidden w-24 relative group"
-                                    (click)="selectedContent.set('student')"
+                                    (click)="selectedContent.set('assignment')"
                                 >
                                     <div
                                         class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
                                     <span
-                                        class="w-full text-center group-hover:text-main-white duration-300 ease-in-out z-10 {{selectedContent()=== 'student'? 'text-main-white' : 'text-font-grey'}}">Students</span>
+                                        class="w-full text-center group-hover:text-main-white duration-300 ease-in-out z-10 {{selectedContent()=== 'assignment'? 'text-main-white' : 'text-font-grey'}}">Tareas</span>
                                 </div>
-                                <div
-                                    (click)="selectedContent.set('settings');settingsIcon.classList.toggle('rotate-[180deg]')"
-                                    class="cursor-pointer w-fit flex items-center h-fit px-2 py-1 overflow-hidden  relative group">
+                                @if (loginSvc.user()?.role === 'teacher') {
+                                    <div
+                                        class="cursor-pointer flex items-center h-fit px-2 py-1 overflow-hidden w-24 relative group"
+                                        (click)="selectedContent.set('student')"
+                                    >
+                                        <div
+                                            class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
+                                        <span
+                                            class="w-full text-center group-hover:text-main-white duration-300 ease-in-out z-10 {{selectedContent()=== 'student'? 'text-main-white' : 'text-font-grey'}}">Students</span>
+                                    </div>
+                                    <div
+                                        (click)="selectedContent.set('settings');settingsIcon.classList.toggle('rotate-[180deg]')"
+                                        class="cursor-pointer w-fit flex items-center h-fit px-2 py-1 overflow-hidden  relative group">
                                     <span #settingsIcon
                                           class="material-icons z-50 transition-all duration-300 ease-in-out group-hover:text-main-white flex items-center {{selectedContent()=== 'settings'? 'text-main-white': 'text-font-grey'}} ">settings</span>
-                                    <div
-                                        class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
-                                </div>
-                            }
+                                        <div
+                                            class="absolute w-full h-full bg-font-grey left-0 transition-all top-0 -translate-y-full group-hover:-translate-y-0 rounded-b-lg duration-300 ease-in-out z-0"></div>
+                                    </div>
+                                }
 
-                        </div>
-                        <div class="flex flex-col lg:flex-row gap-2">
+                            </div>
+                            <div class="flex flex-col lg:flex-row gap-2">
 
-                            <div class="w-full flex  items-center justify-end lg:order-2">
+                                <div class="w-full flex  items-center justify-end lg:order-2">
                                 <span
                                     class="material-icons flex items-center p-1 text-main cursor-pointer hover:text-main-white hover:bg-main transition rounded-full">refresh</span>
-                            </div>
-                            <div class="relative h-1 w-1 lg:order-1">
-                                @if (loginSvc.user()?.role === 'teacher' && selectedContent() !== 'general' && selectedContent() !== 'settings') {
-                                    <button
-                                        (click)="create()"
-                                        class="flex absolute top-1 -right-5 lg:right-0 items-center gap-2 border-2 text-main border-main text-lg font-bold px-4 py-2 rounded-lg hover:bg-main hover:scale-110 hover:text-main-white hover:shadow-button-hover transition-all duration-200 ease-in-out">
-                                        <span class="material-icons">create</span> |
-                                        @if (selectedContent() === 'student') {
-                                            <span class="whitespace-nowrap">Add student</span>
-                                        } @else if (selectedContent() === 'post') {
-                                            <span class="whitespace-nowrap">Create post</span>
-                                        } @else if (selectedContent() === 'assignment') {
-                                            <span class="whitespace-nowrap">Create assignment</span>
-                                        }
+                                </div>
+                                <div class="relative h-1 w-1 lg:order-1">
+                                    @if (loginSvc.user()?.role === 'teacher' && selectedContent() !== 'general' && selectedContent() !== 'settings') {
+                                        <button
+                                            (click)="create()"
+                                            class="flex absolute top-1 -right-5 lg:right-0 items-center gap-2 border-2 text-main border-main text-lg font-bold px-4 py-2 rounded-lg hover:bg-main hover:scale-110 hover:text-main-white hover:shadow-button-hover transition-all duration-200 ease-in-out">
+                                            <span class="material-icons">create</span> |
+                                            @if (selectedContent() === 'student') {
+                                                <span class="whitespace-nowrap">Add student</span>
+                                            } @else if (selectedContent() === 'post') {
+                                                <span class="whitespace-nowrap">Create post</span>
+                                            } @else if (selectedContent() === 'assignment') {
+                                                <span class="whitespace-nowrap">Create assignment</span>
+                                            }
 
-                                    </button>
-                                }
+                                        </button>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="w-full mt-5 flex  p-3 flex-col gap-4">
-                        @if (selectedContent() === 'general') {
-                            @for (element of group().content; track $index) {
-                                @if (element.dead_line) {
-                                    <app-assignment-card [assignment]="element"></app-assignment-card>
-                                } @else {
-                                    <app-post-card [post]="element"></app-post-card>
+                        <div class="w-full mt-5 flex  p-3 flex-col gap-4">
+                            @if (selectedContent() === 'general') {
+                                <div class="flex-col lg:hidden flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
+                                    <div>
+                                        <h2 class="text-2xl font-bold text-font-grey ">Horario</h2>
+                                    </div>
+                                    <div class=" w-fit rounded-md  flex items-stretch justify-evenly gap-2">
+                                        <div
+                                            class="flex  h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : 'bg-main-grey' }}  ">
+                                            L
+                                        </div>
+                                        <div
+                                            class="flex h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
+                                            M
+                                        </div>
+                                        <div
+                                            class="flex h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'l-m'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
+                                            X
+                                        </div>
+                                        <div
+                                            class="flex h-full justify-center items-center shadow p-2 px-4 rounded aspect-square {{group().lesson_days === 'm-j'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
+                                            J
+                                        </div>
+                                        <div
+                                            class="flex h-full justify-center items-center p-2 px-4 rounded aspect-square {{group().lesson_days === 'v'? 'bg-secondary text-main-white' : 'bg-main-grey' }} ">
+                                            V
+                                        </div>
+                                    </div>
+                                    <div>
+                            <span class="font-medium text-font-grey text-lg">De <span
+                                class="px-2 py-1 bg-main text-main-white rounded-lg ">{{ groupSvc.getTime(group())[0] }}</span>
+                                a <span
+                                    class="px-2 py-1 rounded-lg bg-secondary text-main-white">{{ groupSvc.getTime(group())[1] }}</span></span>
+                                    </div>
+                                </div>
+                                @for (element of group().content; track $index) {
+                                    @if (element.dead_line) {
+                                        <app-assignment-card [assignment]="element"></app-assignment-card>
+                                    } @else {
+                                        <app-post-card [post]="element"></app-post-card>
+                                    }
                                 }
-                            }
-                        } @else if (selectedContent() === 'post') {
-                            @for (post of group().posts; track $index) {
-                                <app-post-card [post]="post"></app-post-card>
-                            }
-                        } @else if (selectedContent() === 'assignment') {
-                            @for (assignment of group().assignments; track $index) {
-                                <app-assignment-card [assignment]="assignment"></app-assignment-card>
-                            }
-                        } @else if (selectedContent() === 'student') {
-                            @for (student of group().students; track $index) {
-                                <app-student-card (leaveClass)="kickStudent($event)"
-                                                  [student]="student"></app-student-card>
-                            }
-                        } @else if (selectedContent() === 'settings') {
-                            <div
-                                class="max-w-screen-md mx-auto p-10 w-screen rounded-md bg-main-white shadow-assignment-card gap-10 px-20 flex flex-col">
-                                <h1 class="text-4xl font-bold text-main w-full text-center flex items-center gap-3">
-                                    <span class="material-icons-two-tone text-2xl text-main">settings</span> Settings
-                                </h1>
-                                <div class="flex items-center gap-2 font-medium text-xl text-dark-font">
-                                    Capacity
-                                    <input #capacityInput (input)="update().capacity = true" type="number" min="0"
-                                           [value]="group().capacity"
-                                           class="p-1 rounded-lg bg-main-grey shadow max-w-20" required>
-                                </div>
-                                <div class="flex items-center gap-2 font-medium text-xl text-dark-font">
-                                    <span class="text-font-grey">Horario :</span>
-                                    <select #daysInput (change)="update().lesson_days = true"
-                                            class="p-1 rounded-lg bg-main-grey shadow">
-                                        <option value="l-m">Lunes y miercoles</option>
-                                        <option value="m-j">Martes y jueves</option>
-                                        <option value="v">Viernes</option>
-                                    </select>
-                                    de
-                                    <input type="time"
-                                           (change)="update().lessons_time = true ; group().lessons_time = timeInput.value"
-                                           [value]="groupSvc.getTime(group())[0]"
-                                           class="p-1 rounded-lg bg-main-grey shadow"
-                                           #timeInput>
-                                    a <span>{{ groupSvc.getTime(group())[1] }}</span>
-                                </div>
-                                <div class="flex flex-col gap-2 text-xl text-secondary-grey">
+                            } @else if (selectedContent() === 'post') {
+                                @for (post of group().posts; track $index) {
+                                    <app-post-card [post]="post"></app-post-card>
+                                }
+                            } @else if (selectedContent() === 'assignment') {
+                                @for (assignment of group().assignments; track $index) {
+                                    <app-assignment-card [assignment]="assignment"></app-assignment-card>
+                                }
+                            } @else if (selectedContent() === 'student') {
+                                @for (student of group().students; track $index) {
+                                    <app-student-card (leaveClass)="kickStudent($event)"
+                                                      [student]="student"></app-student-card>
+                                }
+                            } @else if (selectedContent() === 'settings') {
+                                <div
+                                    class="max-w-screen-md mx-auto sm:p-10 w-screen rounded-md bg-main-white shadow-assignment-card gap-10 p-5 mr-2  sm:px-20 flex flex-col">
+                                    <h1 class="text-4xl font-bold text-main w-full text-center flex items-center gap-3">
+                                        <span class="material-icons-two-tone text-2xl text-main">settings</span>
+                                        Settings
+                                    </h1>
+                                    <div class="flex items-center gap-2 font-medium text-xl text-dark-font">
+                                        Capacity
+                                        <input #capacityInput (input)="update().capacity = true" type="number" min="0"
+                                               [value]="group().capacity"
+                                               class="p-1 rounded-lg bg-main-grey shadow max-w-20" required>
+                                    </div>
+                                    <div class="flex items-center flex-wrap gap-2 font-medium text-xl text-dark-font">
+                                        <div><span class="text-font-grey">Horario :</span>
+                                            <select #daysInput (change)="update().lesson_days = true"
+                                                    class="p-1 rounded-lg bg-main-grey shadow">
+                                                <option value="l-m">Lunes y miercoles</option>
+                                                <option value="m-j">Martes y jueves</option>
+                                                <option value="v">Viernes</option>
+                                            </select></div>
+                                        <div>de
+                                            <input type="time"
+                                                   (change)="update().lessons_time = true ; group().lessons_time = timeInput.value"
+                                                   [value]="groupSvc.getTime(group())[0]"
+                                                   class="p-1 rounded-lg bg-main-grey shadow"
+                                                   #timeInput>
+                                            a <span>{{ groupSvc.getTime(group())[1] }}</span></div>
+                                    </div>
+                                    <div class="flex flex-col gap-2 text-xl text-secondary-grey">
                                     <span>Number of students : {{ group().students?.length }}
                                         /{{ group().capacity }}</span>
-                                    This group was created
-                                    on {{ datePipe.transform(group().created_at ?? '', 'dd/MM/yyyy') }}
-                                </div>
-                                <div>
-                                    <button
-                                        (click)="showDeleteDialog.set(true)"
-                                        class="px-4 -translate-x-4 py-2 rounded-lg text-secondary font-bold text-xl hover:scale-110 hover:bg-secondary hover:text-main-white transition-all duration-300 ease-in-out flex gap-2 items-center">
-                                        Delete group
-                                    </button>
-                                </div>
-                                <div class="w-full flex justify-center">
-                                    <button
-                                        (click)="!isLoadingPut() ? putChanges() : '' "
-                                        class="flex w-fit items-center gap-2 px-4 py-2 rounded-lg font-bold text-xl {{settingsUpdateAny()?'border-2 text-main border-main hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover': 'text-font-grey'}} transition-all duration-300 ease-in-out">
-                                        @if (isLoadingPut()) {
-                                            <div class="flex items-center gap-2 ">
-                                                <app-loading-wheel></app-loading-wheel>
-                                                Loading...
-                                            </div>
-                                        } @else {
-                                            <span class="material-icons">save</span> | Save
-                                        }
-                                    </button>
-                                </div>
+                                        This group was created
+                                        on {{ datePipe.transform(group().created_at ?? '', 'dd/MM/yyyy') }}
+                                    </div>
+                                    <div>
+                                        <button
+                                            (click)="showDeleteDialog.set(true)"
+                                            class="px-4 -translate-x-4 py-2 rounded-lg text-secondary font-bold text-xl hover:scale-110 hover:bg-secondary hover:text-main-white transition-all duration-300 ease-in-out flex gap-2 items-center">
+                                            Delete group
+                                        </button>
+                                    </div>
+                                    <div class="w-full flex justify-center">
+                                        <button
+                                            [disabled]="!settingsUpdateAny()"
+                                            (click)="!isLoadingPut() ? putChanges() : '' "
+                                            class="flex w-fit items-center gap-2 px-4 py-2 rounded-lg font-bold text-xl {{settingsUpdateAny()?'border-2 text-main border-main hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover': 'text-font-grey'}} transition-all duration-300 ease-in-out">
+                                            @if (isLoadingPut()) {
+                                                <div class="flex items-center gap-2 ">
+                                                    <app-loading-wheel></app-loading-wheel>
+                                                    Loading...
+                                                </div>
+                                            } @else {
+                                                <span class="material-icons">save</span> | Save
+                                            }
+                                        </button>
+                                    </div>
 
-                            </div>
-                        }
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
 
