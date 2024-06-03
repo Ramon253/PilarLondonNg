@@ -1,9 +1,9 @@
-<section class="flex bg-main-white shadow items-center relative gap-10 p-4 rounded-xl border-2 border-main h-36 shadow hover:shadow-button-hover transition-all hover:-translate-y-1 hover:-translate-x-1">
-    <div class="aspect-square h-full">
+<section class="flex bg-main-white shadow items-center relative gap-10 p-4 rounded-xl border-2 border-main min-h-36 sm:h-36 pt-10 sm:pt-0 h-fit hover:shadow-button-hover transition-all hover:-translate-y-1 hover:-translate-x-1">
+    <div class="aspect-square h-full max-h-36">
         <img src="{{environment.baseUrl}}api/user/{{student().user_id}}/profile-picture"
              class="h-full rounded-full shadow" alt="">
     </div>
-    <div class="flex justify-between items-center w-full">
+    <div class="flex flex-wrap justify-between items-center w-full">
         <div class="flex flex-col w-fit">
             <span class="font-bold text-dark-font">
                 Name : {{ student().full_name }} {{ student().surname }}
@@ -35,7 +35,7 @@
 @if(showDeleteDialog()){
     <app-dialog>
         <div class="flex  flex-col gap-5">
-            <span>Are you sure about kicking {{student().full_name}}?</span>
+            <span>Are you sure about kicking {{student().full_name}}? He will not be able to access the platform anymore</span>
             <div class="flex items-center gap-2 justify-center">
                 <button (click)="leaveClass.emit(student().id ?? '');showDeleteDialog.set(false)" class="px-4 py-2 border-2 rounded-lg text-secondary border-secondary font-bold hover:bg-secondary hover:scale-110 hover:text-main-white transition-all">
                     Yes

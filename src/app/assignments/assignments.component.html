@@ -1,8 +1,8 @@
 <div class="hidden translate-x-[110%] translate-x-[240%]"></div>
 <div class="bg-main-grey">
     <div
-        class="min-h-[90vh] mt-[10vh] max-w-screen-lg w-screen bg-transparent flex flex-col mx-auto items-center gap-10">
-        <h1 class="text-7xl text-main font-bold m-10">{{ loginSvc.user()?.role === 'teacher' ? 'Tareas' : 'Tus tareas' }}</h1>
+        class="min-h-[90vh] p-3 mt-[10vh] max-w-screen-lg  w-screen bg-transparent flex flex-col mx-auto items-center gap-10">
+        <h1 class="text-7xl p-5 text-main font-bold m-10">{{ loginSvc.user()?.role === 'teacher' ? 'Tareas' : 'Tus tareas' }}</h1>
         <div class="border-b-2 border-font-grey w-screen max-w-screen-lg flex justify-between">
             @if (loginSvc.user()?.role === 'teacher') {
                 <div class="w-1/2 flex">
@@ -65,7 +65,8 @@
             <div class="w-full max-w-screen-xl bg-gray-300 animate-pulse h-[70vh] rounded-lg"></div>
             <div class="w-full max-w-screen-xl bg-gray-300 animate-pulse h-[70vh] rounded-lg"></div>
         } @else {
-            <div #assignmentContainer class="flex flex-col w-full gap-5">
+
+            <div #assignmentContainer class="flex flex-col w-full p-5 gap-5">
                 @for (assignment of assignments(); track $index) {
                     <app-assignment-card (delete)="deleteAssignment($event)"
                                          [assignment]="assignment"></app-assignment-card>

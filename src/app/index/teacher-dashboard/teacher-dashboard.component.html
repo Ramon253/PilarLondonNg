@@ -9,9 +9,9 @@
         </h1>
         <div class="max-w-screen-2xl mx-auto rounded-lg flex flex-col gap-16 bg-main-white w-screen p-5">
             @if (assignments().length !== 0) {
-                <h2 class="text-5xl font-bold w-full text-center pt-5 text-main ">Tareas por calificar </h2>
-                <div class="flex justify-between gap-10 w-full ">
-                    <div class="w-fit flex flex-col gap-5 p-4 rounded-lg shadow-xl bg-main-grey h-fit">
+                <h2 class="text-5xl font-bold w-full text-center nav:block hidden pt-5 text-main ">Tareas por calificar </h2>
+                <div class="flex justify-between gap-10 nav:justify-center w-full nav:flex-row nav:items-start items-center flex-col">
+                    <div class="nav:w-fit flex flex-col gap-5 p-4 rounded-lg shadow-xl w-full bg-main-grey h-fit">
                         <div class=" flex flex-col gap-4 p-4 h-fit rounded bg-main-grey">
                             <h3 class="w-full text-center text-dark-font text-2xl {{marked() < 50 ? 'text-secondary' : 'text-dark-font'}} font-bold">
                                 Tareas calificadas</h3>
@@ -25,8 +25,9 @@
                             </div>
                         </div>
                     </div>
+                    <h2 class="text-5xl font-bold w-full text-center nav:hidden flex pt-5 text-main ">Tareas por calificar </h2>
                     <div
-                        class="max-w-screen-xl p-4 max-h-[90vh] overflow-y-scroll pr-10 bg-main-grey shadow rounded-lg w-fit gap-5 flex flex-col ">
+                        class="nav:max-w-screen-lg nav:w-screen  p-4 h-fit nav:pr-10 bg-main-grey shadow rounded-lg w-fit gap-5 flex flex-col ">
                         @for (assignment of assignments(); track $index) {
                             <app-assignment-card [assignment]="assignment"></app-assignment-card>
                         }

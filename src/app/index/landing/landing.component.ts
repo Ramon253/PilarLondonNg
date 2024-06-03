@@ -40,7 +40,7 @@ export class LandingComponent {
         public loginSvc: LoginService,
         private mailSvc: MailService,
         public flashMessageSvc: FlashMessageService,
-        public validationSvc : ValidationsService,
+        public validationSvc: ValidationsService,
     ) {
         if (this.loginSvc.isLogged()) {
             this.contactForm.get('email')?.setValue(this.loginSvc.user()?.email ?? '')
@@ -145,22 +145,22 @@ export class LandingComponent {
 
     hero(scrollTop: number) {
         if (scrollTop > 2500) return;
-        let interval : any
+        let interval: any
         if (scrollTop > 1800) {
             if (this.heroCircle()?.nativeElement.classList.contains('heroAnimation')) {
                 return;
             }
             let start = 0
             interval = setInterval(() => {
-                this.heroPercentage.set(start ++ )
-                if (this.heroPercentage() === 90){
+                this.heroPercentage.set(start++)
+                if (this.heroPercentage() === 90) {
                     clearInterval(interval)
                 }
-            },11)
-            setTimeout(()=> {
+            }, 11)
+            setTimeout(() => {
                 interval.clearInterval()
                 this.heroPercentage.set(90)
-            },1000)
+            }, 1000)
             this.heroCircle()?.nativeElement.classList.add('heroAnimation')
             return
         }
@@ -169,15 +169,9 @@ export class LandingComponent {
     }
 
     secondView(scrollTop: number) {
-        if (scrollTop > 1450) {
-            this.renderer.setStyle(this.foto2()?.nativeElement, 'transforms', 'scale(100%)')
-            this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(100%)')
-            return;
-        }
-
         if (scrollTop > 1300) {
-            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(50%)')
-            this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(50%)')
+            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(100%)')
+            this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(100%)')
             return
         }
         console.log(scrollTop)
@@ -185,7 +179,8 @@ export class LandingComponent {
         this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(0)')
     }
 
-    firstView(scrollTop: number) {
+
+    firstView(scrollTop: number ) {
         if (scrollTop >= 1200) return;
         if (scrollTop < 600) {
             this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(-200%)')
@@ -197,7 +192,10 @@ export class LandingComponent {
     }
 
 
-    sendEmail(event: SubmitEvent) {
+    sendEmail(event
+                  :
+                  SubmitEvent
+    ) {
         event.preventDefault()
         if (this.contactForm.invalid) return
         this.isLoadingMail.set(true)

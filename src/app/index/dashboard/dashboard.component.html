@@ -8,10 +8,10 @@
                   class="cursor-pointer text-5xl hover:px-2 transition-all text-secondary">{{ student().full_name }}</span>
         </h1>
         <div class="max-w-screen-2xl mx-auto rounded-lg flex flex-col gap-16 bg-main-white w-screen p-5 ">
-            <h2 class="text-5xl font-bold w-full text-center pt-5 text-main ">Tus entregas</h2>
-            <div class="flex justify-between gap-10 w-full ">
-                <div class="w-fit flex flex-col gap-5 p-4 rounded-lg shadow bg-main-grey h-fit">
-                    <div class=" flex flex-col gap-4 p-4 h-fit rounded bg-main-grey">
+            <h2 class="text-5xl font-bold w-full text-center pt-5 text-main hidden nav:flex">Tus entregas</h2>
+            <div class="flex nav:flex-row flex-col items-center nav:items-start justify-between gap-10 w-full ">
+                <div class="nav:w-fit w-full flex flex-col gap-5 p-4 rounded-lg shadow bg-main-grey h-fit">
+                    <div class=" flex flex-col w-full nav:w-fit gap-4 p-4 h-fit rounded bg-main-grey">
                         <h3 class="w-full text-center text-dark-font text-2xl {{answered < 50 ? 'text-secondary' : 'text-dark-font'}} font-bold">
                             Tienes entregadas un </h3>
                         <div class="w-full overflow-hidden rounded-md bg-main-white shadow-lg h-10">
@@ -35,10 +35,11 @@
                         </div>
                     </div>
                 </div>
+                <h2 class="text-5xl font-bold w-full text-center pt-5 text-main flex nav:hidden">Tus entregas</h2>
                 <div
-                    class="max-w-screen-lg p-4 max-h-[70vh] overflow-y-scroll bg-main-grey shadow rounded-lg w-screen grid gap-5 grid-cols-2">
+                    class="nav:max-w-screen-lg max-w-[90vw] p-4 max-h-[70vh] overflow-y-scroll bg-main-grey shadow rounded-lg w-screen grid gap-5  grid-cols-1 nav:grid-cols-2">
                     @for (solution of solutions(); track $index) {
-                        <app-your-solution-card [solution]="solution"></app-your-solution-card>
+                        <app-your-solution-card  [solution]="solution"></app-your-solution-card>
 
                     }
                 </div>
@@ -46,18 +47,18 @@
         </div>
         <h5 class="text-main font-bold text-5xl w-full text-center py-20">Tus tareas</h5>
         <div
-            class="max-w-screen-xl w-screen mx-auto flex flex-col p-10  items-center justify-center rounded-lg bg-main-grey gap-5">
+            class="max-w-screen-lg w-screen mx-auto flex flex-col p-10  items-center justify-center rounded-lg bg-main-grey gap-5">
             @if (assignments().length === 0) {
                 <h6 class="text-4xl text-main font-bold w-full text-center">En hora buena tienes todas tus tareas
                     entregadas</h6>
             } @else {
                 <h6 class="text-4xl w-full text-center text-secondary font-bold">Tu proxima entrega</h6>
-                <app-assignment-card [assignment]="assignments()[0]"></app-assignment-card>
+                <app-assignment-card class="w-full" [assignment]="assignments()[0]"></app-assignment-card>
                 @if (assignments().length -1 !== 0) {
                     @if (showAssignments()) {
                         @for(assignment of assignments(); track $index){
                             @if ($index !== 0){
-                                <app-assignment-card [assignment]="assignment"></app-assignment-card>
+                                <app-assignment-card class="w-full" [assignment]="assignment"></app-assignment-card>
                             }
                         }
                         <button routerLink="/assignments"

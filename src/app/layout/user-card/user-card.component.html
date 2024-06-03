@@ -11,7 +11,7 @@
         </div>
         <div
             class="absolute right-1 group-hover:h-[8vh] group-hover:top-[1vh] group-hover:bottom-[1vh]  z-30 shadow-none overflow-hidden cursor-pointer rounded-full shadow-main duration-300 ease-in-out flex items-center justify-end text-xl font-bold text-font-grey group-hover:w-[18vh] {{showMenu()?'w-[18vh] h-[8vh] top-[1vh] bottom-[1vh] ':'top-[2vh] bottom-[2vh]  w-[6vh]'}}  bg-main-grey">
-            <span class="w-[10vh] p-2">{{ user()?.name }}</span>
+            <span class="w-[10vh] p-2 truncate">{{ user()?.name }}</span>
         </div>
     </div>
 }

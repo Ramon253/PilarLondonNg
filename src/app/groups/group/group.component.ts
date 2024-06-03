@@ -1,4 +1,4 @@
-import {Component, ElementRef, input, signal, viewChild} from '@angular/core';
+import {Component, ElementRef, input, signal, SimpleChange, viewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../login.service";
 import {GroupService} from "../../services/group.service";
@@ -13,12 +13,10 @@ import {DialogComponent} from "../../dialog/dialog.component";
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
 import {Student} from "../../models/student";
 import {StudentService} from "../../services/student.service";
-import {tryUnwrapForwardRef} from "@angular/compiler-cli/src/ngtsc/annotations/common";
 import {PostCreationFormComponent} from "../../posts/post-creation-form/post-creation-form.component";
 import {AssignmentFormComponent} from "../../assignments/assignment-form/assignment-form.component";
 import {DatePipe} from "@angular/common";
 import {ImageCroppedEvent, ImageCropperComponent} from "ngx-image-cropper";
-import {update} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
 
 
 @Component({
@@ -40,7 +38,7 @@ import {update} from "@angular-devkit/build-angular/src/tools/esbuild/angular/co
 export class GroupComponent {
 
     group = signal<Group>({})
-
+    showTabMenu = signal<boolean>(false)
     bannerUrl = signal<string>(``)
     banner = viewChild<ElementRef>('banner')
     showCropper = signal<boolean>(false)
@@ -103,7 +101,7 @@ export class GroupComponent {
     ) {
     }
 
-
+    windowSize = signal<number>(window.innerWidth)
     ngOnInit() {
         this.route.params.subscribe(
             params => {
@@ -116,6 +114,9 @@ export class GroupComponent {
                 );
             }
         )
+        window.addEventListener('resize' ,() => {
+            this.windowSize.set(this.window.innerWidth)
+        })
     }
 
     addStudent(select: HTMLSelectElement) {
@@ -273,4 +274,5 @@ export class GroupComponent {
     }
 
     protected readonly environment = environment;
+    protected readonly window = window;
 }

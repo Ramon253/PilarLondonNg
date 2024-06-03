@@ -45,7 +45,7 @@ export class AssignmentComponent {
 	isLoadingDelete = signal<boolean>(false)
 	isLoadingPostResource = signal<boolean>(false)
 	updateAny = signal<boolean>(false)
-
+    showSolutionMenu = signal<boolean>(false)
 	showDeleteDialog = signal<boolean>(false)
 	showPostDialog = signal<boolean>(false)
     showSolutionFormDialog = signal<boolean>(false)
@@ -218,4 +218,5 @@ export class AssignmentComponent {
 	) { }
 
     protected readonly alert = alert;
+    protected readonly parseFloat = parseFloat;
 }

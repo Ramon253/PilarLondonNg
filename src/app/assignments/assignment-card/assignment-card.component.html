@@ -1,12 +1,12 @@
 <div
-    class="shadow-assignment-card p-4 flex relative bg-main-white rounded-md border-[3px] border-secondary pt-14 flex-col shadow-lg gap-10 max-w-screen-lg w-screen max-h-[70vh] overflow-hidden items-center"
+    class="shadow-assignment-card p-4 flex  relative bg-main-white rounded-md border-[3px] border-secondary pt-24 sm:pt-14 flex-col gap-10 max-w-screen-lg w-full max-h-[70vh] overflow-hidden items-center"
 >
 
     @if (loginSvc.user()?.role === 'teacher') {
         <div class="absolute top-2 left-2 p-1 rounded-lg bg-main-grey shadow text-lg text-main flex flex-col gap-4">
             <div class="flex items-center gap-2">
                 <span>Enviados</span>
-                <span class="text-dark-font">{{assignment().submitted}} / {{assignment().members}}</span>
+                <span class="text-dark-font">{{ assignment().submitted }} / {{ assignment().members }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span>Calificado </span><span class="text-dark-font">{{ assignment().marked }}
@@ -15,9 +15,8 @@
         </div>
         <div class="absolute right-4 top-4">
             <button (click)="showDeleteDialog.set(true)"
-                    class=" flex items-center p-2 px-3 border-2 font-bold text-secondary hover:text-main-white border-secondary hover:bg-secondary hover:scale-110 transition-all rounded-lg">
+                    class=" flex items-center text-secondary hover:text-main-white  hover:bg-secondary  transition-all rounded-full p-1">
                 <span class="material-icons cursor-pointer flex items-center">delete</span>
-                <span>| Delete Assignment </span>
             </button>
         </div>
     } @else {
@@ -33,7 +32,8 @@
         <h1 class="text-5xl font-bold text-main w-full text-center">
             <a routerLink="/assignment/{{assignment().id}}">{{ assignment().name }}</a>
         </h1>
-        <div class="flex items-center justify-between text-secondary-grey">
+        <div
+            class="flex items-start sm:items-center flex-wrap gap-5 sm:gap-3  flex-col sm:flex-row justify-between text-secondary-grey">
             <span>Assignment / {{ assignment().group_name ?? '' }}</span>
             <span>Fecha entrega : {{ assignment().dead_line }}</span>
         </div>
@@ -58,25 +58,30 @@
             }
         </div>
 
-        <section class="flex gap-4 w-full">
-            <div class="w-full flex gap-4 flex-col p-4 justify-center h-fit">
-                <h2 class="text-4xl  font-medium text-secondary w-full py-4 border-b-2 border-secondary">Links
-                </h2>
-                <div class="w-full items-center justify-center h-fit flex flex-wrap">
-                    @for (link of assignment().links; track $index) {
-                        <app-link parent="assignment" [link]="link"></app-link>
-                    }
+        <section class="flex nav:flex-row flex-col gap-4 w-full">
+            @if (assignment().links?.length !== 0) {
+
+                <div class="w-full flex gap-4 flex-col p-4 justify-center h-fit">
+                    <h2 class="text-4xl  font-medium text-secondary w-full py-4 border-b-2 border-secondary">Links
+                    </h2>
+                    <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                        @for (link of assignment().links; track $index) {
+                            <app-link parent="assignment" [link]="link"></app-link>
+                        }
+                    </div>
                 </div>
-            </div>
-            <div class="w-full flex gap-4 flex-col p-4 items-center h-fit">
-                <h2 class="text-4xl  font-medium text-main w-full py-4 border-b-2 border-main">Files
-                </h2>
-                <div class="w-full items-center justify-center h-fit flex flex-wrap">
-                    @for (file of assignment().fileLinks; track $index) {
-                        <app-file parent="assignment" [file]="file"></app-file>
-                    }
+            }
+            @if (assignment().fileLinks?.length !== 0) {
+                <div class="w-full flex gap-4 flex-col p-4 items-center h-fit">
+                    <h2 class="text-4xl  font-medium text-main w-full py-4 border-b-2 border-main">Files
+                    </h2>
+                    <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                        @for (file of assignment().fileLinks; track $index) {
+                            <app-file parent="assignment" [file]="file"></app-file>
+                        }
+                    </div>
                 </div>
-            </div>
+            }
         </section>
 
     </div>

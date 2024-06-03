@@ -1,10 +1,16 @@
 <section class="w-full bg-landing-gradient h-fit min-h-[90vh]">
-    <div class="max-w-screen-xl h-[90vh] flex items-center justify-center gap-10 w-screen mx-auto">
-        <div class="flex basis-1/2 items-center justify-center">
-            <div class="flex w-1/2 flex-col h-full gap-5">
-                <h1 class="text-8xl font-bold font-landing text-main">
-                    Pilar London
-                </h1>
+    <div
+        class="max-w-screen-xl min-h-[90vh] h-fit flex-col nav:flex-row flex items-center justify-evenly w-screen mx-auto">
+        <div class="flex w-full nav:basis-1/2 items-center justify-center">
+            <div class="flex  nav:w-1/2 flex-col p-2 h-full gap-5">
+                <div class="text-6xl nav:text-8xl font-bold font-landing text-main flex flex-col">
+                    <h1 class="font-landing">
+                        Pilar
+                    </h1>
+                    <h1 class="font-landing">
+                        London
+                    </h1>
+                </div>
                 <p class="text-main text-xl font-medium">
                     Academia de ingles para todos los niveles
                 </p>
@@ -16,7 +22,7 @@
             </div>
         </div>
         <div class="basis-1/2 flex justify-center items-center h-full">
-            <div class="w-full relative aspect-[13/10]">
+            <div class="w-full relative aspect-[13/10] p-2 pr-5">
                 <img class="aspect-[13/10] w-full rounded-lg shadow-xl" src="assets/img/landingEjem.png"
                      alt="Academy Photo">
                 <div class="w-full h-fit flex justify-center items-center absolute bottom-2">
@@ -33,14 +39,15 @@
     </div>
 </section>
 <div class="max-w-screen-2xl  w-screen h-fit bg-main-white mx-auto">
-    <div class="h-[90vh] flex gap-40 items-center snap-center  p-10">
-        <div class="basis-1/2 max-h-full sm:h-[90%]  flex items-center justify-end ">
+    <div class="min-h-[90vh] h-fit flex flex-col nav:flex-row gap-40 items-center  nav:snap-center  p-10">
+        <div
+            class="order-2 nav:order-1 basis-1/2 max-h-full sm:h-[90%] nav:max-h-[80vh] flex items-center justify-end ">
             <img #foto1 src="assets/img/landing2.webp"
-                 class=" transition-all rounded-lg shadow-xl ease-in-out duration-[400ms] -translate-x-[150%] w-auto h-full aspect-[4/6]"
+                 class="transition-all rounded-lg shadow-xl ease-in-out duration-[400ms] nav:max-h-[80vh] -translate-x-[150%]  h-full aspect-[4/6]"
                  alt="landing image 2">
         </div>
         <div #text1
-             class="flex flex-col items-start justify-center gap-5 basis-1/2 transition-all duration-[400ms] ease-in-out">
+             class="flex order-1 nav:order-2 flex-col items-start justify-center gap-5 basis-1/2 transition-all duration-[400ms] ease-in-out">
             <h2 class="text-5xl font-bold text-secondary">Todas las edades</h2>
             <p class="text-dark-font text-lg max-w-[300px]">
                 Ofrecemos clases de ingles a todas las edades y niveles, desde los más pequeños (4 años) los cuales
@@ -54,7 +61,7 @@
             </button>
         </div>
     </div>
-    <div class="h-[90vh] flex items-center snap-center gap-40 p-10">
+    <div class="min-h-[90vh] h-fit flex flex-col nav:flex-row items-center snap-center gap-40 p-10">
         <div #text2
              class="flex flex-col items-end justify-center gap-5 basis-1/2 transition-all duration-[400ms] ease-in-out">
             <div class="w-fit space-y-5 ">
@@ -73,18 +80,19 @@
             </div>
         </div>
         <div #foto2
-             class="basis-1/2 transition-all duration-[400ms] ease-in-out max-h-full justify-start flex items-center sm:h-[90%] scale-0">
+             class="basis-1/2 transition-all duration-[400ms] ease-in-out max-h-full justify-start flex items-center sm:h-[90%]">
             <img src="assets/img/landing2.jpg"
-                 class="transition-all rounded-lg shadow-xl ease-in-out duration-[400ms]  w-auto h-full aspect-[4/6]"
+                 class="transition-all nav:max-h-[80vh] rounded-lg shadow-xl ease-in-out duration-[400ms]  w-auto h-full aspect-[4/6]"
                  alt="landing image 2">
         </div>
     </div>
 </div>
 
 <!--Hero-->
-<div class="w-full snap-center text-main-white font-medium h-[300px] bg-main py-20">
-    <div class="max-w-screen-lg w-screen mx-auto h-full flex items-center justify-between">
-        <div class="basis-1/2 flex items-center divide-main-white h-fit divide-x ">
+<div class="w-full snap-center text-main-white font-medium h-fit nav:h-[300px] bg-main py-20">
+    <div class="max-w-screen-lg w-screen mx-auto h-full flex flex-col nav:flex-row items-center justify-between">
+        <div
+            class="basis-1/2 px-5 flex flex-col nav:flex-row items-center divide-main-white h-fit  divide-y nav:divide-y-0 nav:divide-x ">
             <div class="hero relative aspect-square flex items-center justify-center px-10 basis-1/2">
                 <svg width="181" height="181" viewBox="0 0 181 181" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle class="cicle" cx="90.5" cy="90.5" r="73" stroke="#FEFEFE" stroke-width="35"/>
@@ -95,14 +103,15 @@
                     {{ heroPercentage() }}%
                 </div>
             </div>
-            <div class="basis-1/2 flex flex-col gap-5 items-center px-10 justify-center">
+            <div class="basis-1/2 pt-5 nav:pt:0 flex flex-col gap-5 items-center px-10 justify-center">
                 <span class="text-4xl w-full font-bold text-secondary">{{ heroPercentage() }} %</span>
                 <p class="text-main-grey  font-bold">
                     De aprobados en examenes de cambridge
                 </p>
             </div>
         </div>
-        <div class="basis-1/2 flex items-center divide-main-white h-fit divide-x ">
+        <div
+            class="basis-1/2 flex-col nav:flex-row flex items-center divide-main-white h-fit divide-y  nav:divide-y-0 nav:divide-x ">
             <div class="aspect-square flex items-center justify-center px-10 basis-1/2">
                 <svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -110,7 +119,7 @@
                         fill="#EDEDED"/>
                 </svg>
             </div>
-            <div class="basis-1/2 flex flex-col gap-5 items-center px-10 justify-center">
+            <div class="basis-1/2 pt-5 nav:pt:0 flex flex-col gap-5 items-center px-10 justify-center">
                 <span class="text-4xl w-full font-bold text-secondary">+ 100</span>
                 <p class="text-main-grey max-w-[150px] font-bold">
                     Alumnos matriculados
@@ -120,12 +129,13 @@
     </div>
 </div>
 <div class="max-w-screen-2xl  w-screen h-fit bg-main-white mx-auto">
-    <div class="min-h-[90vh] h-fit flex flex-col gap-20 snap-center p-20 w-full overflow-hidden">
-        <h3 #planHeader class="transition-all duration-[400ms] w-full text-center text-7xl text-secondary font-bold ">
+    <div class="min-h-[90vh] h-fit flex flex-col gap-20 snap-center pt-20 nav:p-20 w-full overflow-hidden">
+        <h3 #planHeader
+            class="transition-all duration-[400ms] px-5 w-full text-center text-7xl text-secondary font-bold ">
             Planes y precios</h3>
-        <div class="flex h-full   items-center gap-10 justify-center snap-center">
+        <div class="flex h-full flex-col nav:flex-row items-center gap-10 justify-center snap-center">
             <div #plan1
-                 class="transition-all duration-[400ms] ease-in-out basis-1/3 aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-auto p-10">
+                 class="max-w-[90vw] transition-all duration-[400ms] ease-in-out nav:basis-1/3 nav:aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-fit nav:h-auto p-10">
                 <div class="flex flex-col gap-5 w-full">
                     <span class="w-full font-bold text-5xl text-main text-center pb-4 border-b-2 border-secondary-grey">Dia de prueba</span>
                     <span class="w-full font-bold text-4xl text-secondary text-center ">0€</span></div>
@@ -139,7 +149,7 @@
                 </button>
             </div>
             <div #plan2
-                 class="transition-all duration-[400ms] ease-in-out  border-secondary border-t-[3px] rounded-t-none basis-1/3 aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-auto p-10">
+                 class="max-w-[90vw] transition-all duration-[400ms] ease-in-out  border-secondary border-t-[3px] rounded-t-none nav:basis-1/3 nav:aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-fit nav:h-auto p-10">
                 <div class="flex flex-col gap-5 w-full">
                     <span class="w-full font-bold text-5xl text-main text-center pb-4 border-b-2 border-secondary-grey">Plan familiar</span>
                     <span class="w-full font-bold text-4xl text-secondary text-center ">40€/mes</span></div>
@@ -154,7 +164,7 @@
                 </button>
             </div>
             <div #plan3
-                 class="transition-all duration-[400ms] ease-in-out basis-1/3 aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-auto p-10">
+                 class="max-w-[90vw] transition-all duration-[400ms] ease-in-out nav:basis-1/3 nav:aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-fit nav:h-auto p-10">
                 <div class="flex flex-col gap-5 w-full">
                     <span class="w-full font-bold text-5xl text-main text-center pb-4 border-b-2 border-secondary-grey">Plan mensual</span>
                     <span class="w-full font-bold text-4xl text-secondary text-center ">50 €/mes</span></div>
@@ -173,7 +183,7 @@
     </div>
     <div
         class="max-h-[90vh] overflow-hidden snap-center h-[90vh] flex flex-col items-center justify-center gap-20 p-20">
-        <h4 class="text-main  text-6xl font-bold flex items-center justify-center gap-2">
+        <h4 class="text-main  text-4xl nav:text-6xl font-bold flex items-center justify-center gap-2">
             <div class="relative h-fit w-fit p-2">
                 <svg
                     #svgLocation
@@ -189,7 +199,7 @@
             </div>
             Ubicacion
         </h4>
-        <div class="text-xl font-bold">
+        <div class="text-xl font-bold max-w-[90vw]">
             <div #timetable
                  class="p-2 font-medium shadow-soft rounded-t-lg bg-main-white text-main w-full flex transition-all duration-[400ms] items-center justify-center">
                 <span>Abiertos de <span class="font-bold text-secondary">Lunes</span> a <span
@@ -200,8 +210,9 @@
                  class="p-2 shadow-card rounded-b-lg  bg-main text-main-white w-full flex transition-all duration-[400ms] items-center justify-center">
                 <span>Calle 5 C. Antonio de Ulloa</span>
             </div>
-            <div class="bg-main-grey shadow-card">
+            <div class="bg-main-grey  shadow-card">
                 <iframe
+                    class="max-w-[90vw]"
                     src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1601.6303630943617!2d-6.247002461101953!3d36.596029146512926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDM1JzQ1LjciTiA2wrAxNCc0NC42Ilc!5e0!3m2!1ses!2ses!4v1717138959081!5m2!1ses!2ses"
                     width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -209,13 +220,14 @@
         </div>
     </div>
     <h5 class="text-6xl font-bold w-full text-center text-secondary">Contacto</h5>
-    <div class="min-h-[90vh] w-full flex p-10 gap-10">
-        <div class="rounded-lg gap-2 p-4 bg-main-grey shadow flex flex-col items-center h-fit ">
+    <div class="min-h-[90vh] h-full w-full flex-col lg:flex-row lg:items-start items-center flex p-10 gap-10">
+        <div class="rounded-lg gap-2 lg:w-fit w-full p-4 bg-main-grey shadow flex flex-col items-center h-fit ">
             <span class="text-3xl font-bold py-4 text-main">Informacion de contacto</span>
             <div
-                class="w-full flex items-center gap-2 text-font-grey justify-between bg-main-white p-2 shadow rounded-md">
-                <div class="flex items-center gap-2"><span class="text-secondary font-bold">Telefono</span> : 601 14
-                    80 31
+                class="w-full flex flex-col nav:flex-row items-center gap-2 text-font-grey justify-between bg-main-white p-2 shadow rounded-md">
+                <div class="flex flex-col nav:flex-row items-center gap-2">
+                    <span class="text-secondary font-bold">Telefono :</span>
+                    601 14 80 31
                 </div>
                 <button class="" (click)="
                     navigator.clipboard.writeText('601148031');
@@ -228,9 +240,10 @@
                 </button>
             </div>
             <div
-                class="w-full flex items-center gap-2 justify-between text-font-grey bg-main-white p-2 rounded-md shadow">
-                <div class="flex gap-2 items-center"><span class="text-secondary font-bold">Email</span>
-                    : {{ 'pilarlondon@gmail.com' }}
+                class="w-full flex-col nav:flex-row flex items-center gap-2 justify-between text-font-grey bg-main-white p-2 rounded-md shadow">
+                <div class="flex-col nav:flex-row flex gap-2 items-center">
+                    <span class="text-secondary font-bold">Email :</span>
+                     {{ ' pilarlondon@gmail.com' }}
                 </div>
                 <button class="" (click)="
                 navigator.clipboard.writeText('pilarlondon@gmail.com');
@@ -243,11 +256,11 @@
                 </button>
             </div>
         </div>
-        <div class="max-w-screen-md w-screen">
+        <div class="max-w-screen-md w-screen ">
             <!--Contact form-->
             <form
                 (submit)="sendEmail($event)"
-                class="max-w-screen-md overflow-hidden w-screen rounded-lg bg-main-white shadow-card flex flex-col gap-10 p-10 mx-auto"
+                class="max-w-[90vw] nav:max-w-screen-md overflow-hidden w-screen rounded-lg bg-main-white shadow-card flex flex-col gap-10 p-10 mx-auto"
                 [formGroup]="contactForm">
 
                 <div class="flex flex-col ">
@@ -269,7 +282,7 @@
                             nombre</label>
 
                     </div>
-                    <div class="w-full flex items-center gap-2">
+                    <div class="w-full flex-col sm:flex-row flex items-center gap-2">
                         <div #email
                              class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
                             <input #emailInput formControlName="email" id="email" type="email"

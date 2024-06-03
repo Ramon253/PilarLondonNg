@@ -2,7 +2,7 @@
 </section>
 
 <section class="w-full bg-main-grey">
-    <div class="mt-[10vh] min-h-[90vh] max-w-screen-xl mx-auto p-4 flex gap-10 bg-main-grey">
+    <div class="mt-[10vh] min-h-[90vh] max-w-screen-xl w-screen mx-auto p-4 flex gap-10 bg-main-grey">
         @if (isLoading()) {
         <div class="flex gap-4 w-full mt-20">
             <div class="w-full flex max-h-screen flex-col  max-w-screen-lg  gap-4">
@@ -13,7 +13,7 @@
             <div class="w-[50rem] h-[7rem] rounded-lg bg-gray-300 animate-pulse"></div>
         </div>
         } @else {
-        <div class="flex flex-col items-center max-w-screen-lg  w-max mx-auto gap-4 pt-10">
+        <div class="flex flex-col items-center max-w-screen-lg  w-screen px-10 mx-auto gap-4 pt-10">
 
             <div class="pl-1 w-full flex justify-between">
                 <span class="flex items-center gap-4">POST/
@@ -99,6 +99,49 @@
                     }
                 </div>
             </div>
+            @if (hasResources() || loginSvc.user()?.role === 'teacher') {
+                <div class="w-full lg:hidden">
+                    <div class="py-4 pr-4 rounded-xl  h-fit flex flex-col ">
+                        <div class="flex w-full flex-col gap-10">
+
+                            <div class="w-full space-y-4">
+                                <div class="w-full border-b border-secondary  pb-4  ">
+                                    <h1 class="text-secondary font-bold text-2xl pl-4">Files</h1>
+                                </div>
+                                <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
+                                    @for (file of post().fileLinks; track $index) {
+                                        <app-file parent="assignment" [file]="file"
+                                                  (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
+                                    }
+                                </div>
+                            </div>
+
+
+                            <div class="w-full space-y-4">
+                                <div class="w-full border-b  border-main pb-4 ">
+                                    <h1 class="text-main pl-4 font-bold text-2xl">Links</h1>
+                                </div>
+                                <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
+                                    @for (link of post().links; track $index) {
+                                        <app-link parent="assignment" (delete)="deleteLink($event.id, false)"
+                                                  [link]="link"></app-link>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                        @if (loginSvc.user()?.role === 'teacher') {
+                            <div class="w-full flex p-2 items-center justify-center">
+                                <button (click)="showPostDialog.set(true)"
+                                        class="flex p-2 items-center gap-2 border-2 rounded-lg text-main border-main hover:bg-main hover:scale-110 hover:text-main-white transition">
+                                    <span class="material-icons">add</span> <span>|</span> Añadir link u archivo
+                                </button>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            }
             @if (loginSvc.user()?.role === 'teacher') {
             <div class="w-full">
                 <button (click)="showDeleteDialog.set(true)"
@@ -119,7 +162,7 @@
 
         </div>
         @if (hasResources()) {
-        <div class="w-full pt-20">
+        <div class="w-full pt-20 hidden lg:block">
             <div class="p-4 rounded-xl border-2 border-main h-fit flex flex-col bg-main-white shadow">
                 @if (post().fileLinks?.length !== 0 ) {
                 <div class="w-full border-b border-font-grey  text-center pb-4 ">

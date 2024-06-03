@@ -1,25 +1,25 @@
 <div
-    class="p-4 flex relative bg-main-white rounded-xl border-[3px] border-main pt-14 flex-col shadow-lg gap-10 max-w-screen-lg w-full max-h-[70vh] overflow-hidden items-center">
+    class="p-4 flex relative bg-main-white rounded-lg border-[3px] border-main pt-14 flex-col shadow-lg gap-10 max-w-screen-lg w-full max-h-[70vh] h-fit overflow-hidden items-center">
 
-    @if (loginSvc.user()?.role === 'teacher' ) {
-    <div class="absolute right-4 top-4">
-        <button (click)="showDeleteDialog.set(true)"
-            class=" flex items-center p-2 px-3 border-2 font-bold text-secondary hover:text-main-white border-secondary hover:bg-secondary hover:scale-110 transition-all rounded-lg">
-            <span class="material-icons cursor-pointer flex items-center">delete</span>
-            <span>| Delete post </span>
-        </button>
-    </div>
+    @if (loginSvc.user()?.role === 'teacher') {
+        <div class="absolute right-4 top-4">
+            <button (click)="showDeleteDialog.set(true)"
+                    class=" flex items-center p-1 cursor-pointer transition-all ease-in-out text-secondary hover:text-main-white hover:bg-secondary rounded-full">
+                <span class="material-icons ">delete</span>
+            </button>
+        </div>
     }
     <div class="w-full max-w-screen-md">
         <h1 class="text-5xl font-bold text-secondary w-full text-center">
             <a routerLink="/post/{{post.id}}">{{ post.name }}</a>
         </h1>
         <div class="flex items-center justify-between text-secondary-grey">
-            <span>POST / {{post.group_name ?? ''}}</span>
-            <span>{{post.created_at}}</span>
+            <span>POST / {{ post.group_name ?? '' }}</span>
+            <span>{{ post.created_at }}</span>
         </div>
     </div>
-    <div class="flex h-auto flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-20"
+    <div
+        class="flex h-fit flex-col gap-5 mx-auto max-w-screen-md w-full items-center overflow-y-scroll scroll-hidden pb-5"
         style="mask-image: linear-gradient(to bottom, white 95%, transparent 100%)">
 
 
@@ -29,41 +29,46 @@
 
         <div #multimedia class="h-fit">
             @for (multimedia of post.multimedia; track $index) {
-            <app-multimedia parent="post" [file]="multimedia"></app-multimedia>
+                <app-multimedia parent="post" [file]="multimedia"></app-multimedia>
             }
         </div>
 
         <div #youtube class="w-full h-fit">
             @for (video of post.videos; track $index) {
-            <app-youtube-video parent="post" [link]="video"></app-youtube-video>
+                <app-youtube-video parent="post" [link]="video"></app-youtube-video>
             }
         </div>
 
-        <section class="flex gap-4 w-full">
-            <div class="w-full flex gap-4 flex-col p-4 justify-center h-fit">
-                <h2 class="text-4xl  font-medium text-secondary w-full py-4 border-b-2 border-secondary">Links
-                </h2>
-                <div class="w-full items-center justify-center h-fit flex flex-wrap">
-                    @for (link of post.links; track $index) {
-                    <app-link parent="post" [link]="link"></app-link>
-                    }
+        <section class="flex gap-4 flex-col sm:flex-row w-full">
+            @if (post.links?.length !== 0) {
+                <div class="w-full flex gap-4 flex-col p-4 justify-center h-fit">
+                    <h2 class="text-4xl  font-medium text-secondary w-full py-4 border-b-2 border-secondary">
+                        Links
+                    </h2>
+                    <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                        @for (link of post.links; track $index) {
+                            <app-link parent="post" [link]="link"></app-link>
+                        }
+                    </div>
                 </div>
-            </div>
-            <div class="w-full flex gap-4 flex-col p-4 items-center h-fit">
-                <h2 class="text-4xl  font-medium text-main w-full py-4 border-b-2 border-main">Files
-                </h2>
-                <div class="w-full items-center justify-center h-fit flex flex-wrap">
-                    @for (file of post.fileLinks; track $index) {
-                    <app-file parent="post" [file]="file"></app-file>
-                    }
+            }
+            @if (post.fileLinks?.length !== 0) {
+                <div class="w-full flex gap-4 flex-col p-4 items-center h-fit">
+                    <h2 class="text-4xl  font-medium text-main w-full py-4 border-b-2 border-main">Files
+                    </h2>
+                    <div class="w-full items-center justify-center h-fit flex flex-wrap">
+                        @for (file of post.fileLinks; track $index) {
+                            <app-file parent="post" [file]="file"></app-file>
+                        }
+                    </div>
                 </div>
-            </div>
+            }
         </section>
 
     </div>
     <div class="h-fit">
         <button routerLink="/post/{{post.id}}"
-            class="p-2 rounded-lg border-2 px-4 border-main text-main font-medium hover:scale-110 hover:bg-main hover:text-main-white transition-all">
+                class="p-2 rounded-lg border-2 px-4 border-main text-main font-medium hover:scale-110 hover:bg-main hover:text-main-white transition-all">
             Ver mas
         </button>
     </div>
@@ -77,14 +82,14 @@
                 post</span>
             <div class="w-full flex items-center justify-center gap-4">
                 <button (click)="deletePost();" type="submit"
-                    class="border-2 h-[3rem] flex items-center gap-2 py-2 px-4 rounded-lg border-secondary font-bold text-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition ease-in-out">
+                        class="border-2 h-[3rem] flex items-center gap-2 py-2 px-4 rounded-lg border-secondary font-bold text-secondary hover:scale-110 hover:bg-secondary hover:text-main-white transition ease-in-out">
                     @if (isLoadingDelete()) {
-                    <div class="h-full aspect-square">
-                        <app-loading-wheel></app-loading-wheel>
-                    </div>
-                    <span>Loading...</span>
-                    }@else {
-                    Si
+                        <div class="h-full aspect-square">
+                            <app-loading-wheel></app-loading-wheel>
+                        </div>
+                        <span>Loading...</span>
+                    } @else {
+                        Si
                     }
                 </button>
                 <button

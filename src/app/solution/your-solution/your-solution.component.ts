@@ -28,6 +28,7 @@ export class YourSolutionComponent {
     solution = input.required<Solution>()
     dead_line = input.required<Date | boolean>()
     showPostDialog = signal<boolean>(false)
+    showNote = input<boolean>(true)
 
     isLoadingLink = false
     isLoadingFile = false

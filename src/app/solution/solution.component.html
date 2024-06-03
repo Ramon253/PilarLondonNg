@@ -55,7 +55,7 @@
         }
         @if (!solution().note) {
             <div class="w-full mt-10">
-                <form class="w-full flex gap-4 items-center justify-center" (submit)="grade($event, note )">
+                <form class="w-full flex gap-4 flex-wrap items-center justify-center" (submit)="grade($event, note )">
                     <input type="number" #note max="10" min="0" step="any"
                            class="border-2 border-secondary rounded-lg p-2">
                     <button type="submit"
@@ -66,8 +66,8 @@
                 </form>
             </div>
         } @else {
-            <div class="w-full flex items-center text-3xl justify-center gap-2">
-                <h3 class=" font-medium text-secondary">Nota : </h3>
+            <div class="w-full flex items-center flex-wrap text-3xl justify-center gap-2">
+                <h3 class=" font-medium text-secondary">Nota</h3>
                 @if (editNote()){
                     <form class="flex gap-2" (submit)="grade($event, updateNote )">
                         <input type="number" #updateNote max="10" min="0" step="any"

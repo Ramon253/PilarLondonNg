@@ -5,6 +5,7 @@ import {Student} from "../models/student";
 import {StudentCardComponent} from "./student-card/student-card.component";
 import {DialogComponent} from "../dialog/dialog.component";
 import {LoadingWheelComponent} from "../svg/loading-wheel/loading-wheel.component";
+import {FlashMessageService} from "../services/flash-message.service";
 
 @Component({
   selector: 'app-students',
@@ -22,6 +23,7 @@ export class StudentsComponent {
     isLoading = signal<boolean>(true)
     students = signal<Student[]>([])
     showGenerateDialog = signal<boolean>(false)
+    isCopied = signal<boolean>(false)
 
     showCode = signal<boolean>(false)
     isLoadingWaitList = signal<boolean>(false)
@@ -29,7 +31,8 @@ export class StudentsComponent {
     code = signal<string>('')
     constructor(
         private studentSvc : StudentService,
-        public loginSvc : LoginService
+        public loginSvc : LoginService,
+        private flashMessageSvc : FlashMessageService
     ) {
     }
 
@@ -56,7 +59,12 @@ export class StudentsComponent {
     copyToClipboard(){
         navigator.clipboard.writeText(this.code()).then(
             () =>{
-                alert('texto copiado ')
+                this.flashMessageSvc.messages().push({
+                    message : 'Code copied successfully',
+                    type : '',
+                    duration : 5
+                })
+                this.isCopied.set(true)
             }
         )
     }

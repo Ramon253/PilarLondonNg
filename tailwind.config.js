@@ -8,7 +8,8 @@ module.exports = {
         extend: {
             screens: {
                 'nav': '850px',
-                'xs': '320'
+                'group' : '570px',
+                'xs': '320px',
             },
             boxShadow: {
                 'assignment-card': '-10px -10px 30px 4px rgba(0,0,0,0.1), 10px 10px 30px 4px rgba(45,78,255,0.15)',
