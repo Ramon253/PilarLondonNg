@@ -13,16 +13,16 @@
             <div class="w-[50rem] h-[7rem] rounded-lg bg-gray-300 animate-pulse"></div>
         </div>
         } @else {
-        <div class="flex flex-col items-center max-w-screen-lg  w-screen px-10 mx-auto gap-4 pt-10">
+        <div class="flex flex-col items-center max-w-screen-lg  w-screen nav:px-10 mx-auto gap-4 pr-4 pt-10">
 
-            <div class="pl-1 w-full flex justify-between">
-                <span class="flex items-center gap-4">POST/
+            <div class="p-1 w-full flex justify-between">
+                <span class="flex items-center gap-4">POST
                     @if (update().group_id) {
                     <select #group_select class="bg-transparent autofill:disabled:">
                         @for (group of post().groups; track $index) {
 
                         <option [attr.selected]="group.id == post().group_id ? true : null" value="{{group.id}}">
-                            {{group.name}}
+                            /{{group.name}}
                         </option>
 
                         }
@@ -71,7 +71,7 @@
                     }
                 </h1>
             </div>
-            <div class="w-full min-h-3 flex items-start">
+            <div class="w-full max-w-[90vh] min-h-3 flex items-start">
                 @if (update().description) {
                 <textarea (focus)="triggerResize(descriptionInput)" autofocus (input)="triggerResize(descriptionInput)"
                     #descriptionInput class="border-2 rounded-lg w-[768px] h-fit p-2 bg-main-white"

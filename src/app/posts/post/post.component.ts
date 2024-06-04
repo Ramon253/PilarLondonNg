@@ -1,29 +1,26 @@
-import { Component, ElementRef, effect, signal, viewChild } from '@angular/core';
-import { PostService } from "../../services/post.service";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { Post } from "../../models/post";
-import { DatePipe } from "@angular/common";
-import { popResultSelector } from "rxjs/internal/util/args";
-import { LoginService } from "../../login.service";
-import { ValidationsService } from "../../services/validations.service";
-import { YoutubeVideoComponent } from "../youtube-video/youtube-video.component";
-import { MultimediaComponent } from "../../multimedia/multimedia.component";
-import { Comment } from "../../models/properties/comment";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { CommaExpr } from '@angular/compiler';
-import { CommentComponent } from '../../resources/comment/comment.component';
-import { FileR } from '../../models/properties/file';
-import { Link } from '../../models/properties/link';
-import { CommentService } from '../../services/resources/comment.service';
-import { LoadingWheelComponent } from '../../svg/loading-wheel/loading-wheel.component';
-import { DialogComponent } from '../../dialog/dialog.component';
-import { FormPostComponent } from '../../resources/form-post/form-post.component';
-import { LinkService } from '../../services/resources/link.service';
-import { FileService } from '../../services/resources/file.service';
-import { FileComponent } from '../../resources/file/file.component';
-import { LinkComponent } from '../../resources/link/link.component';
-import { CommentsComponent } from '../../resources/comments/comments.component';
-
+import {Component, ElementRef, signal, viewChild} from '@angular/core';
+import {PostService} from "../../services/post.service";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {Post} from "../../models/post";
+import {popResultSelector} from "rxjs/internal/util/args";
+import {LoginService} from "../../login.service";
+import {ValidationsService} from "../../services/validations.service";
+import {YoutubeVideoComponent} from "../youtube-video/youtube-video.component";
+import {MultimediaComponent} from "../../multimedia/multimedia.component";
+import {Comment} from "../../models/properties/comment";
+import {ReactiveFormsModule} from "@angular/forms";
+import {CommentComponent} from '../../resources/comment/comment.component';
+import {Link} from '../../models/properties/link';
+import {CommentService} from '../../services/resources/comment.service';
+import {LoadingWheelComponent} from '../../svg/loading-wheel/loading-wheel.component';
+import {DialogComponent} from '../../dialog/dialog.component';
+import {FormPostComponent} from '../../resources/form-post/form-post.component';
+import {LinkService} from '../../services/resources/link.service';
+import {FileService} from '../../services/resources/file.service';
+import {FileComponent} from '../../resources/file/file.component';
+import {LinkComponent} from '../../resources/link/link.component';
+import {CommentsComponent} from '../../resources/comments/comments.component';
+import {FlashMessageService} from "../../services/flash-message.service";
 
 
 @Component({
@@ -106,11 +103,11 @@ export class PostComponent {
         public validator: ValidationsService,
         private linkSvc: LinkService,
         private fileSvc: FileService,
-        public commentSvc : CommentService
+        public commentSvc: CommentService,
+        private flashMessageService: FlashMessageService
     ) {
 
     }
-
 
 
     postResource() {
@@ -130,28 +127,42 @@ export class PostComponent {
     */
 
     updatePost() {
-        this.post().subject = 'dd'
+        const post: Post = {id: this.post().id, name: this.post().name, group_id: '', subject: 'dd'}
 
         if (this.update().name) {
-            this.post().name = this.nameInput()?.nativeElement.value
+            post.name = this.nameInput()?.nativeElement.value
         }
         if (this.update().group_id) {
-            this.post().group_id = this.groupInput()?.nativeElement.value
-            this.post().group_name = this.groups().find((group) => this.post().group_id == group.id)?.name
-        }
-        if (this.update().description) {
-            this.post().description = this.descriptionInput()?.nativeElement.value
+            post.group_id = this.groupInput()?.nativeElement.value
+            post.group_name = this.groups().find((group) => this.post().group_id == group.id)?.name
+        } else
+            if (this.post().group_id === null) post.group_id = 'public'
+         else
+             post.group_id = this.post().group_id
+
+            if (this.update().description) {
+            post.description = (this.descriptionInput()?.nativeElement.value.replaceAll(' ', '') === '') ? '--@undefined' : this.descriptionInput()?.nativeElement.value
         }
 
-        this.postSvc.putPost(this.post()).subscribe(
-            post => {
-            },
-            err => {
-                this.postSvc.getPosts().subscribe(
-                    post => this.post.set(this.postSvc.mapPost(post))
-                )
+        this.postSvc.putPost(post).then(
+            res => {
+                this.post.set(res.data.post)
+                this.flashMessageService.messages().push({
+                    message: 'Post updated successfully',
+                    duration: 5,
+                    type: 'message'
+                })
             }
-        )
+        ).catch(err => {
+            this.postSvc.getPost(this.post().id?.toString() ?? '').subscribe(
+                post => this.post.set(this.postSvc.mapPost(post))
+            )
+            this.flashMessageService.messages().push({
+                message: 'Error while updating post',
+                duration: 5,
+                type: 'error'
+            })
+        })
         this.restartUpdate()
     }
 
@@ -164,11 +175,11 @@ export class PostComponent {
         )
     }
 
-    deleteComment(id : string) {
+    deleteComment(id: string) {
         this.post().comments = this.post().comments?.filter(comment => comment.id !== id)
     }
 
-    postComment(comments : Comment[]){
+    postComment(comments: Comment[]) {
         this.post().comments = comments
     }
 

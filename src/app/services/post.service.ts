@@ -58,9 +58,9 @@ export class PostService {
     }
 
 
-    public putPost(post: Post): Observable<Post> {
-
-        return this.http.put<Post>(this.path + `post/${post.id}`, post, { withCredentials: true })
+    public async putPost(post: Post): Promise<Post | any> {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.put(this.path + `post/${post.id}`, post)
     }
 
     public deletePost(post: Post): Observable<Response> {
