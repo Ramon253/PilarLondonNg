@@ -14,9 +14,9 @@
         }
     </div>
     @if (file()?.mime_type?.includes('image')) {
-    <img src="http://localhost:8000/api/{{parent()}}/file/{{file()?.id}}/get" class="aspect-auto" alt="{{file()?.file_name}}">
+    <img src="{{environment.baseUrl}}api/{{parent()}}/file/{{file()?.id}}/get" class="aspect-auto" alt="{{file()?.file_name}}">
     } @else {
-    <video src="http://localhost:8000/api/{{parent()}}/file/{{file()?.id}}/get" (seeking)="true" controls>
+    <video src="{{environment.baseUrl}}api/{{parent()}}/file/{{file()?.id}}/get" (seeking)="true" controls>
         <span>There has been a problem with the video, maybe your browser doesnt support the video tag</span>
     </video>
     }
