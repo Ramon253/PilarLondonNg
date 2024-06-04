@@ -47,8 +47,8 @@ export class FormPostComponent {
 		this.linkForm.get('link_name')?.setValue('')
 		this.linkForm.get('link')?.setValue('')
 
-
 		this.newLinks.emit(this.links())
+        this.linkForm.reset()
 	}
 
 	addLink() {

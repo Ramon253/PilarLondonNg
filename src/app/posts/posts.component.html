@@ -2,7 +2,7 @@
     <div class="min-h-[90vh] mt-[10vh] max-w-screen-lg bg-transparent flex flex-col mx-auto items-center p-2 sm:p-10 gap-10">
         <h1 class="text-7xl text-main font-bold m-10">{{showPublic()? 'Public posts' :'Tus posts'}}</h1>
         <div class="border-b-2 border-font-grey w-full flex justify-between">
-            <div class="w-1/2 flex">
+            <div class="w-full sm:w-1/2 flex">
                 <div class="border-b px-6 font-medium cursor-pointer transition relative" (click)="getPosts(false)">
                     Tus posts
                     <div
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="w-full flex -translate-y-8 items-start justify-between">
+        <div class="w-full flex flex-wrap gap-1 -translate-y-8 items-start justify-between">
             <button (click)="filter()"
                 class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
                 <span class="material-icons-outlined">filter_alt</span> Filtrar por <span class="material-icons-outlined">arrow_drop_up</span>

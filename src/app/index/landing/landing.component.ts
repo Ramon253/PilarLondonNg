@@ -8,7 +8,6 @@ import {FlashMessageService} from "../../services/flash-message.service";
 import {ValidationErrorComponent} from "../../validations/validation-error/validation-error.component";
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
 import {ValidationsService} from "../../services/validations.service";
-import {TimeInterval} from "rxjs";
 
 @Component({
     selector: 'app-landing',
@@ -81,12 +80,14 @@ export class LandingComponent {
     }
 
     contactFormTransition(scrollTop: number) {
-        if (scrollTop > 4350) {
+        let breakpoints = [4100, 4350]
+        if (window.innerWidth < 850) breakpoints = [6900, 7100]
+        if (scrollTop > breakpoints[1]) {
             this.renderer.setStyle(this.subject()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.message()?.nativeElement, 'transform', 'translateY(0)')
             return;
         }
-        if (scrollTop > 4100) {
+        if (scrollTop > breakpoints[0]) {
             this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(0)')
@@ -101,7 +102,9 @@ export class LandingComponent {
     }
 
     location(scrollTop: number) {
-        if (scrollTop > 3450) {
+        let breakpoints = [3000, 3250]
+        if (window.innerWidth < 850) breakpoints = [5300, 5500]
+        if (scrollTop > breakpoints[1]) {
             this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(0)')
             return
@@ -109,7 +112,7 @@ export class LandingComponent {
         this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(200%)')
         this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(-200%)')
 
-        if (scrollTop > 3300) {
+        if (scrollTop > breakpoints[0]) {
             this.renderer.setStyle(this.svgLocation()?.nativeElement, 'transform', 'translateY(0)')
             this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(100%)')
             return;
@@ -119,7 +122,10 @@ export class LandingComponent {
     }
 
     plans(scrollTop: number) {
-        if (scrollTop > 2600) {
+        let breakpoints = [2100, 2200]
+        if (window.innerWidth < 850) breakpoints = [3500, 4000]
+        if (scrollTop > breakpoints[1]) {
+
             this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateY(0)')
             this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateY(0)')
             this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'scale(105%)')
@@ -133,7 +139,7 @@ export class LandingComponent {
         this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '0')
         this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateY(100%)')
 
-        if (scrollTop > 2300) {
+        if (scrollTop > breakpoints[0]) {
             this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'translateY(0)')
             this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'scale(100%)')
             return
@@ -144,9 +150,11 @@ export class LandingComponent {
     }
 
     hero(scrollTop: number) {
-        if (scrollTop > 2500) return;
+        let breakpoints = [1800, 2600]
+        if (window.innerWidth < 850) breakpoints = [2450, 2800]
+        if (scrollTop > breakpoints[1]) return;
         let interval: any
-        if (scrollTop > 1800) {
+        if (scrollTop > breakpoints[0]) {
             if (this.heroCircle()?.nativeElement.classList.contains('heroAnimation')) {
                 return;
             }
@@ -169,9 +177,12 @@ export class LandingComponent {
     }
 
     secondView(scrollTop: number) {
+
         if (scrollTop > 1300) {
-            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(100%)')
             this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(100%)')
+            if (window.innerWidth < 850 && scrollTop < 1850)
+                return;
+            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(100%)')
             return
         }
         console.log(scrollTop)
@@ -180,15 +191,21 @@ export class LandingComponent {
     }
 
 
-    firstView(scrollTop: number ) {
-        if (scrollTop >= 1200) return;
-        if (scrollTop < 600) {
+    firstView(scrollTop: number) {
+        let breakpoints = [600, 1200]
+        if (window.innerWidth < 850) breakpoints = [500, 1200]
+        if (scrollTop >= breakpoints[1]) return;
+        if (scrollTop < breakpoints[0]) {
             this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(-200%)')
             this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(200%)')
             return
         }
-        this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(0)')
         this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(0)')
+        if (window.innerWidth < 850) {
+            if (scrollTop < 700) return;
+        }
+        this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(0)')
+
     }
 
 

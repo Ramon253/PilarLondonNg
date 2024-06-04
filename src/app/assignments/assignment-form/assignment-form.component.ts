@@ -30,9 +30,10 @@ export class AssignmentFormComponent {
     showError = signal<boolean>(false)
     files = signal<File[]>([])
     links = signal<Link[]>([])
+    dateValid = signal<boolean>(false)
     assignmentForm = this.formBuilder.group({
         name : ['', Validators.required],
-        description : ['', Validators.maxLength(500)],
+        description : [undefined, Validators.maxLength(500)],
         group_id : ['', Validators.required],
         dead_line : [new Date(), Validators.required]
     })
@@ -48,28 +49,30 @@ export class AssignmentFormComponent {
             this.showError.set(true)
     }
     createAssignment(ev : SubmitEvent, description : HTMLTextAreaElement){
+        if (!this.dateValid()){
+            this.assignmentForm.get('dead_line')?.setErrors({required :true})
+            return
+        }
         this.isLoading.set(true)
         let formData = undefined
         const assignment = this.assignmentForm.getRawValue() as Assignment
-        assignment.description = description.value
-        description.value = ''
+
         assignment.dead_line = this.assignmentForm.get('dead_line')?.getRawValue()
         assignment.group_id = this.assignmentForm.get('group_id')?.value ?? ''
         assignment.links = (this.links().length !== 0) ? this.links() : undefined;
         assignment.files = (this.files().length !== 0) ? this.files() : undefined;
 
-        console.log(this.assignmentForm.get('dead_line'))
         if (assignment.files) {
             formData = new FormData
             for (const key in assignment.files) {
                 formData.append(`files[${key}]`, assignment.files[key])
             }
             formData.append('name', assignment.name)
-            console.log(assignment)
             formData.append('dead_line', assignment.dead_line?.toString() ?? '')
 
-            if (assignment.description)
+            if (assignment.description )
                 formData.append('description', assignment.description)
+
 
             if (assignment.links) {
                 for (const key in assignment.links) {

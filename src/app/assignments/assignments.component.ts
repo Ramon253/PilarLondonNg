@@ -1,4 +1,4 @@
-import {Component, ElementRef, signal, viewChild} from '@angular/core';
+import {Component, ElementRef, Renderer2, signal, viewChild} from '@angular/core';
 import {PostCardComponent} from "../posts/post-card/post-card.component";
 import {PostCreationFormComponent} from "../posts/post-creation-form/post-creation-form.component";
 import {Assignment} from "../models/assignment";
@@ -43,7 +43,8 @@ export class AssignmentsComponent {
         public loginSvc: LoginService,
         private fileSvc: FileService,
         private linkSvc: LinkService,
-        private router: Router
+        private router: Router,
+        private renderer : Renderer2
     ) {
     }
 
@@ -82,12 +83,10 @@ export class AssignmentsComponent {
 
     changeTab() {
         let translate = ''
-        if (this.show.answered) {
+        if (this.show.answered || this.show.toDo) {
             translate = 'translate-x-[110%]'
-        } else if (this.show.toDo) {
-            translate = 'translate-x-[240%]'
         } else if (this.show.unmarked) {
-            translate = 'translate-x-[90%] w-[140%]'
+            translate = 'translate-x-[70%] w-[160%]'
         }
         return translate
     }

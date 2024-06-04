@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable, signal} from '@angular/core';
+import {Injectable, output, signal} from '@angular/core';
 import {Observable} from 'rxjs';
 import {UserResponse} from './models/user/userResponse';
 import {Credentials} from './models/credentials';
@@ -9,6 +9,7 @@ import {environment} from "../environments/environment.development";
 import {Router} from "@angular/router";
 import {FlashMessageService} from "./services/flash-message.service";
 import {FlashMessage} from "./models/flash-message";
+import {RoutingService} from "./services/routing.service";
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = environment.baseUrl
@@ -21,20 +22,19 @@ axios.defaults.withXSRFToken = true;
 export class LoginService {
     public isLogged = signal<boolean>(JSON.parse(localStorage.getItem('isLogged') ?? 'false'))
     user = signal<User | null>(null)
-
+    userReady = output<User>()
     constructor(
         private http: HttpClient,
         private router: Router,
-        private flashMessageSvc : FlashMessageService
+        private flashMessageSvc : FlashMessageService,
+        private routingSvc : RoutingService
     ) {
-    }
-
-    ngOnInit(){
         if (this.isLogged())
             this.getUser().subscribe(
                 user => {
                     this.user.set(user.user)
                     this.loginFront()
+                    this.userReady.emit(user.user)
                 },
                 error => {
                     if (error.status === 401) {
@@ -42,6 +42,9 @@ export class LoginService {
                     }
                 }
             );
+    }
+
+    ngOnInit(){
     }
 
     private path = environment.baseUrl + 'api';
@@ -90,7 +93,7 @@ export class LoginService {
     loginFront() {
         this.isLogged.set(true)
         localStorage.setItem('isLogged', 'true')
-        this.router.navigate(['/'])
+        this.router.navigate([this.routingSvc.intended])
     }
 
     serverErrorMessage : FlashMessage = {

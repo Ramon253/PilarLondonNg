@@ -1,11 +1,11 @@
-<div class="hidden translate-x-[110%] translate-x-[240%]"></div>
+<div class="hidden w-[160%] translate-x-[120%] translate-x-[70%]"></div>
 <div class="bg-main-grey">
     <div
         class="min-h-[90vh] p-3 mt-[10vh] max-w-screen-lg  w-screen bg-transparent flex flex-col mx-auto items-center gap-10">
         <h1 class="text-7xl p-5 text-main font-bold m-10">{{ loginSvc.user()?.role === 'teacher' ? 'Tareas' : 'Tus tareas' }}</h1>
         <div class="border-b-2 border-font-grey w-screen max-w-screen-lg flex justify-between">
             @if (loginSvc.user()?.role === 'teacher') {
-                <div class="w-1/2 flex">
+                <div class="w-full sm:w-1/2 flex">
                     <div class="border-b px-6 font-medium cursor-pointer transition relative"
                          (click)="resetTabs(); show.all = true;changeFilter()">
                         Tareas
@@ -19,17 +19,13 @@
                     </div>
                 </div>
             } @else {
-                <div class="w-1/2 flex">
+                <div class="w-full sm:w-1/2 flex">
                     <div class="border-b px-6 font-medium cursor-pointer transition relative"
                          (click)="resetTabs(); show.all = true;changeFilter()">
                         Tus tareas
                         <div #underlineTab
                              class="absolute -bottom-[3px] left-0 h-[3px] transition ease-in-out bg-secondary w-full shadow {{changeTab()}}">
                         </div>
-                    </div>
-                    <div class=" px-6 font-medium cursor-pointer transition "
-                         (click)="resetTabs(); show.answered = true;changeFilter()">
-                        Tareas hechas
                     </div>
                     <div class=" px-6 font-medium cursor-pointer transition "
                          (click)="resetTabs(); show.toDo = true;changeFilter()">
@@ -46,7 +42,7 @@
             </div>
         </div>
 
-        <div class="w-full flex -translate-y-8 items-start justify-between">
+        <div class="w-full flex gap-1 flex-wrap -translate-y-8 items-start justify-between">
             <button (click)="filter()"
                     class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
                 <span class="material-icons-outlined">filter_alt</span> Filtrar por <span

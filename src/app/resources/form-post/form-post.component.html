@@ -1,5 +1,5 @@
 <div class="max-w-[90vh] flex flex-col items-center h-fit">
-    <div class="w-full flex items-center justify-center h-fit p-2 gap-4">
+    <div class="w-full flex flex-wrap items-center justify-center h-fit p-2 gap-4">
         <button type="button" (click)="addLink()">
             <div #openLink
                 class="border-2 p-2 text-secondary w-fit rounded-lg flex items-center border-secondary gap-2 transition-all">
@@ -23,7 +23,7 @@
     </div>
     <div class="w-full overflow-hidden  h-fit">
         <div #linkMenu class="flex w-[200%] transition-all ease-out h-fit">
-            <div #lists class="w-1/2 h-fit flex items-start gap-4">
+            <div #lists class="w-1/2 h-fit flex flex-col nav:flex-row items-start gap-4">
                 <div #linkList class="w-1/2 flex flex-col gap-4 h-fit ">
                     <div class="w-full pb-2 border-b-2 border-main">
                         <span class="text-2xl font-medium text-main ">Links</span>
@@ -43,13 +43,13 @@
                     </div>
                 </div>
                 <div class="flex flex-col w-1/2 gap-4 min-h-[2rem]" #fileList>
-                    <div class=" w-full pb-2 border-b-2 border-secondary">
+                    <div class=" w-full  pb-2 border-b-2 border-secondary">
                         <span class="text-2xl font-medium text-secondary ">Files</span>
                     </div>
                     <div class=" flex flex-col flex-wrap gap-2">
                         @for (file of files(); track $index) {
-                        <div class="w-fit p-2 rounded-lg border-2 border-secondary flex items-center justify-between">
-                            <a class="mx-auto" download [href]="download(file)">
+                        <div class="w-fit max-w-[80vw] nav:max-w-[98%] p-2 rounded-lg border-2 border-secondary flex items-center justify-between">
+                            <a class="mx-auto truncate" download [href]="download(file)">
                                 {{ file.name }}
                             </a>
                             <button type="button" (click)="deleteFile(file)"

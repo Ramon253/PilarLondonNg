@@ -7,11 +7,12 @@ import {ValidationsService} from "../../services/validations.service";
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
 import {ImageCroppedEvent, ImageCropperComponent} from "ngx-image-cropper";
 import {NgOptimizedImage} from "@angular/common";
+import {ValidationErrorComponent} from "../../validations/validation-error/validation-error.component";
 
 @Component({
     selector: 'app-group-creation-form',
     standalone: true,
-    imports: [ReactiveFormsModule, LoadingWheelComponent, ImageCropperComponent, NgOptimizedImage],
+    imports: [ReactiveFormsModule, LoadingWheelComponent, ImageCropperComponent, NgOptimizedImage, ValidationErrorComponent],
     templateUrl: './group-creation-form.component.html',
     styleUrl: './group-creation-form.component.css'
 })
@@ -32,7 +33,7 @@ export class GroupCreationFormComponent {
         banner: ['', Validators.required],
         lesson_days: ['', Validators.required],
         lessons_time: ['', Validators.required],
-        capacity: ['', Validators.required, Validators.min(0)],
+        capacity: ['', Validators.required],
         level: ['', Validators.required, Validators.pattern('^(A[12]|B[12]|C1)$')],
     })
 

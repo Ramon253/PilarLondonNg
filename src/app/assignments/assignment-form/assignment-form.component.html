@@ -1,7 +1,7 @@
-<form class="aspect-square max-w-screen-md w-[80vh] h-fit bg-transparent max-h-[90vh]" [formGroup]="assignmentForm"
+<form class="aspect-square max-w-screen-md w-screen h-fit bg-transparent max-h-[90vh] mt-[10vh] nav:mt-0"  [formGroup]="assignmentForm"
       (submit)="createAssignment($event, description)" #form>
     <div
-        class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-transparent border-[4px] border-transparent gap-10 px-20"
+        class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-transparent border-[4px] border-transparent gap-10 px-5  nav:px-20"
         #formContent>
         <button (click)="toggleForm()"
                 class="absolute top-1 right-1 text-secondary border-2 border-secondary transition hover:text-main-white hover:bg-secondary rounded hover:scale-125 p-1 flex items-center justify-center">
@@ -18,9 +18,10 @@
         </div>
         <div class="flex flex-col gap-2 items-start justify-center w-full">
             <label class="font-medium text-main" for="description">Descripción</label>
-            <textarea #description class="border-2 border-main shadow rounded-lg p-2 h-full w-full "
+            <textarea #description class="shadow rounded-lg p-2 h-full w-full "
                       name="description" required id="description" rows="10"
                       placeholder="Escribe en contenido de texto de el post"></textarea>
+
         </div>
 
         <div class="w-full flex flex-col justify-between">
@@ -28,8 +29,7 @@
                 <div class="flex  items-baseline  w-full gap-4">
                     <div class="flex flex-col items-baseline w-full gap-4">
                         <label class="font-medium text-main" for="group_id">Grupo del post</label>
-                        <select #select class="border-main border-2 rounded-md" formControlName="group_id" id="group_id"
-                                autocomplete="off">
+                        <select #select class="p-2 shadow bg-main-white rounded-md" formControlName="group_id" id="group_id">
                             <option #default [attr.selected]="true" disabled hidden value="">Escoje grupo</option>
                             @for (group of groups(); track $index) {
                                 <option value="{{group.id}}">{{ group.name }}</option>
@@ -40,14 +40,16 @@
                     </div>
 
                 </div>
+                <app-validation-error class="" [form]="assignmentForm" [errors]="['required']" field="group_id"
+                                      [showError]="showError()"></app-validation-error>
             }
             <div class="flex basis-1/2 flex-col gap-2">
                 <label for="dead_line" class=" text-main">Fecha de entrega</label>
-                <input type="datetime-local" formControlName="dead_line" id="dead_line"
-                       class="border-2 border-main rounded-lg p-2">
+                <input (input)="dateValid.set(true)" #dead_line_input type="datetime-local" formControlName="dead_line" id="dead_line"
+                       class="shadow bg-main-white rounded-lg border-2 p-2">
+                <app-validation-error (hasError)="dead_line_input.classList.add('border-secondary')" class="" [form]="assignmentForm" [errors]="['required']" field="dead_line"></app-validation-error>
             </div>
-            <app-validation-error class="" [form]="assignmentForm" [errors]="['required']" field="group_id"
-                                  [showError]="showError()"></app-validation-error>
+
         </div>
 
 
@@ -62,7 +64,7 @@
             class="{{assignmentForm.invalid || isLoading()? 'cursor-not-allowed' : 'cursor-pointer hover:bg-main hover:text-main-white hover:scale-105'}} px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent  transition "
             #submitButton type="submit" [disabled]="assignmentForm.invalid || isLoading()" (click)="tryPost()">
             @if (isLoading()) {
-                <div class="flex items-center">
+                <div class="flex items-center gap-2">
                     <app-loading-wheel></app-loading-wheel>
                     Loading ...
                 </div>

@@ -3,7 +3,7 @@
         <div class="drop-shadow w-full text-center">
             <h1 class="text-5xl font-bold text-secondary drop-shadow-2xl p-10">Inicio de sesion</h1>
         </div>
-        <div class="bg-main-white w-full rounded-3xl border-2 border-secondary shadow py-10 px-20">
+        <div class="bg-main-white w-full rounded-3xl border-2 border-secondary shadow py-10 px-5 nav:px-20">
             <form [formGroup]="loginForm" (submit)="login($event)"
                   class="flex flex-col gap-7 items-center justify-center mt-10 font-medium text-font-grey">
                 @if (identifier() === 'name') {
