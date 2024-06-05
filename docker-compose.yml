@@ -6,5 +6,5 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - ./certs:/etc/nginx/certs
-            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - ../pilarlondonng/certs:/etc/nginx/certs
+            - ../pilarlondonng/nginx.conf:/etc/nginx/conf.d/default.conf
