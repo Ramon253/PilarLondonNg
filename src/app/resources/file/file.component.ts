@@ -29,17 +29,6 @@ export class FileComponent {
     ) {
     }
 
-    download() {
-        this.fileSvc.downLoadFile(environment.baseUrl + `api/${this.parent()}/file/${this.file()?.id}/download`).subscribe(
-            (blob: Blob) => {
-                const url = window.URL.createObjectURL(blob);
-                const newTab = window.open();
-                if (newTab !== null)
-                    newTab.location.href = url;
-            },
-            error => console.error('Download failed', error)
-        );
-    }
 
     deleteFile() {
         this.fileSvc.destroyFile(this.parent(), this)
