@@ -266,14 +266,17 @@
     }
     @if (showPostDialog()) {
         <app-dialog>
-            <div class="max-w-screen-md w-full overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
+            <div class="max-w-screen-md w-screen overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
                 <div class="w-fit aspect-square absolute right-0 top-0">
                     <button (click)="showPostDialog.set(false)"
                             class="rounded-full hover:bg-secondary transition text-secondary hover:text-main-white p-1 flex items-center justify-center">
                         <span class="material-icons">close</span>
                     </button>
                 </div>
-                <app-form-post (newLinks)="inputLinks.set($event)" (newFiles)="inputFiles.set($event)"></app-form-post>
+                <div class="max-w-full">
+                    <app-form-post (newLinks)="inputLinks.set($event)"
+                                   (newFiles)="inputFiles.set($event)"></app-form-post>
+                </div>
                 <button
                     class="flex items-center gap-2 p-2 border-2 border-secondary font-medium text-secondary hover:text-main-white hover:bg-secondary hover:scale-110 transition rounded-lg"
                     (click)="postResource()">
@@ -343,7 +346,7 @@
                     </button>
                 }
             </div>
-        } @else if (loginSvc.user()?.role === 'teacher'){
+        } @else if (loginSvc.user()?.role === 'teacher') {
             <div class=" w-full flex flex-col gap-4 ">
                 <div class="w-full text-center">
                     @if (!assignment().solutions) {

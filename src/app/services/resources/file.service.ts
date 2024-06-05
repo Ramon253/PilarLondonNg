@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import { FileR } from '../../models/properties/file';
 import { FileComponent } from '../../resources/file/file.component';
 import { MultimediaComponent } from '../../multimedia/multimedia.component';
@@ -46,6 +46,10 @@ export class FileService {
 			}
 		)
 	}
+
+    downLoadFile(url : string){
+        return this.http.get(url, { withCredentials: true , responseType: 'blob' })
+    }
 
 
 	createFiles(from: string, fromComponent: PostComponent | AssignmentComponent | YourSolutionComponent, post : Post|Assignment |Solution) {

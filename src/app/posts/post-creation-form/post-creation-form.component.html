@@ -1,11 +1,11 @@
 <div
-    class="flex pt-[10vh] nav:pt-0 rounded w-screen h-screen items-center justify-center bg-opacity-20 bg-font-grey flex-col fixed top-0 z-50 "
+    class="flex pt-[10vh] nav:pt-0 rounded w-screen overflow-y-hidden h-screen items-center justify-center bg-opacity-20 bg-font-grey flex-col fixed top-0 z-50 "
     #formContainer>
 
-    <form class="aspect-square max-w-screen-md w-full h-fit max-h-[90vh]" [formGroup]="postForm"
+    <form class="aspect-square max-w-screen-md overflow-y-scroll w-full h-screen nav:h-fit  max-h-[90vh]" [formGroup]="postForm"
           (submit)="createPost($event, description)" #form>
         <div
-            class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-main-grey border-[4px] border-transparent gap-10 shadow-2xl nav:px-20"
+            class="flex pb-[10vh] nav:pb-0 h-fit overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-main-grey border-[4px] border-transparent gap-10 shadow-2xl nav:px-20"
             #formContent>
             <button
                 type="button"

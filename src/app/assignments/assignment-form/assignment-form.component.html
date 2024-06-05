@@ -1,7 +1,7 @@
-<form class="aspect-square max-w-screen-md w-screen h-fit bg-transparent max-h-[90vh] mt-[10vh] nav:mt-0"  [formGroup]="assignmentForm"
+<form class="aspect-square max-w-screen-md w-screen h-fit bg-transparent pt-[10vh] nav:pt-0"  [formGroup]="assignmentForm"
       (submit)="createAssignment($event, description)" #form>
     <div
-        class="flex h-fit max-h-[90vh] overflow-y-scroll overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-transparent border-[4px] border-transparent gap-10 px-5  nav:px-20"
+        class="flex h-fit  overflow-y-scroll max-h-[90vh] pb-[10vh] nav:pb-0 overflow-x-hidden flex-col relative items-center p-5 rounded-lg bg-transparent border-[4px] border-transparent gap-10 px-5  nav:px-20"
         #formContent>
         <button (click)="toggleForm()"
                 class="absolute top-1 right-1 text-secondary border-2 border-secondary transition hover:text-main-white hover:bg-secondary rounded hover:scale-125 p-1 flex items-center justify-center">

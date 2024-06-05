@@ -25,9 +25,24 @@ export class FileComponent {
 
   constructor(
     public loginSvc: LoginService,
-    private fileSvc: FileService
+    public fileSvc: FileService
   ) { }
 
+    download( ){
+      this.fileSvc.downLoadFile(environment.baseUrl + `api/${this.parent()}/file/${this.file()?.id}/download`).subscribe(
+          (blob: Blob) => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download =  this.file()?.file_name ?? '';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+          },
+          error => console.error('Download failed', error)
+      );
+    }
   deleteFile() {
     this.fileSvc.destroyFile(this.parent(),this)
   }

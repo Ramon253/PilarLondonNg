@@ -30,8 +30,8 @@
                     </div>
                     <div class="flex flex-wrap gap-2">
                         @for (link of links(); track $index) {
-                        <div class="w-fit p-2 rounded-lg border-2 border-main flex items-center justify-between">
-                            <a class="mx-auto" target="_blank" href="{{ link.link }}">
+                        <div class="w-fit max-w-[80vw] nav:max-w-[98%] p-2 rounded-lg border-2 border-main flex items-center justify-between">
+                            <a class="mx-auto truncate" target="_blank" href="{{ link.link }}">
                                 {{ link.link_name }}
                             </a>
                             <button type="button" (click)="deleteLink(link)"
