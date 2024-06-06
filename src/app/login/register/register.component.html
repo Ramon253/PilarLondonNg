@@ -1,46 +1,93 @@
 <div class="bg-main-grey mt-[10vh]">
-    <div class="max-w-screen-xl mx-auto bg-transparent mt-[10vh]">
-        <form [formGroup]="registerForm" class="flex flex-col gap-10 items-center justify-center mt-10"
-            (submit)="register($event)">
+    <div class="max-w-screen-sm w-screen mx-auto min-h-[90vh] pb-10 px-4 bg-transparent mt-[10vh]">
+        <div class="drop-shadow w-full text-center">
+            <h1 class="text-5xl font-bold text-main drop-shadow-2xl p-10">Create una cuenta</h1>
+        </div>
+        <form [formGroup]="registerForm" class="flex py-16 px-10 nav:px-20 flex-col gap-10 w-full rounded-3xl shadow bg-main-white border-main border-2 items-center justify-center mt-10"
+              (submit)="register($event)">
 
             <!--Name-->
-            <div>
-                <input class="border-2 rounded border-black p-2" formControlName="name" #name type="text" name="name">
-                <div class="{{ hasErrors('name')? 'flex': 'hidden'}} text-red-500">
-                    <span>{{validator.getErrors('name', ['required'], registerForm)}}</span>
+            <div class="h-fit w-full flex flex-col">
+                <input
+                    (input)="name.classList.remove('border-secondary')"
+                    class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
+                    formControlName="name" #name type="text" name="name" id="name" placeholder=" ">
+                <div
+                    class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                    <label class="" for="name">
+                        Nombre de usuario
+                    </label>
                 </div>
+                <app-validation-error (hasError)="name.classList.add('border-secondary')" class="order-3" [form]="registerForm" [errors]="['required', 'taken']" field="name"
+                ></app-validation-error>
             </div>
 
             <!--email-->
-            <div>
-                <input class="border-2 rounded border-black p-2" formControlName="email" #email type="email">
-                <div class="{{hasErrors('email') ? 'flex' :'hidden' }} text-red-500">
-                    <span>{{validator.getErrors('email', ['required', 'email'], registerForm)}}</span>
+            <div class="h-fit w-full  flex flex-col">
+                <input
+                    (input)="email.classList.remove('border-secondary')"
+                    class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
+                    formControlName="email" #email type="email" name="email" id="email" placeholder=" ">
+                <div
+                    class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                    <label class="" for="email">
+                        Correo electronico
+                    </label>
                 </div>
+                <app-validation-error (hasError)="email.classList.add('border-secondary')" class="order-3" [form]="registerForm" [errors]="['required', 'taken', 'email'] " field="email"
+                ></app-validation-error>
             </div>
 
             <!--passwords-->
-            <div>
-                <input class="border-2 rounded border-black p-2" formControlName="password" #password type="password">
-                <div class="{{hasErrors('password') ? 'flex' :'hidden' }} text-red-500">
-                    <span>{{validator.getErrors('password', ['required', 'minlength', 'pattern'], registerForm)}}</span>
+            <div class="h-fit w-full flex flex-col">
+                <input
+                    (input)="password.classList.remove('border-secondary')"
+                    class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
+                    formControlName="password" #password type="password" name="password" id="password" placeholder=" ">
+                <div
+                    class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                    <label class="" for="password">
+                        Contraseña
+                    </label>
                 </div>
+                <app-validation-error (hasError)="password.classList.add('border-secondary')" class="order-3" [form]="registerForm" [errors]="['required', 'pattern', 'notConfirmed', 'minlength']" field="password"
+                ></app-validation-error>
             </div>
 
-            <div>
-                <input class="border-2 rounded border-black p-2" formControlName="password_confirmation" #password
-                    type="password">
-                <div class="{{hasErrors('password_confirmation') ? 'flex' :'hidden' }} text-red-500">
-                    <span>{{validator.getErrors('password_confirmation', ['required', 'minlength', 'pattern'],
-                        registerForm)}}</span>
+            <div class="h-fit w-full flex flex-col">
+                <input
+                    (input)="password_confirmation.classList.remove('border-secondary')"
+                    class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
+                    formControlName="password_confirmation" #password_confirmation type="password" name="password_confirmation" id="password_confirmation" placeholder=" ">
+                <div
+                    class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                    <label class="" for="password_confirmation">
+                        Confirmar contraseña
+                    </label>
                 </div>
+                <app-validation-error (hasError)="password_confirmation.classList.add('border-secondary')" class="order-3" [form]="registerForm" [errors]="['required', 'pattern', 'minlength']" field="password_confirmation"
+                ></app-validation-error>
+            </div>
+            <div class="w-full text-lg font-medium text-font-grey">
+                ¿Ya tienes cuenta? <a routerLink="/login" class="text-secondary">Iniciar sesion</a>
             </div>
 
             <!--Submit-->
             <div>
                 <button
-                    class="{{registerForm.invalid ? 'border-gray-400 text-gray-400' : 'border-black text-black'}} border-2 rounded  p-2"
-                    [disabled]="registerForm.invalid" type="submit">Login</button>
+                    class="{{(registerForm.invalid || isLoading()) ? 'cursor-not-allowed' : 'group hover:scale-110 cursor-pointer hover:bg-main hover:text-main-white hover:shadow-button-hover'}} w-fit relative  py-2 px-4 rounded-lg border-[3px] border-main text-main font-bold bg-transparent  transition flex items-center justify-center"
+                    [disabled]="registerForm.invalid || isLoading()" type="submit">
+                    @if(isLoading()){
+                       <span class="flex gap-2 items-center"><app-loading-wheel></app-loading-wheel> Cargando...</span>
+                    } @else {
+                        <span #submitButton class="transition ease-in-out flex items-center gap-2 w-fit">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.5rem] fill-main group-hover:fill-main-white transition-all ease-in-out " viewBox="0 0 24 24"><path d="M15 4a4 4 0 0 0-4 4a4 4 0 0 0 4 4a4 4 0 0 0 4-4a4 4 0 0 0-4-4m0 1.9a2.1 2.1 0 1 1 0 4.2A2.1 2.1 0 0 1 12.9 8A2.1 2.1 0 0 1 15 5.9M4 7v3H1v2h3v3h2v-3h3v-2H6V7zm11 6c-2.67 0-8 1.33-8 4v3h16v-3c0-2.67-5.33-4-8-4m0 1.9c2.97 0 6.1 1.46 6.1 2.1v1.1H8.9V17c0-.64 3.1-2.1 6.1-2.1"/></svg>
+                            </span>
+                            Crear cuenta
+                        </span>
+                    }
+                </button>
             </div>
 
         </form>

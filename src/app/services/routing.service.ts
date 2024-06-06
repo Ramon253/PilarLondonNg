@@ -6,8 +6,8 @@ import {FlashMessage} from "../models/flash-message";
     providedIn: 'root'
 })
 export class RoutingService {
-    previous = signal<string>('')
-    intended = signal<string>('')
+    previous = signal<string>('/')
+    intended = signal<string>('/')
 
     constructor(private router: Router) {
     }

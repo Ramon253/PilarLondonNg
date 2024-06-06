@@ -7,12 +7,13 @@ import {Router, RouterLink} from '@angular/router';
 import {ValidationErrorComponent} from '../validations/validation-error/validation-error.component';
 import {FlashMessageService} from "../services/flash-message.service";
 import {RoutingService} from "../services/routing.service";
+import {LoadingWheelComponent} from "../svg/loading-wheel/loading-wheel.component";
 
 @Component({
     selector: 'app-login',
     standalone: true,
     imports: [
-        ReactiveFormsModule, RouterLink, ValidationErrorComponent
+        ReactiveFormsModule, RouterLink, ValidationErrorComponent, LoadingWheelComponent
     ],
     templateUrl: './login.component.html',
     styles: ``,
@@ -21,8 +22,7 @@ export class LoginComponent {
     arrowIcon = viewChild<ElementRef>('arrowIcon');
     identifier = signal<string>('email')
     fields = ['name', 'email', 'password']
-    submitButton = viewChild<ElementRef>('submitButton')
-    loadingAnimation = viewChild<ElementRef>('loadingAnimation')
+    isLoading = signal<boolean>(false)
 
     loginForm = this.formBuilder.group({
         name: [''],
@@ -51,10 +51,7 @@ export class LoginComponent {
     login(event: SubmitEvent) {
 
         event.preventDefault();
-
-        this.submitButton()?.nativeElement.classList.toggle('hidden')
-        this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
-
+        this.isLoading.set(true)
         this.loginSvc.login(this.loginForm.getRawValue() as Credentials).then(
             res => {
                 this.loginSvc.loginFront()
@@ -72,8 +69,6 @@ export class LoginComponent {
             err => {
                 if (err.status === 500 || err.code === 'ERR_NETWORK') {
                     this.flashMessageSvc.messages().push(this.loginSvc.serverErrorMessage)
-                    this.submitButton()?.nativeElement.classList.toggle('hidden')
-                    this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
                     return
                 }
                 if (err.status === 401 || err.status === 422) {
@@ -83,10 +78,10 @@ export class LoginComponent {
                         type: 'error',
                         duration: 10
                     })
-                    this.submitButton()?.nativeElement.classList.toggle('hidden')
-                    this.loadingAnimation()?.nativeElement.classList.toggle('hidden')
                 }
-            })
+            }).finally(
+            () => this.isLoading.set(false)
+        )
 
 
     }

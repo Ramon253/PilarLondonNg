@@ -19,7 +19,7 @@
                                 Nombre
                             </label>
                         </div>
-                        <app-validation-error class="order-3" [form]="loginForm" field="name"
+                        <app-validation-error class="order-3" [errors]="['required']" [form]="loginForm" field="name"
                                               ></app-validation-error>
                     </div>
                     <!--[errors]="['required', 'invalidCredentials']"-->
@@ -85,12 +85,14 @@
                     </div>
                     <div class="w-full flex flex-col items-center">
                         <button
-                            class="{{loginForm.invalid ? 'cursor-not-allowed hover:bg-transparent  hover:text-secondary' : 'hover:scale-110 cursor-pointer'}} relative  py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white transition flex items-center justify-center"
+                            class="{{loginForm.invalid ? 'cursor-not-allowed hover:bg-transparent  hover:text-secondary' : 'hover:scale-110 cursor-pointer'}} relative  py-2 w-fit px-4 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white transition flex items-center justify-center"
                             [disabled]="loginForm.invalid" type="submit">
-                            <div #loadingAnimation class="animate-spin hidden justify-center items-center">
-                                <img class="aspect-square size-5" src="assets/img/loading_wheel.png" alt="loading">
-                            </div>
-                            <span #submitButton class="transition">Login</span>
+                            @if (isLoading()){
+                                <span class="transition-all ease-in-out flex items-center gap-2"><app-loading-wheel></app-loading-wheel> Cargando...</span>
+                            } @else {
+                                <span #submitButton class="transition-all ease-in-out flex items-center gap-2"><span class="material-icons">login</span> Login</span>
+                            }
+
                         </button>
                         <app-validation-error [form]="loginForm" [errors]="['invalidCredentials']"></app-validation-error>
                     </div>

@@ -17,6 +17,7 @@ export class ValidationsService {
         'invalidCredentials' : 'Credenciales invalidas',
         'taken': 'El campo @field ya esta en uso',
         'phone' : 'El telefono debe ser valido',
+        'notConfirmed' : 'La contraseña de confirmacion no coincide'
     }
 
 
