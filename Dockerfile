@@ -15,8 +15,8 @@ FROM nginx:latest
 RUN mkdir -p /etc/nginx/certs
 
 # Copiar certificados SSL a la imagen de Docker
-COPY certs/nginx-selfsigned.crt /etc/nginx/certs/nginx-selfsigned.crt
-COPY certs/nginx-selfsigned.key /etc/nginx/certs/nginx-selfsigned.key
+COPY certs/nginx-selfsignedng.crt /etc/nginx/certs/nginx-selfsignedng.crt
+COPY certs/nginx-selfsignedng.key /etc/nginx/certs/nginx-selfsignedng.key
 
 # Copiar archivo de configuración de Nginx a la imagen de Docker
 COPY nginx.conf /etc/nginx/conf.d/default.conf
