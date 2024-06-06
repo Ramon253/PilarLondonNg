@@ -114,7 +114,7 @@
                                     </div>
                                     <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
                                         @for (file of post().fileLinks; track $index) {
-                                            <app-file parent="assignment" [file]="file"
+                                            <app-file parent="post" [file]="file"
                                                       (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
                                         }
                                     </div>
