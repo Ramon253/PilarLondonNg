@@ -60,7 +60,7 @@
                 class="{{postForm.invalid || isLoading()? 'cursor-not-allowed' : 'cursor-pointer hover:bg-main hover:text-main-white hover:scale-105'}} px-4 py-2 border-[3px] rounded-lg border-main text-main font-bold bg-transparent  transition "
                 #submitButton type="submit" [disabled]="postForm.invalid || isLoading()" (click)="tryPostPost()">
                 @if (isLoading()) {
-                    <div class="flex items-center">
+                    <div class="flex items-center gap-2">
                         <app-loading-wheel></app-loading-wheel>
                         Loading ...
                     </div>

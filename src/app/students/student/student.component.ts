@@ -99,7 +99,8 @@ export class StudentComponent {
 
     ngOnInit() {
 
-        if (this.router.url.includes('profile')) {
+        if (this.router.url.includes('/profile')) {
+            if (this.loginSvc.user()?.role === 'teacher')
             this.studentSvc.getProfile().then(
                 res => {
                     this.mapProfile(res)

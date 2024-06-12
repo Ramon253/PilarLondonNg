@@ -21,7 +21,7 @@ export class SolutionPostFormComponent {
     links = signal<Link[]>([])
     isLoading = signal<boolean>(false)
     assignment = input.required<string>()
-
+    close = output<boolean>()
     solutionForm = this.formBuilder.group({
         description: [' ', Validators.maxLength(250)],
     })
@@ -59,7 +59,7 @@ export class SolutionPostFormComponent {
             )
             return
         }
-        this.solution().links = this.links()
+        this.solution().links = this.links().length === 0 ? undefined : this.links()
         this.solution().description = this.solutionForm.get('description')?.value ?? ''
 
         this.solutionSvc.postSolution(this.assignment(), this.solution()).subscribe(

@@ -71,7 +71,8 @@ export class LoginComponent {
                     this.flashMessageSvc.messages().push(this.loginSvc.serverErrorMessage)
                     return
                 }
-                if (err.status === 401 || err.status === 422) {
+
+                if (err.response.status === 401 || err.response.status === 422) {
                     this.loginForm.setErrors({invalidCredentials: true})
                     this.flashMessageSvc.messages().push({
                         message: 'Credenciales invalidas',

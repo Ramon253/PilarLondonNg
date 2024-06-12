@@ -1,20 +1,22 @@
-<a class="p-4 pr-2 gap-2 rounded-2xl border-2 border-{{color()}} flex items-center justify-between max-w-[300px]"
+<a class="p-4 pr-2 gap-2 rounded-2xl border-2 border-{{color()}} flex items-center justify-between max-w-full "
    href="{{environment.baseUrl}}api/{{parent()}}/file/{{file()?.id}}/download" (click)="disableLink($event)"
 >
+    <span class="truncate max-w-full">
     {{ file()?.file_name }}
+    </span>
     @if (loginSvc.user()?.role === 'teacher' || showControls()) {
-    <div class="w-fit">
-        <button (click)="deleteFile()" (mouseenter)="hoverCloseButton.set(true)"
-            (mouseleave)="hoverCloseButton.set(false)"
-            class="text-secondary rounded-full font-medium hover:scale-110 transition ease-in-out hover:bg-secondary hover:text-main-white flex items-center justify-center p-1">
-            @if (!isLoadingDelete()) {
-            <span class="material-icons w-full text-center">close</span>
-            }@else {
-            <div class="">
-                <app-loading-wheel></app-loading-wheel>
-            </div>
-            }
-        </button>
-    </div>
+        <div class="w-fit">
+            <button (click)="deleteFile()" (mouseenter)="hoverCloseButton.set(true)"
+                    (mouseleave)="hoverCloseButton.set(false)"
+                    class="text-secondary rounded-full font-medium hover:scale-110 transition ease-in-out hover:bg-secondary hover:text-main-white flex items-center justify-center p-1">
+                @if (!isLoadingDelete()) {
+                    <span class="material-icons w-full text-center">close</span>
+                } @else {
+                    <div class="">
+                        <app-loading-wheel></app-loading-wheel>
+                    </div>
+                }
+            </button>
+        </div>
     }
 </a>

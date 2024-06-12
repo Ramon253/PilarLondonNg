@@ -79,15 +79,15 @@ export class PostCreationFormComponent {
                     formData.append(`links[${key}][link]`, post.links[key].link)
                 }
             }
+            formData.append('group_id', post.group_id ?? '')
         }
         this.postSvc.postPost(post, formData , this.postForm.get('group_id')?.value === 'public')
             .then(
                 (res : any ) => {
-                    post.links = this.links()
-                    this.post.emit(res.post as Post);
+
+                    this.post.emit(this.postSvc.mapPost(res.data.post as Post));
                     this.toggleForm()
                     this.isLoading.set(false)
-
                     this.postForm.reset()
                 }
             )

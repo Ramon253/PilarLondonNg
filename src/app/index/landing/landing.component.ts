@@ -45,6 +45,7 @@ export class LandingComponent {
             this.contactForm.get('email')?.setValue(this.loginSvc.user()?.email ?? '')
             this.contactForm.get('name')?.setValue(this.loginSvc.user()?.name ?? '')
         }
+
     }
 
     foto1 = viewChild<ElementRef>('foto1')

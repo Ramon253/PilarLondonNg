@@ -34,11 +34,14 @@ export class AssignmentCardComponent {
 
     deleteAssignment(){
         this.isLoadingDelete.set(true)
-        this.assignmentSvc.deleteAssignment(this.assignment().id ?? '').subscribe(
+        this.assignmentSvc.deleteAssignment(this.assignment().id ?? '').then(
             res => {
                 this.delete.emit(this.assignment().id ?? '')
+                this.showDeleteDialog.set(false)
+                this.isLoadingDelete.set(false)
             }
         );
+
     }
     constructor(
         public loginSvc : LoginService,

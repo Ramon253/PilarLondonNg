@@ -93,6 +93,7 @@ export class AssignmentsComponent {
 
     deleteAssignment(id: string) {
         this.assignments.set(this.assignments().filter((assignment) => assignment.id !== id))
+
     }
 
     resetTabs() {

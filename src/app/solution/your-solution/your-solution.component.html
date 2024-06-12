@@ -31,11 +31,11 @@
                 <span class="w-full py-4 border-b-2 border-secondary text-2xl text-secondary font-medium">Files</span>
                 <div class="flex flex-wrap justify-start items-center gap-4">
                     @for (file of solution().fileLinks; track $index) {
-                        <app-file [file]="file" parent="solution" (delete)="deleteFile($event)" [showControls]="true">
+                        <app-file [file]="file" parent="solution" class="max-w-full" (delete)="deleteFile($event)" [showControls]="true">
                         </app-file>
                     }
                     @for (file of solution().multimedia; track $index) {
-                        <app-file color="main" [file]="file" parent="solution" (delete)="deleteFile($event)"
+                        <app-file color="main" [file]="file" class="max-w-full" parent="solution" (delete)="deleteFile($event)"
                                   [showControls]="true">
                         </app-file>
                     }
@@ -47,7 +47,7 @@
                 <span class="w-full py-4 border-b-2 border-main text-2xl text-main font-medium">Links</span>
                 <div class="flex flex-wrap justify-start items-center">
                     @for (link of solution().links; track $index) {
-                        <app-link [showControls]="true" (delete)="deleteLink($event)" [link]="link" parent="solution">
+                        <app-link [showControls]="true" class="max-w-full" (delete)="deleteLink($event)" [link]="link" parent="solution">
                         </app-link>
                     }
                 </div>
@@ -79,7 +79,7 @@
 
 @if (showPostDialog()) {
     <app-dialog>
-        <div class="max-w-screen-md w-max overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
+        <div class="max-w-screen-md w-screen overflow-y-scroll flex flex-col items-center gap-4 p-2 relative">
             <div class="w-fit aspect-square absolute right-0 top-0">
                 <button (click)="showPostDialog.set(false)"
                         class="rounded-full hover:bg-secondary transition text-secondary hover:text-main-white p-1 flex items-center justify-center">

@@ -1,25 +1,23 @@
-import {Component, input, output, Renderer2, signal} from '@angular/core';
+import {Component, ElementRef, input, output, signal, viewChild} from '@angular/core';
 import {FormPostComponent} from "../../resources/form-post/form-post.component";
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ValidationErrorComponent} from "../../validations/validation-error/validation-error.component";
-import {PostService} from "../../services/post.service";
 import {AssignmentService} from "../../services/assignment.service";
 import {Link} from "../../models/properties/link";
-import {Post} from "../../models/post";
 import {Assignment} from "../../models/assignment";
 
 @Component({
-  selector: 'app-assignment-form',
-  standalone: true,
+    selector: 'app-assignment-form',
+    standalone: true,
     imports: [
         FormPostComponent,
         LoadingWheelComponent,
         ReactiveFormsModule,
         ValidationErrorComponent
     ],
-  templateUrl: './assignment-form.component.html',
-  styles: ``
+    templateUrl: './assignment-form.component.html',
+    styles: ``
 })
 export class AssignmentFormComponent {
     close = output<boolean>()
@@ -31,26 +29,28 @@ export class AssignmentFormComponent {
     files = signal<File[]>([])
     links = signal<Link[]>([])
     dateValid = signal<boolean>(false)
+    description = viewChild<ElementRef>('description')
     assignmentForm = this.formBuilder.group({
-        name : ['', Validators.required],
-        description : [undefined, Validators.maxLength(500)],
-        group_id : ['', Validators.required],
-        dead_line : [new Date(), Validators.required]
+        name: ['', Validators.required],
+        description: [undefined, Validators.maxLength(500)],
+        group_id: ['', Validators.required],
+        dead_line: [new Date(), Validators.required]
     })
 
     constructor(
-        public assignmentSvc : AssignmentService,
+        public assignmentSvc: AssignmentService,
         private formBuilder: FormBuilder
     ) {
     }
 
-    tryPost(){
+    tryPost() {
         if (this.assignmentForm.get('group_id')?.invalid)
             this.showError.set(true)
     }
-    createAssignment(ev : SubmitEvent, description : HTMLTextAreaElement){
-        if (!this.dateValid()){
-            this.assignmentForm.get('dead_line')?.setErrors({required :true})
+
+    createAssignment(ev: SubmitEvent, description: HTMLTextAreaElement) {
+        if (!this.dateValid()) {
+            this.assignmentForm.get('dead_line')?.setErrors({required: true})
             return
         }
         this.isLoading.set(true)
@@ -58,6 +58,7 @@ export class AssignmentFormComponent {
         const assignment = this.assignmentForm.getRawValue() as Assignment
 
         assignment.dead_line = this.assignmentForm.get('dead_line')?.getRawValue()
+        assignment.description = this.description()?.nativeElement.value
         assignment.group_id = this.assignmentForm.get('group_id')?.value ?? ''
         assignment.links = (this.links().length !== 0) ? this.links() : undefined;
         assignment.files = (this.files().length !== 0) ? this.files() : undefined;
@@ -69,9 +70,7 @@ export class AssignmentFormComponent {
             }
             formData.append('name', assignment.name)
             formData.append('dead_line', assignment.dead_line?.toString() ?? '')
-
-            if (assignment.description )
-                formData.append('description', assignment.description)
+            formData.append('description', assignment.description ?? '')
 
 
             if (assignment.links) {
@@ -82,10 +81,10 @@ export class AssignmentFormComponent {
             }
         }
 
-        this.assignmentSvc.postAssignment(assignment, formData )
-            .subscribe(
-                assignment =>{
-                    this.newAssignment.emit(this.assignmentSvc.mapAssignment( assignment))
+        this.assignmentSvc.postAssignment(assignment, formData)
+            .then(
+                res => {
+                    this.newAssignment.emit(this.assignmentSvc.mapAssignment(res.data))
                     this.close.emit(true)
                 }
             )
@@ -93,12 +92,13 @@ export class AssignmentFormComponent {
         this.links.set([]);
         this.files.set([]);
     }
-    toggleForm(){
+
+    toggleForm() {
         this.close.emit(true)
     }
 
-    ngOnInit(){
-        if (this.group() === null){
+    ngOnInit() {
+        if (this.group() === null) {
             return
         }
         this.assignmentForm.get('group_id')?.setValue(this.group())

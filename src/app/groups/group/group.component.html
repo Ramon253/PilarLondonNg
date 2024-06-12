@@ -10,7 +10,7 @@
         </div>
     </section>
 } @else {
-    <section class="w-full mt-[10vh] pt-1 min-h-[90vh] h-fit bg-main-grey pb-10">
+    <section class="w-full mt-[10vh] p-1 min-h-[90vh] h-fit bg-main-grey pb-10">
         <div class="max-w-screen-2xl  w-full mx-auto gap-10 flex min-h-screen flex-col">
             <div class="w-full relative aspect-[16/4] ">
                 <img class="w-full rounded-b aspect-[16/4]" [src]="getBannerUr()"
@@ -125,7 +125,7 @@
                 </div>
             }
             <div class="w-full h-full flex gap-20">
-                <div class="basis-1/4 flex-col gap-4 hidden lg:flex">
+                <div class="basis-1/4 flex-col gap-4 hidden xl:flex">
                     <div class="flex-col flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
                         <div>
                             <h2 class="text-2xl font-bold text-font-grey ">Horario</h2>
@@ -322,7 +322,7 @@
 
                         <div class="w-full mt-5 flex  p-3 flex-col gap-4">
                             @if (selectedContent() === 'general') {
-                                <div class="flex-col lg:hidden flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
+                                <div class="flex-col xl:hidden flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
                                     <div>
                                         <h2 class="text-2xl font-bold text-font-grey ">Horario</h2>
                                     </div>
@@ -377,7 +377,7 @@
                                 }
                             } @else if (selectedContent() === 'settings') {
                                 <div
-                                    class="max-w-screen-md mx-auto sm:p-10 w-screen rounded-md bg-main-white shadow-assignment-card gap-10 p-5 mr-2  sm:px-20 flex flex-col">
+                                    class="max-w-screen-md ml-0 sm:p-10 w-screen rounded-md bg-main-white shadow-assignment-card gap-10 p-5 mr-2  sm:px-20 flex flex-col">
                                     <h1 class="text-4xl font-bold text-main w-full text-center flex items-center gap-3">
                                         <span class="material-icons-two-tone text-2xl text-main">settings</span>
                                         Settings

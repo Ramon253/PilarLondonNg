@@ -138,7 +138,7 @@
                                     </div>
                                     <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
                                         @for (file of assignment().fileLinks; track $index) {
-                                            <app-file parent="assignment" [file]="file"
+                                            <app-file parent="assignment" [file]="file" class="max-w-full"
                                                       (delete)="deleteFile($event.id, $event.isMultimedia)"></app-file>
                                         }
                                     </div>
@@ -151,7 +151,7 @@
                                     </div>
                                     <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
                                         @for (link of assignment().links; track $index) {
-                                            <app-link parent="assignment" (delete)="deleteLink($event.id, false)"
+                                            <app-link parent="assignment" class="max-w-full" (delete)="deleteLink($event.id, false)"
                                                       [link]="link"></app-link>
                                         }
                                     </div>
@@ -190,9 +190,9 @@
 
 
             <!--Solutions-->
-            <div class="w-1/3 pt-20 hidden lg:flex">
+            <div class="w-1/3 pt-20 hidden p-2 lg:flex">
                 <div
-                    class="p-4 rounded-xl border-2 border-main h-fit flex flex-col bg-main-white shadow-[5px_5px_rgba(0,_98,_90,_0.4),_10px_10px_rgba(0,_98,_90,_0.3),_15px_15px_rgba(0,_98,_90,_0.2),_20px_20px_rgba(0,_98,_90,_0.1),_25px_25px_rgba(0,_98,_90,_0.05)]">
+                    class="p-4 rounded-xl max-w-full border-2 border-main h-fit flex flex-col bg-main-white shadow-[5px_5px_rgba(0,_98,_90,_0.4),_10px_10px_rgba(0,_98,_90,_0.3),_15px_15px_rgba(0,_98,_90,_0.2),_20px_20px_rgba(0,_98,_90,_0.1),_25px_25px_rgba(0,_98,_90,_0.05)]">
                     <div class="w-full flex flex-col p-2 gap-4 items-center justify-center">
                         @if (loginSvc.user()?.role === 'teacher') {
                             <div class=" w-full flex flex-col gap-4 ">
@@ -292,8 +292,9 @@
     }
     @if (showSolutionFormDialog()) {
         <app-dialog>
-            <div class="max-w-screen-md w-max">
+            <div class="max-w-screen-md w-screen">
                 <app-solution-post-form
+                    (close)="showSolutionFormDialog.set(false)"
                     (newSolution)="this.assignment().solution = $event; showSolutionFormDialog.set(false)"
                     [assignment]="this.assignment().id ?? ''"></app-solution-post-form>
             </div>
@@ -311,10 +312,10 @@
 <div
     class="lg:hidden rounded-t-lg {{showSolutionMenu() ? '-translate-y-[75vh]': ''}} transition-all ease-in-out fixed -translate-y-[4rem] -bottom-[75vh]  w-full right-0 h-[75vh] bg-main-white shadow ">
     <div (click)="showSolutionMenu.set(!showSolutionMenu())"
-         class="rounded-t-lg shadow-card h-[4rem] text-main-white text-xl font-bold bg-main  flex justify-evenly items-center gap-3">
+         class="rounded-t-lg shadow-card h-[4rem] text-main-white text-xl font-bold bg-secondary  flex justify-evenly items-center gap-3">
         <span
             class="material-icons p-2 rounded-full bg-main-white text-main transition-all ease-in-out {{showSolutionMenu()? 'rotate-180' : 'rotate-0'}}">keyboard_double_arrow_up</span>
-        <span>Tu entrega</span>
+        <span>{{loginSvc.user()?.role === 'teacher' ? 'Entregas': 'Tu entrega'}}</span>
         @if (assignment().solution) {
 
             @if (assignment().solution?.note === null) {
@@ -333,7 +334,7 @@
     <div class="h-full  overflow-y-scroll pt-5 bg-main-white">
         @if (loginSvc.user()?.role === 'student') {
             <div
-                class="w-full h-full bg-main-grey shadow p-4 rounded-lg flex flex-col gap-5 items-center max-w-screen-sm mx-auto">
+                class=" h-full bg-main-grey shadow p-4 rounded-lg flex flex-col gap-5 items-center max-w-screen-sm w-screen mx-auto">
                 @if (assignment().solution) {
                     <div class="w-full">
                         <app-your-solution [showNote]="false" [dead_line]="(assignment().dead_line ?? false)"
@@ -349,16 +350,18 @@
         } @else if (loginSvc.user()?.role === 'teacher') {
             <div class=" w-full flex flex-col gap-4 ">
                 <div class="w-full text-center">
-                    @if (!assignment().solutions) {
+                    @if (assignment().solutions?.length === 0) {
                         <span
                             class="text-secondary-grey text-center w-full">No hay entregas todavia</span>
                     } @else {
-                        <div class="flex w-full flex-col px-2 items-center gap-2">
+                        <div class="flex sm:grid grid-cols-2 w-full flex-col px-2 items-center gap-2">
                             @for (solution of assignment().solutions; track $index) {
                                 <app-solution-card
                                     (click)="selectedSolution.set(solution.id ?? '');showSolutionDialog.set(true) "
                                     [dead_line]="assignment().dead_line"
-                                    [solution]="solution"></app-solution-card>
+                                    [solution]="solution"
+                                    class="w-full"
+                                    ></app-solution-card>
                             }
                         </div>
                     }

@@ -7,6 +7,7 @@ import {Solution} from '../models/solution';
 import {FileR} from "../models/properties/file";
 import {ValidationsService} from "./validations.service";
 import {environment} from "../../environments/environment.development";
+import axios from "axios";
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,7 @@ export class SolutionService {
     private path = environment.baseUrl + 'api/'
 
     getSolution(id: string): Observable<Solution> {
-        return this.http.get<Solution>(`${this.path}solution/${id}`)
+        return this.http.get<Solution>(`${this.path}solution/${id}`, {withCredentials: true})
     }
 
     grade(id: string, note: number): Observable<any> {

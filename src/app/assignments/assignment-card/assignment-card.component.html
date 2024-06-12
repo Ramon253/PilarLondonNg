@@ -66,7 +66,7 @@
                     </h2>
                     <div class="w-full items-center justify-center h-fit flex flex-wrap">
                         @for (link of assignment().links; track $index) {
-                            <app-link parent="assignment" [link]="link"></app-link>
+                            <app-link parent="assignment" class="max-w-full" [link]="link"></app-link>
                         }
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                     </h2>
                     <div class="w-full items-center justify-center h-fit flex flex-wrap">
                         @for (file of assignment().fileLinks; track $index) {
-                            <app-file parent="assignment" [file]="file"></app-file>
+                            <app-file parent="assignment" class="max-w-full" [file]="file"></app-file>
                         }
                     </div>
                 </div>

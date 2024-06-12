@@ -1,7 +1,7 @@
-<a class="p-4 flex items-center h-fit justify-between gap-2 rounded-2xl border-2 border-main pr-2"
+<a class="p-4 flex items-center h-fit justify-between gap-2 rounded-2xl border-2 border-main pr-2 max-w-full"
     href="{{link()?.link}}" target="_blank" (click)="disableLink($event)">
 
-    {{link()?.link_name}}
+    <span class="truncate max-w-full">{{ link()?.link_name }}</span>
     @if (loginSvc.user()?.role === 'teacher' || showControls()) {
     <div class="w-fit">
         <button (mouseenter)="hoverCloseButton.set(true)" (mouseleave)="hoverCloseButton.set(false)"

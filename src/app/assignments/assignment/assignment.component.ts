@@ -26,11 +26,12 @@ import {Solution} from "../../models/solution";
 import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
 import {SolutionPostFormComponent} from "../../resources/solution-post-form/solution-post-form.component";
 import {SolutionComponent} from "../../solution/solution.component";
+import {YourSolutionCardComponent} from "../../solution/your-solution-card/your-solution-card.component";
 
 @Component({
 	selector: 'app-assignment',
 	standalone: true,
-	imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent, SolutionCardComponent, YourSolutionComponent, SolutionPostFormComponent, SolutionComponent],
+    imports: [LoadingWheelComponent, YoutubeVideoComponent, CommentsComponent, MultimediaComponent, DialogComponent, FileComponent, LinkComponent, FormPostComponent, SolutionCardComponent, YourSolutionComponent, SolutionPostFormComponent, SolutionComponent, YourSolutionCardComponent],
 	templateUrl: './assignment.component.html',
 	styles: ``,
 
@@ -90,16 +91,17 @@ export class AssignmentComponent {
 			this.assignment().dead_line = this.dead_line()?.nativeElement.value
 			this.assignment().show_dead_line = this.datePipe.transform(this.assignment().dead_line, 'HH:mm dd/MM/yyyy') ?? ''
 		}
-		this.assignmentSvc.putAssignment(this.assignment()).subscribe(
+		this.assignmentSvc.putAssignment(this.assignment()).then(
 			res => {
-				this.getAssignment(res.assignment)
-			},
-			err => {
-				this.assignmentSvc.getAssignment(this.assignment().id ?? '').subscribe(
-					this.getAssignment
-				)
+				this.getAssignment(res.data.assignment)
 			}
-		)
+		).catch(
+            err => {
+                this.assignmentSvc.getAssignment(this.assignment().id ?? '').subscribe(
+                    this.getAssignment
+                )
+            }
+        )
 
 		this.restartUpdate()
 	}
@@ -170,7 +172,7 @@ export class AssignmentComponent {
 
 	deleteAssignment() {
 		this.isLoadingDelete.set(true)
-		this.assignmentSvc.deleteAssignment(this.assignment().id ?? '').subscribe(
+		this.assignmentSvc.deleteAssignment(this.assignment().id ?? '').then(
 			res => {
 				this.router.navigate(['/assignments'])
 			}
@@ -217,6 +219,5 @@ export class AssignmentComponent {
 		private solutionSvc : SolutionService
 	) { }
 
-    protected readonly alert = alert;
     protected readonly parseFloat = parseFloat;
 }

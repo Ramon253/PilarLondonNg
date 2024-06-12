@@ -8,6 +8,11 @@ import {CommentService} from './resources/comment.service';
 import {DatePipe} from '@angular/common';
 import {SolutionService} from './solution.service';
 import {environment} from "../../environments/environment.development";
+import axios from "axios";
+
+axios.defaults.baseURL = environment.baseUrl
+axios.defaults.withCredentials = true
+axios.defaults.withXSRFToken = true
 
 @Injectable({
     providedIn: 'root'
@@ -24,12 +29,13 @@ export class AssignmentService {
     ) {
     }
 
-    private path = environment.baseUrl+  'api/';
+    private path = environment.baseUrl + 'api/';
 
-    postAssignment(assignment: Assignment, formData: FormData | undefined): Observable<Assignment> {
+    async postAssignment(assignment: Assignment, formData: FormData | undefined): Promise<any | Assignment> {
+        await axios.get('/sanctum/csrf-cookie')
         if (formData)
-            return this.http.post<Assignment>(this.path + `group/${assignment.group_id}/assignment`, formData, {withCredentials: true})
-        return this.http.post<Assignment>(this.path + `group/${assignment.group_id}/assignment`, assignment, {withCredentials: true})
+            return axios.post<Assignment>(`/api/group/${assignment.group_id}/assignment`, formData)
+        return axios.post<Assignment>(`/api/group/${assignment.group_id}/assignment`, assignment)
     }
 
     getAssignments(): Observable<{ assignments: Assignment[], groups?: any }> {
@@ -43,12 +49,13 @@ export class AssignmentService {
         return this.http.get<Assignment>(this.path + `assignment/${id}`, {withCredentials: true})
     }
 
-    deleteAssignment(id: string): Observable<Assignment> {
-        return this.http.delete<Assignment>(this.path + 'assignment/' + id, {withCredentials: true})
+    async deleteAssignment(id: string): Promise<any | Assignment> {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.delete<Assignment>('/api/assignment/' + id)
     }
 
-    putAssignment(assignment: Assignment): Observable<any> {
-        return this.http.put<any>(this.path + `assignment/${assignment.id}`, assignment, {withCredentials: true})
+    async putAssignment(assignment: Assignment): Promise<any > {
+        return axios.put<any>(`/api/assignment/${assignment.id}`, assignment)
     }
 
     mapAssignment(assignment: any): Assignment {
