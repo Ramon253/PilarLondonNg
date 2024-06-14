@@ -1,0 +1,10 @@
+@if (isLoading()) {
+
+} @else {
+    @if (show().student) {
+        <app-student/>
+    } @else if (show().teacher) {
+        <app-teacher></app-teacher>
+    }
+
+}

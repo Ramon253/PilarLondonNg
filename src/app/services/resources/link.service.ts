@@ -12,6 +12,11 @@ import {Assignment} from "../../models/assignment";
 import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
 import {Solution} from "../../models/solution";
 import {environment} from "../../../environments/environment.development";
+import axios from "axios";
+
+axios.defaults.baseURL = environment.baseUrl
+axios.defaults.withXSRFToken = true
+axios.defaults.withCredentials = true
 
 @Injectable({
 	providedIn: 'root'
@@ -22,18 +27,20 @@ export class LinkService {
 
 	constructor(private http: HttpClient, private validator: ValidationsService) { }
 
-	postLink(from: string, id: string, links: Link[]): Observable<Link[]> {
-		return this.http.post<Link[]>(`${this.path}${from}/${id}/link`, { links: links }, { withCredentials: true })
+	async postLink(from: string, id: string, links: Link[]): Promise<Link[] | any> {
+        await axios.get('/sanctum/csrf-cookie')
+		return axios.post<Link[]>(`/api/${from}/${id}/link`, { links: links })
 	}
 
-	deleteLink(from: string, id: string): Observable<any> {
-		return this.http.delete(`${this.path}${from}/link/${id}`, { withCredentials: true })
+	async deleteLink(from: string, id: string): Promise<any> {
+        await axios.get('/sanctum/csrf-cookie')
+		return this.http.delete(`/api/${from}/link/${id}`)
 	}
 
 	destroyLink(from : string , LinkComponent: LinkComponent | YoutubeVideoComponent ) {
 		LinkComponent.isLoadingDelete.set(true)
 
-		this.deleteLink(from, LinkComponent.link()?.id ?? '').subscribe(
+		this.deleteLink(from, LinkComponent.link()?.id ?? '').then(
 			res => {
 				LinkComponent.isLoadingDelete.set(false)
 				LinkComponent.delete.emit({
@@ -49,9 +56,9 @@ export class LinkService {
 
 	createLinks(from : string, fromComponent : PostComponent | AssignmentComponent | YourSolutionComponent, post : Post| Assignment | Solution){
 		 fromComponent.isLoadingLink = true
-		this.postLink(from, post.id?.toString() ?? '', fromComponent.inputLinks()).subscribe(
+		this.postLink(from, post.id?.toString() ?? '', fromComponent.inputLinks()).then(
 			(res: any) => {
-				const links = this.mapLinks(res.links)
+				const links = this.mapLinks(res.data.links)
 
 				post.links = links.links
 				post.videos = links.videos

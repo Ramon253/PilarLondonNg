@@ -1,5 +1,5 @@
 <div
-    routerLink="/group/{{group().id}}"
+    (click)="onClick()"
     class="relative w-full flex-col bg-main-white lg:flex-row mx-auto group max-w-screen-lg flex items-stretch rounded-lg border-[3px] border-main cursor-pointer hover:shadow-button-hover transition-all hover:-translate-y-1 hover:-translate-x-1 shadow-assignment-card">
     <div class="w-full  h-full lg:w-2/3   flex items-center ">
         <img class="h-full w-full aspect-[16/4]" src="{{environment.baseUrl}}api/group/{{ group().id }}/banner" alt="">
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    @if (loginSvc.user()?.role === 'none') {
+    @if (loginSvc.user()?.role === 'none' || !loginSvc.isLogged()) {
         <div
             class="absolute hidden top-0 left-0 w-full h-full bg-opacity-70 group-hover:flex transition-all items-center justify-center bg-gray-300">
             <button

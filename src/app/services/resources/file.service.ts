@@ -14,6 +14,11 @@ import {Assignment} from "../../models/assignment";
 import {YourSolutionComponent} from "../../solution/your-solution/your-solution.component";
 import {Solution} from "../../models/solution";
 import {environment} from "../../../environments/environment.development";
+import axios from "axios";
+
+axios.defaults.baseURL = environment.baseUrl;
+axios.defaults.withCredentials = true
+axios.defaults.withXSRFToken = true
 
 @Injectable({
 	providedIn: 'root'
@@ -24,19 +29,22 @@ export class FileService {
 
 	constructor(private http: HttpClient, private validator: ValidationsService) { }
 
-	postFile(from: string, id: string, files: FormData): Observable<FileR[]> {
-		return this.http.post<FileR[]>(`${this.path}${from}/${id}/file`, files, { withCredentials: true })
+
+	async postFile(from: string, id: string, files: FormData): Promise<FileR[] | any > {
+        await axios.get('/sanctum/csrf-cookie')
+		return axios.post<FileR[]>(`/api/${from}/${id}/file`, files)
 	}
 
 
-	deleteFile(from: string, id: string): Observable<any> {
-		return this.http.delete(`${this.path}${from}/file/${id}`, { withCredentials: true })
+	async deleteFile(from: string, id: string): Promise<any> {
+        await axios.get('/sanctum/csrf-cookie')
+		return axios.delete(`/api/${from}/file/${id}`)
 	}
 
 
 	destroyFile(from : string , file: FileComponent | MultimediaComponent) {
 		file.isLoadingDelete.set(true)
-		this.deleteFile(from, file.file()?.id.toString() ?? '').subscribe(
+		this.deleteFile(from, file.file()?.id.toString() ?? '').then(
 			res => {
 				file.delete.emit({ id: file.file()?.id.toString() ?? '', isMultimedia: false })
 				file.isLoadingDelete.set(false)
@@ -60,10 +68,10 @@ export class FileService {
 			formData.append(`files[${fromComponent.inputFiles().indexOf(file)}]`, file)
 		}
 
-		this.postFile(from, post.id?.toString() ?? '', formData).subscribe(
+		this.postFile(from, post.id?.toString() ?? '', formData).then(
 			(res: any) => {
 
-				const files = this.mapFiles(res.files)
+				const files = this.mapFiles(res.data.files)
 
 				post.fileLinks = files.files
 				post.multimedia = files.multimedia

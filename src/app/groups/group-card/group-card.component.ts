@@ -2,7 +2,7 @@ import {Component, ElementRef, input, viewChild} from '@angular/core';
 import {Group} from "../../models/group";
 import {DatePipe} from "@angular/common";
 import {LoginService} from "../../login.service";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {GroupService} from "../../services/group.service";
 import {environment} from "../../../environments/environment.development";
 
@@ -22,11 +22,16 @@ export class GroupCardComponent {
     constructor(
         public datePipe: DatePipe,
         public loginSvc: LoginService,
-        public groupSvc : GroupService
+        public groupSvc : GroupService,
+        private router: Router,
     ) {
     }
 
-
+    onClick(){
+       if (!this.loginSvc.isLogged() || this.loginSvc.user()?.role === 'none')
+           return;
+        this.router.navigate(['/group/' + this.group().id]);
+    }
 
     showDays() {
         switch (this.group().lesson_days) {
@@ -48,4 +53,5 @@ export class GroupCardComponent {
     }
 
     protected readonly environment = environment;
+    protected readonly onclick = onclick;
 }

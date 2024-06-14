@@ -8,6 +8,8 @@ import {ValidationErrorComponent} from "../../validations/validation-error/valid
 import {Student} from "../../models/student";
 import {ImageCropperComponent} from "ngx-image-cropper";
 import {Router} from "@angular/router";
+import {RoutingService} from "../../services/routing.service";
+import {FlashMessageService} from "../../services/flash-message.service";
 
 @Component({
     selector: 'app-create-student-form',
@@ -48,7 +50,9 @@ export class CreateStudentFormComponent {
         private studentSvc: StudentService,
         public loginSvc: LoginService,
         private formBuilder: FormBuilder,
-        private router : Router
+        private router : Router,
+        private routingSvc : RoutingService,
+        private flashMessageSvc : FlashMessageService
     ) {
     }
 
@@ -112,6 +116,18 @@ export class CreateStudentFormComponent {
     }
 
     ngOnInit() {
+        if (!this.loginSvc.isLogged()) {
+            this.routingSvc.intended.set('create-student')
+            this.router.navigate(['/login']).then(() => {
+                this.flashMessageSvc.messages().push({
+                    message : 'Necesitas iniciar sesion para poder activar tu cuenta, si no tiene cuenta creese una aqui',
+                    type : 'error',
+                    duration : 20,
+                    link : 'register'
+                })
+            })
+            return
+        }
         this.studentSvc.isActivated().then(
             res => {
                 this.isLoading.set(false)

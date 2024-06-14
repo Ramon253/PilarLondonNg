@@ -119,6 +119,7 @@ export class LoginComponent {
         console.log('form al final');
         console.log(this.loginForm);
     }
+    protected readonly navigator = navigator;
 }
 
 

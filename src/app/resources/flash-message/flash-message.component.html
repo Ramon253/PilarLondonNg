@@ -1,9 +1,11 @@
 <div #messageElement
+
      class="flex items-center justify-center transition-all duration-200 ease-in-out right-0 w-full pointer-events-none h-fit top-2 bounce fixed z-50  "
 >
 
     <span
-        class="rounded-3xl overflow-hidden relative items-center pointer-events-auto flex flex-col gap-1 shadow {{message().type === 'error' ? 'bg-secondary': 'bg-main'}} text-xl p-4 text-main-white w-fit max-w-96 min-w-28 min-h-16">
+        (click)="onClick()"
+        class="rounded-3xl {{message().link ? 'cursor-pointer': ''}} overflow-hidden relative items-center pointer-events-auto flex flex-col gap-1 shadow {{message().type === 'error' ? 'bg-secondary': 'bg-main'}} text-xl p-4 text-main-white w-fit max-w-96 min-w-28 min-h-16">
         <div class="flex items-center gap-4">
             <div class=" p-2 border-r border-main-grey">
                 <span

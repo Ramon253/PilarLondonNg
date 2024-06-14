@@ -21,8 +21,8 @@
 
                     </li>
                     <li class="overflow-hidden">
-                        @if (loginSvc.user()?.role === 'none') {
-                            <a routerLink="/create-student" class="group flex w-fit flex-col items-center">
+                        @if (loginSvc.user()?.role === 'none' || !loginSvc.isLogged()) {
+                            <a routerLink="/join" class="group flex w-fit flex-col items-center">
                                 Unete
                                 <div
                                     class="h-[2px] bg-font-grey transition -translate-x-full w-[150%] group-hover:translate-x-0 duration-300">
@@ -130,13 +130,14 @@
 
             } @else {
                 <div>
-                    <button routerLink="/login"
+                    <button
+                        (click)="navigateTo('/login')"
                             class="py-1 w-24 px-2 rounded-lg border-[3px] border-secondary text-secondary font-bold bg-transparent hover:bg-secondary hover:text-main-white hover:scale-105 transition">
                         Login
                     </button>
                 </div>
                 <div>
-                    <button routerLink="/register"
+                    <button (click)="navigateTo('/register')"
                             class="py-1 px-2 rounded-lg border-[3px] border-main text-main font-bold bg-transparent hover:bg-main hover:text-main-white hover:scale-105 transition w-24">
                         Register
                     </button>
@@ -153,14 +154,14 @@
             </div>
 
 
-            <div (click)="showUserMenu.set(false)"
+            <div (click)="showUserMenu.set(false);navigateTo('/profile')"
                  routerLink="/profile"
                  class="p-2 cursor-pointer text-xl rounded-lg bg-main-white shadow flex items-center gap-2 border-2 border-transparent text-dark-font hover:border-main hover:text-main hover:scale-110 transition-all">
                 <span class="material-icons">face</span>
                 Perfil
             </div>
             <div
-                (click)="loginSvc.logout(); loginSvc.logoutFront(); showUserMenu.set(false)"
+                (click)="loginSvc.logout(); loginSvc.logoutFront(); showUserMenu.set(false);toggleMenu()"
                 class="p-2 text-xl cursor-pointer rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition-all">
                 <span class="material-icons">logout</span>
                 Cerrar sesion
@@ -197,7 +198,7 @@
             <span>Posts</span>
         </div>
         @if (user()?.role === 'none' || !loginSvc.isLogged()) {
-            <div #postLink (click)="navigateTo('/create-student')"
+            <div #postLink (click)="navigateTo('/join')"
                  class="p-4 w-1/2 flex items-center gap-2  overflow-hidden relative group text-xl hover:bg-main-grey text-font-grey font-medium rounded-r-lg cursor-pointer ">
                 <div class="h-full absolute top-0 group w-full left-0 overflow-hidden">
                     <div

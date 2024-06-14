@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, signal, viewChild} from '@angular/core';
+import {Component, ElementRef, Renderer2, signal, viewChild, viewChildren} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {Router, RouterLink} from "@angular/router";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -19,7 +19,8 @@ import {ValidationsService} from "../../services/validations.service";
     styleUrl: './landing.component.css'
 })
 export class LandingComponent {
-
+    sliderLength = 4
+    sliderPosition = 0
     isLoadingMail = signal<boolean>(false)
     isTouchedMail = signal<boolean>(false)
     heroPercentage = signal<number>(100)
@@ -67,6 +68,8 @@ export class LandingComponent {
     phone = viewChild<ElementRef>('phone')
     message = viewChild<ElementRef>('message')
     nameInput = viewChild<ElementRef>('nameInput')
+    views = viewChildren<ElementRef>('view')
+    slider = viewChild<ElementRef>('slider')
 
     ngOnInit() {
         this.scrollSvc.scrollTop.subscribe((scrollTop) => {
@@ -76,86 +79,106 @@ export class LandingComponent {
             this.plans(scrollTop)
             this.location(scrollTop)
             this.contactFormTransition(scrollTop)
-            console.log(scrollTop)
         })
+        setInterval(() => {
+            this.slideImage()
+        }, 5000)
+
+    }
+
+    slideImage() {
+        this.sliderPosition++
+        if (this.sliderPosition >= this.sliderLength) {
+            this.sliderPosition = 0
+        }
+        this.renderer.setStyle(this.slider()?.nativeElement, 'transform', `translateX(-${this.sliderPosition * 100}%)`)
     }
 
     contactFormTransition(scrollTop: number) {
-        let breakpoints = [4100, 4350]
-        if (window.innerWidth < 850) breakpoints = [6900, 7100]
-        if (scrollTop > breakpoints[1]) {
+        if (this.scrollSvc.isVisible(this.from()?.nativeElement)) {
+            this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(0)')
+            this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(0)')
+            this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(0)')
+        } else {
+            this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(-110%)')
+            this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(200%)')
+            this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(-210%)')
+        }
+
+        if (this.scrollSvc.isVisible(this.subject()?.nativeElement)) {
             this.renderer.setStyle(this.subject()?.nativeElement, 'transform', 'translateX(0)')
             this.renderer.setStyle(this.message()?.nativeElement, 'transform', 'translateY(0)')
             return;
         }
-        if (scrollTop > breakpoints[0]) {
-            this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(0)')
-            this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(0)')
-            this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(0)')
-            return
-        }
-        this.renderer.setStyle(this.from()?.nativeElement, 'transform', 'translateX(-110%)')
-        this.renderer.setStyle(this.email()?.nativeElement, 'transform', 'translateX(200%)')
-        this.renderer.setStyle(this.phone()?.nativeElement, 'transform', 'translateX(-210%)')
+
         this.renderer.setStyle(this.subject()?.nativeElement, 'transform', 'translateX(110%)')
         this.renderer.setStyle(this.message()?.nativeElement, 'transform', 'translateY(110%)')
 
     }
 
     location(scrollTop: number) {
-        let breakpoints = [3000, 3250]
-        if (window.innerWidth < 850) breakpoints = [5300, 5500]
-        if (scrollTop > breakpoints[1]) {
-            this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(0)')
-            this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(0)')
-            return
-        }
-        this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(200%)')
-        this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(-200%)')
-
-        if (scrollTop > breakpoints[0]) {
+        if (this.scrollSvc.isVisible(this.svgLocation()?.nativeElement, 6)) {
             this.renderer.setStyle(this.svgLocation()?.nativeElement, 'transform', 'translateY(0)')
             this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(100%)')
-            return;
+        } else {
+            this.renderer.setStyle(this.svgLocation()?.nativeElement, 'transform', 'translateY(-300%)')
+            this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(0)')
         }
-        this.renderer.setStyle(this.svgLocation()?.nativeElement, 'transform', 'translateY(-220%)')
-        this.renderer.setStyle(this.locationShadow()?.nativeElement, 'transform', 'scale(0)')
+
+        if (this.scrollSvc.isVisible(this.views().at(3)?.nativeElement)) {
+            this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(0)')
+            this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(0)')
+        } else {
+            this.renderer.setStyle(this.street()?.nativeElement, 'transform', 'translateX(200%)')
+            this.renderer.setStyle(this.timeTable()?.nativeElement, 'transform', 'translateX(-200%)')
+        }
     }
 
     plans(scrollTop: number) {
-        let breakpoints = [2100, 2200]
-        if (window.innerWidth < 850) breakpoints = [3500, 4000]
-        if (scrollTop > breakpoints[1]) {
-
-            this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateY(0)')
-            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateY(0)')
-            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'scale(105%)')
-            this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '100%')
-            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateY(0)')
-            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'scale(95%)')
-            return;
-        }
-        this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateY(100%)')
-        this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateY(-200%)')
-        this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '0')
-        this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateY(100%)')
-
-        if (scrollTop > breakpoints[0]) {
+        if (this.scrollSvc.isVisible(this.planHeader()?.nativeElement)) {
             this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'translateY(0)')
             this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'scale(100%)')
-            return
+        } else {
+            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'translateY(-100%)')
+            this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'scale(0)')
         }
-        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'translateY(-100%)')
-        this.renderer.setStyle(this.planHeader()?.nativeElement, 'transform', 'scale(0)')
+
+        if (window.innerWidth >= 850) {
+            if (this.scrollSvc.isVisible(this.views().at(2)?.nativeElement)) {
+                this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateY(0)')
+                this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateY(0)')
+                this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '100%')
+                this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateY(0)')
+
+            } else {
+                this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateY(100%)')
+                this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateY(-200%)')
+                this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '0')
+                this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateY(100%)')
+            }
+            return;
+        }
+        this.renderer.setStyle(this.plan2()?.nativeElement, 'opacity', '100%')
+        if (this.scrollSvc.isVisible(this.plan1()?.nativeElement)) {
+            this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateX(0)')
+        } else
+            this.renderer.setStyle(this.plan1()?.nativeElement, 'transform', 'translateX(200%)')
+
+        if (this.scrollSvc.isVisible(this.plan2()?.nativeElement)) {
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateX(0)')
+        } else
+            this.renderer.setStyle(this.plan2()?.nativeElement, 'transform', 'translateX(-200%)')
+
+        if (this.scrollSvc.isVisible(this.plan3()?.nativeElement)) {
+            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateX(0)')
+        } else
+            this.renderer.setStyle(this.plan3()?.nativeElement, 'transform', 'translateX(200%)')
 
     }
 
     hero(scrollTop: number) {
-        let breakpoints = [1800, 2600]
-        if (window.innerWidth < 850) breakpoints = [2450, 2800]
-        if (scrollTop > breakpoints[1]) return;
         let interval: any
-        if (scrollTop > breakpoints[0]) {
+        if (this.scrollSvc.isVisible(this.heroCircle()?.nativeElement, 8)) {
             if (this.heroCircle()?.nativeElement.classList.contains('heroAnimation')) {
                 return;
             }
@@ -178,42 +201,55 @@ export class LandingComponent {
     }
 
     secondView(scrollTop: number) {
-
-        if (scrollTop > 1300) {
-            this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(100%)')
-            if (window.innerWidth < 850 && scrollTop < 1850)
+        if (window.innerWidth > 850) {
+            if (this.scrollSvc.isVisible(this.views().at(1)?.nativeElement)) {
+                this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(100%)')
+                this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(100%)')
                 return;
-            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(100%)')
+            }
+            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(0)')
+            this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(0)')
             return
         }
-        console.log(scrollTop)
-        this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(0)')
-        this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(0)')
+
+        if (this.scrollSvc.isVisible(this.text2()?.nativeElement)) {
+            this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(100%)')
+        } else
+            this.renderer.setStyle(this.text2()?.nativeElement, 'transform', 'scale(0)')
+
+        if (this.scrollSvc.isVisible(this.foto2()?.nativeElement)) {
+            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(100%)')
+        } else
+            this.renderer.setStyle(this.foto2()?.nativeElement, 'transform', 'scale(0)')
     }
 
 
     firstView(scrollTop: number) {
-        let breakpoints = [600, 1200]
-        if (window.innerWidth < 850) breakpoints = [500, 1200]
-        if (scrollTop >= breakpoints[1]) return;
-        if (scrollTop < breakpoints[0]) {
+        if (window.innerWidth > 850) {
+            if (this.scrollSvc.isVisible(this.views().at(0)?.nativeElement)) {
+                this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(0)')
+                this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(0)')
+                return;
+            }
             this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(-200%)')
             this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(200%)')
             return
         }
-        this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(0)')
-        if (window.innerWidth < 850) {
-            if (scrollTop < 700) return;
-        }
-        this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(0)')
+
+        if (this.scrollSvc.isVisible(this.text1()?.nativeElement)) {
+            this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(0)')
+        } else
+            this.renderer.setStyle(this.text1()?.nativeElement, 'transform', 'translateX(200%)')
+
+        if (this.scrollSvc.isVisible(this.foto1()?.nativeElement)) {
+            this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(0)')
+        } else
+            this.renderer.setStyle(this.foto1()?.nativeElement, 'transform', 'translateX(-200%)')
+
 
     }
 
-
-    sendEmail(event
-                  :
-                  SubmitEvent
-    ) {
+    sendEmail(event: SubmitEvent) {
         event.preventDefault()
         if (this.contactForm.invalid) return
         this.isLoadingMail.set(true)

@@ -1,1 +1,129 @@
-<p>join works!</p>
+<div class="w-full h-fit bg-main-grey">
+    <div
+        class="mt-[10vh] overflow-hidden max-w-screen-2xl flex flex-col flex-grow w-screen min-h-[90vh] h-fit mx-auto">
+        <div class="min-h-[90vh] flex flex-col gap-20 w-screen max-w-screen-xl mx-auto p-5">
+            <h1 class=" w-full text-center text-7xl font-bold text-main py-10">Apúntate</h1>
+            <div
+                class="h-fit w-fit max-w-full  divide-secondary basis-1 justify-between flex-col nav:flex-row items-center flex gap-4 p-10  bg-main-white rounded-l shadow-card ">
+                <div #howto
+                     class="h-full -translate-x-full  basis-1/2  group items-center gap-8 flex flex-col hover:scale-110 transition-all ease-in-out duration-500 hover:bg-main-white hover:p-5 hover:shadow-card hover:rounded-lg  justify-start">
+                    <h2 class="text-3xl font-bold text-main flex items-center gap-2">¿Como unirse?</h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-1/2" viewBox="0 0 24 24">
+                        <g fill="none" fill-rule="evenodd">
+                            <path
+                                d="M24 0v24H0V0zM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036c-.01-.003-.019 0-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"/>
+                            <path fill="#012169"
+                                  d="M12 12c1.873 0 3.57.62 4.815 1.487c1.183.825 2.185 2.051 2.185 3.37c0 .724-.309 1.324-.796 1.77c-.458.421-1.056.694-1.672.88C15.301 19.88 13.68 20 12 20c-1.68 0-3.301-.12-4.532-.493c-.616-.186-1.214-.459-1.673-.88C5.31 18.182 5 17.582 5 16.858c0-1.319 1.002-2.545 2.185-3.37C8.43 12.62 10.127 12 12 12m0 2c-1.44 0-2.743.48-3.67 1.127c-.989.69-1.33 1.392-1.33 1.73c0 .304.352.494.672.614l.205.07l.17.052c.94.284 2.32.407 3.953.407c1.508 0 2.799-.105 3.728-.344l.304-.087l.19-.06c.343-.117.778-.314.778-.652s-.341-1.04-1.33-1.73C14.744 14.481 13.44 14 12 14m7-1c1.044 0 1.992.345 2.693.833c.64.447 1.307 1.19 1.307 2.096c0 1.335-1.297 1.813-2.463 1.98l-.3.037l-.289.025a9.535 9.535 0 0 1-.138.008c.122-.345.19-.72.19-1.122a3.78 3.78 0 0 0-.107-.888c.386-.03.703-.08.939-.151c.104-.032.01-.13-.1-.215l-.107-.078l-.076-.051a2.698 2.698 0 0 0-.995-.418c-.38-.76-.964-1.418-1.586-1.943A4.78 4.78 0 0 1 19 13M5 13c.357 0 .703.04 1.032.113c-.622.525-1.206 1.183-1.586 1.943a2.701 2.701 0 0 0-.995.418l-.128.088c-.127.092-.276.22-.155.256c.236.071.553.122.94.151a3.73 3.73 0 0 0-.108.888c0 .402.068.777.19 1.122l-.28-.02l-.296-.03c-1.202-.147-2.614-.607-2.614-2c0-.905.666-1.649 1.307-2.096A4.756 4.756 0 0 1 5 13m13.5-6a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5m-13 0a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5M12 3a4 4 0 1 1 0 8a4 4 0 0 1 0-8m6.5 6a.5.5 0 1 0 0 1a.5.5 0 0 0 0-1m-13 0a.5.5 0 1 0 0 1a.5.5 0 0 0 0-1M12 5a2 2 0 1 0 0 4a2 2 0 0 0 0-4"/>
+                        </g>
+                    </svg>
+                    <div
+                        class="text-md overflow-hidden text-font-grey group-hover:bg-main-grey h-0 group-hover:h-fit group-hover:shadow-md font-medium flex flex-col gap-3 rounded-r-lg border-l-2 border-transparent group-hover:border-secondary p-2 transition-all ease-in-out">
+                        <p class="p-4 -translate-x-full group-hover:translate-x-0 transition-all duration-300 ease-in-out">
+                            Bienvenido a Pilarlondon, si usted quiere unirse y no es un estudiante tiene tres formas
+                            princiles de unirse, dale al boton o sigue bajando para ver como
+                        </p>
+                    </div>
+                    <button
+                        (click)="goToHowTo()"
+                        class="w-full hover:text-main-white p-2 flex items-center justify-center rounded-lg hover:bg-main shadow hover:shadow-button-hover text-main border-main border-2 transition-all ease-in-out duration-200">
+                        <a >Ver como</a>
+                    </button>
+                </div>
+                <div class="w-full nav:w-[2px] nav:h-full h-[2px] bg-dark-grey">
+                </div>
+                <div #activate
+                     class="h-full translate-x-full basis-1/2 group items-center gap-8 flex flex-col hover:scale-110 transition-all ease-in-out duration-500 hover:bg-main-white hover:p-5 hover:shadow-card hover:rounded-lg  justify-start">
+                    <h2 class="text-3xl font-bold text-secondary flex items-center gap-2">¿Ya eres estudiante?</h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-1/2 fill-secondary" viewBox="0 0 256 256">
+                        <path
+                            d="m226.53 56.41l-96-32a8 8 0 0 0-5.06 0l-96 32A8 8 0 0 0 24 64v80a8 8 0 0 0 16 0V75.1l33.59 11.19a64 64 0 0 0 20.65 88.05c-18 7.06-33.56 19.83-44.94 37.29a8 8 0 1 0 13.4 8.74C77.77 197.25 101.57 184 128 184s50.23 13.25 65.3 36.37a8 8 0 0 0 13.4-8.74c-11.38-17.46-27-30.23-44.94-37.29a64 64 0 0 0 20.65-88l44.12-14.7a8 8 0 0 0 0-15.18ZM176 120a48 48 0 1 1-86.65-28.45l36.12 12a8 8 0 0 0 5.06 0l36.12-12A47.9 47.9 0 0 1 176 120m-48-32.43L57.3 64L128 40.43L198.7 64Z"/>
+                    </svg>
+                    <div
+                        class="text-md overflow-hidden text-font-grey group-hover:bg-main-grey h-0 group-hover:h-fit group-hover:shadow-md font-medium flex flex-col gap-3 rounded-r-lg border-l-2 border-transparent group-hover:border-main p-2 transition-all ease-in-out">
+                        <p class="p-4 -translate-x-full group-hover:translate-x-0 transition-all duration-300 ease-in-out">
+                            Si ya eres un estudiante, lo que debes hacer para unirte es insertar un código de
+                            activacion, este codigo lo tendras que pedir a la profesora, o se le ha enviado por correo
+                            asi que mire en spam en caso de que no le haya llegado nada,
+                            <strong>para poder usar el codigo debe tener una cuenta creada</strong> ,muchas gracias por
+                            estudiar aqui
+                        </p>
+                    </div>
+                    <button routerLink="/create-student"
+                            class="w-full hover:text-main-white p-2 flex items-center justify-center rounded-lg hover:bg-secondary shadow hover:shadow-secondary-button-hover text-secondary border-secondary border-2 transition-all ease-in-out duration-200">
+                        Insertar código
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div #howToJoin class="min-h-[90vh] h-fit">
+            <h3 class="text-6xl font-bold text-secondary w-full text-center p-10">Como unirse</h3>
+            <div class="flex w-full flex-col nav:flex-row h-fit p-10  gap-10 justify-evenly overflow-hidden">
+                <div
+                    #howToCard
+                    class="p-5 flex basis-1/3 flex-col gap-2 rounded-lg items-center bg-main-white shadow-card justify-between transition-all ease-in-out duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="w-1/3 m-3 fill-main p-4 border-b border-secondary-font-grey" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                              d="M7.435 1.25h9.13c.57 0 1.054 0 1.453.041c.426.044.82.14 1.192.37c.371.23.633.539.863.9c.215.34.432.772.687 1.282l.016.033c.01.02.019.039.027.06l1.403 3.547c.168.423.353.95.407 1.488c.055.552-.02 1.183-.453 1.73a2.753 2.753 0 0 1-1.41.945v9.604H22a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1 0-1.5h1.25v-9.604a2.754 2.754 0 0 1-1.41-.944c-.432-.548-.508-1.18-.453-1.73c.054-.54.24-1.066.406-1.489l1.404-3.548a.747.747 0 0 1 .027-.06l.016-.032c.255-.51.471-.943.687-1.282c.23-.361.492-.67.863-.9c.372-.23.766-.326 1.191-.37c.4-.041.884-.041 1.454-.041M18 10.888a2.75 2.75 0 0 0 1.25.758v9.604h-4v-2.782c0-.44 0-.82-.028-1.13c-.03-.33-.096-.656-.273-.963a2.251 2.251 0 0 0-.824-.824c-.307-.177-.633-.243-.962-.273c-.312-.028-.691-.028-1.13-.028h-.065c-.44 0-.82 0-1.13.028c-.33.03-.656.096-.963.273a2.25 2.25 0 0 0-.824.824c-.177.307-.243.633-.273.962c-.028.312-.028.691-.028 1.13v2.783h-4v-9.603a2.75 2.75 0 0 0 1.25-.76a2.742 2.742 0 0 0 2 .863c.788 0 1.499-.331 2-.863a2.742 2.742 0 0 0 2 .863c.788 0 1.499-.331 2-.863a2.742 2.742 0 0 0 2 .863c.788 0 1.499-.331 2-.863M10.25 21.25h3.5V18.5c0-.481 0-.792-.022-1.027c-.02-.225-.055-.307-.079-.348a.75.75 0 0 0-.274-.274c-.04-.024-.123-.058-.348-.079A12.776 12.776 0 0 0 12 16.75c-.481 0-.792 0-1.027.022c-.225.02-.307.055-.348.079a.75.75 0 0 0-.274.274c-.024.04-.059.123-.079.348c-.021.235-.022.546-.022 1.027zM6.75 9a1.25 1.25 0 0 0 2.5 0a.75.75 0 0 1 1.5 0a1.25 1.25 0 0 0 2.5 0a.75.75 0 0 1 1.5 0a1.25 1.25 0 0 0 2.5 0a.75.75 0 0 1 1.5 0a1.25 1.25 0 0 0 2.232.773c.114-.144.17-.342.138-.652c-.032-.322-.151-.688-.308-1.086L19.42 4.517c-.268-.535-.447-.89-.613-1.15c-.16-.252-.274-.361-.386-.43c-.111-.07-.26-.123-.557-.154c-.314-.032-.72-.033-1.336-.033H7.472c-.617 0-1.023 0-1.336.033c-.297.031-.446.085-.557.154c-.112.069-.226.178-.386.43c-.167.26-.345.615-.613 1.15L3.188 8.035c-.157.398-.276.764-.308 1.086c-.031.31.024.508.138.652A1.25 1.25 0 0 0 5.25 9a.75.75 0 0 1 1.5 0"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    <div class="p-3 space-y-3">
+                        <span class="text-2xl font-bold text-main w-full  shadow-b ">Ven a nuestro local</span>
+                        <p>La primera forma seria venir a nuestro local directamente y consulte con nosotros,
+                            solucionaremos sus dudas en persona y le aydaremos a escojer la clase que mejor se ajuste a
+                            sus metas</p>
+                    </div>
+                    <button
+                        routerLink="/location"
+                        class="px-4 py-2 mt-5 rounded-lg hover:shadow-secondary-button-hover border-2 border-secondary text-secondary text-md font-bold hover:scale-110 hover:text-main-white hover:bg-secondary flex items-center gap-2 transition-all ease-in-out">
+                        <span class="material-icons">location_on</span> Ubicación
+                    </button>
+                </div>
+                <div
+                    #howToCard
+                    class="p-5 basis-1/3 flex flex-col gap-2 rounded-lg items-center bg-main-white shadow-card justify-between transition-all ease-in-out duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="w-1/3 m-3 stroke-main p-4 border-b border-secondary-font-grey" viewBox="0 0 24 24">
+                        <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <path d="m3 7l9 6l9-6"/>
+                        </g>
+                    </svg>
+                    <div class="p-3 flex flex-col gap-3">
+                        <span class="text-2xl font-bold text-main w-full  shadow-b ">Contacte con nosotros</span>
+                        <p>Otra forma es contactar con nosotros de forma directa, puede mandarnos un mail a traves de
+                            esta pagina usando el formulario de contacto o puede usar la informacion de contacto para
+                            mandarnos un whatssapp o un mail directamente </p>
+                    </div>
+                    <button
+                        routerLink="/contact"
+                        class="px-4 py-2 mt-5 rounded-lg hover:shadow-secondary-button-hover border-2 border-secondary text-secondary text-md font-bold hover:scale-110 hover:text-main-white hover:bg-secondary flex items-center gap-2 transition-all ease-in-out">
+                        <span class="material-icons">mail</span> Contactar
+                    </button>
+                </div>
+                <div
+                    #howToCard
+                    class="p-5 basis-1/3 flex flex-col gap-2 rounded-lg items-center bg-main-white shadow-card justify-between transition-all ease-in-out duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="w-1/3 m-3 fill-main p-4 border-b border-secondary-font-grey" viewBox="0 0 24 24">
+                        <path fill="#012169"
+                              d="M4.616 19q-.691 0-1.153-.462T3 17.384V6.616q0-.691.463-1.153T4.615 5h14.77q.69 0 1.152.463T21 6.616v10.769q0 .69-.463 1.153T19.385 19zm0-1H15v-3.884H4v3.269q0 .23.192.423t.423.192M16 18h3.385q.23 0 .423-.192t.192-.424V9.231h-4zM4 13.116h11V9.23H4z"/>
+                    </svg>
+                    <div class="p-3 space-y-3">
+                        <span class="text-2xl font-bold text-main w-full  shadow-b ">A traves de esta pagina</span>
+                        <p>Puede usar esta pagina para apuntarse, lo unico que necesita es tener una cuenta creada,
+                            explorar las clases que cumplan sus requisitos y solicitar unirse, cuando haga
+                            esto entrara en una lista de espera que dependera de los estudiantes apuntados, en cuanto
+                            haya hueco nosotros contactaremos con usted
+                        </p>
+                    </div>
+                    <button
+                        routerLink="/groups"
+                        class="px-4 py-2 mt-5 rounded-lg hover:shadow-secondary-button-hover border-2 border-secondary text-secondary text-md font-bold hover:scale-110 hover:text-main-white hover:bg-secondary flex items-center gap-2 transition-all ease-in-out">
+                        <span class="material-icons">group</span> Explorar clases
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

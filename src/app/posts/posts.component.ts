@@ -10,6 +10,7 @@ import { Route, Router, RouterLink } from '@angular/router';
 import { FileR } from '../models/properties/file';
 import { throwError } from 'rxjs';
 import { ValidationsService } from "../services/validations.service";
+import {RoutingService} from "../services/routing.service";
 
 
 @Component({
@@ -36,9 +37,31 @@ export class PostsComponent {
         private el: ElementRef,
         private router: Router,
         public loginSvc: LoginService,
+        public routingSvc: RoutingService,
         public postSvc: PostService,
         private validator: ValidationsService
     ) {
+    }
+
+    ngOnInit(){
+        if (!this.loginSvc.isLogged()){
+            this.routingSvc.intended.set('posts')
+            this.router.navigate(['/login'])
+        }
+        if (this.loginSvc.user() === null){
+            this.loginSvc.userReady.subscribe(() =>{
+                this.loadPost()
+            })
+            return;
+        }
+        this.loadPost()
+    }
+
+    loadPost(){
+        if (this.loginSvc.user()?.role === 'none') {
+            this.getPosts(true)
+            return
+        }
         this.getPosts(this.showPublic())
     }
 
@@ -61,7 +84,11 @@ export class PostsComponent {
                 this.isLoading.set(false)
             },
             err => {
-                if (this.Unauthenticated(err.status)) return
+                if (err.status === 401)
+                {
+                    this.routingSvc.intended.set('posts')
+                    this.router.navigate(['/login'])
+                }
 
                 if (err.status >= 500) {
                     throw new Error('Server error')

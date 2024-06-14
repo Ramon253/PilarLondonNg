@@ -15,8 +15,8 @@ import {ImageCropperComponent} from "ngx-image-cropper";
 import {LoadingWheelComponent} from "../../svg/loading-wheel/loading-wheel.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Parent} from "../../models/parent";
-import {subscriptionLogsToBeFn} from "rxjs/internal/testing/TestScheduler";
 import {YourSolutionCardComponent} from "../../solution/your-solution-card/your-solution-card.component";
+import {TeacherService} from "../../services/teacher.service";
 
 @Component({
     selector: 'app-student',
@@ -62,16 +62,18 @@ export class StudentComponent {
     isLoadingPut = signal<boolean>(false)
     isLoadingPutImage = signal<boolean>(false)
 
-    editForm :FormGroup = new FormGroup({})
+    editForm: FormGroup = new FormGroup({})
 
     showTutors = signal<boolean>(false)
+
     constructor(
         private studentSvc: StudentService,
         public loginSvc: LoginService,
         private route: ActivatedRoute,
         private router: Router,
         public datePipe: DatePipe,
-        private formBuilder : FormBuilder
+        private formBuilder: FormBuilder,
+        private teacherSvc: TeacherService
     ) {
     }
 
@@ -101,12 +103,18 @@ export class StudentComponent {
 
         if (this.router.url.includes('/profile')) {
             if (this.loginSvc.user()?.role === 'teacher')
-            this.studentSvc.getProfile().then(
-                res => {
+                this.teacherSvc.getProfile().then(
+                    res => {
+                        this.mapProfile(res)
+                        this.startForm()
+                    }
+                )
+            if (this.loginSvc.user()?.role === 'student'){
+                this.studentSvc.getProfile().then((res) =>{
                     this.mapProfile(res)
                     this.startForm()
-                }
-            )
+                })
+            }
             return
         }
         this.route.params.subscribe(
@@ -121,15 +129,16 @@ export class StudentComponent {
         )
     }
 
-    private startForm(){
+    private startForm() {
         this.editForm = this.formBuilder.group({
-            full_name : [this.student().full_name, Validators.required],
-            surname : [this.student().surname, Validators.required],
-            birth_date : [this.student().birth_date, Validators.required],
-            level : [this.student().level, Validators.required],
-            phone_number : [this.student().phone_number, Validators.pattern('^(?:(?:\\\\+34|0034)?\\\\s?(?:6\\\\d|7[1-9]|9[1-9]|8[1-9])\\\\d{7})$\\n\'') ]
+            full_name: [this.student().full_name, Validators.required],
+            surname: [this.student().surname, Validators.required],
+            birth_date: [this.student().birth_date, Validators.required],
+            level: [this.student().level, Validators.required],
+            phone_number: [this.student().phone_number, Validators.pattern('^(?:(?:\\\\+34|0034)?\\\\s?(?:6\\\\d|7[1-9]|9[1-9]|8[1-9])\\\\d{7})$\\n\'')]
         })
     }
+
     private mapProfile = (res: any) => {
         this.isLoading.set(false)
         this.student.set(res.data.student)
@@ -161,12 +170,12 @@ export class StudentComponent {
         )
     }
 
-    putStudent(event : SubmitEvent){
+    putStudent(event: SubmitEvent) {
         event.preventDefault()
         if (this.editForm.invalid) return
 
         this.isLoadingPut.set(true)
-        let student : Student = this.editForm.getRawValue()
+        let student: Student = this.editForm.getRawValue()
         this.studentSvc.putStudent(student).then(
             res => {
                 this.edit.set(false)

@@ -7,6 +7,10 @@ import { DatePipe } from '@angular/common';
 import { PostComponent } from '../../posts/post/post.component';
 import { CommentsComponent } from '../../resources/comments/comments.component';
 import {environment} from "../../../environments/environment.development";
+import axios from "axios";
+
+axios.defaults.baseURL = environment.baseUrl
+axios.defaults.withCredentials = true
 
 @Injectable({
 	providedIn: 'root'
@@ -17,16 +21,18 @@ export class CommentService {
 
 	constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
-	deleteComment(id: string, from: string): Observable<any> {
-		return this.http.delete<any>(`${this.path}${from}/comment/${id}`, { withCredentials: true })
+	async deleteComment(id: string, from: string): Promise<any> {
+        await axios.get('sanctum/csrf-cookie')
+		return axios.delete<any>(`/api/${from}/comment/${id}`)
 	}
 
 	getComments(from: string, postId: string): Observable<Comment[]> {
 		return this.http.get<Comment[]>(`${this.path}${from}/${postId}/comments`, {withCredentials : true})
 	}
 
-	postComment(comment: Comment, from: string): Observable<Response> {
-		return this.http.post<Response>(`${this.path}${from}/${comment.post_id}/comment`, comment, { withCredentials: true })
+	async postComment(comment: Comment, from: string): Promise<Response | any> {
+        await axios.get('sanctum/csrf-cookie')
+		return axios.post<Response>(`/api/${from}/${comment.post_id}/comment`, comment)
 	}
 
 
@@ -44,17 +50,15 @@ export class CommentService {
 
 		} as Comment
 
-		this.postComment(comment as Comment, from).subscribe(
+		this.postComment(comment as Comment, from).then(
 			(res: any) => {
-
-				CommentsComponent.post.emit(res.comments as Comment[])
+				CommentsComponent.post.emit(res.data.comments as Comment[])
 				CommentsComponent.isLoadingPost.set(false)
 				CommentsComponent.commentPostForm.get('Comentario')?.setValue('')
 				CommentsComponent.answerComment.set(undefined)
 				CommentsComponent.answerTo.set(undefined)
 			},
 			error => {
-				console.error(error)
 				CommentsComponent.commentPostForm.get('Comentario')?.setErrors({ required: true })
 				CommentsComponent.isLoadingPost.set(false)
 			}

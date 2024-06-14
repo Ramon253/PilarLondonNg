@@ -1,0 +1,121 @@
+<section class="w-full bg-main-grey min-h-[90vh] mt-[10vh] h-fit">
+    <div class="max-w-screen-xl mx-auto flex flex-col pt-10">
+        @if (isLoading()) {
+            <div class="w-full flex items-center justify-center">
+                <div class="h-96 rounded-full bg-gray-300 animate-pulse w-96"></div>
+            </div>
+        } @else {
+            <div class="w-full flex flex-col gap-5 items-center justify-center pb-20">
+                <div class="aspect-square h-96  relative group">
+                    <img [src]="getUrl()"
+                         alt="Profile_picture"
+                         class="rounded-full h-full shadow"
+                    >
+                    <span
+                        (click)="inputImg.click()"
+                        class="absolute top-0 right-0 text-main hover:text-main-white group-hover:text-main-white cursor-pointer material-icons flex items-center p-1 rounded-full hover:bg-main group-hover:bg-main transition">
+                        edit
+                    </span>
+                    <input type="file" class="hidden" #inputImg (change)="getProfile($event)">
+                </div>
+
+                <div
+                    class="max-w-screen-lg  w-screen mx-auto  text-main pt-4 border-b-2 border-dark-font flex flex-col gap-2">
+                    <h1 class="w-full text-secondary font-bold text-5xl text-center">{{ user().name }}</h1>
+                    <h2 class="w-full text-main font-bold text-3xl text-center">{{ user().email }}</h2>
+                </div>
+                    <div class="max-w-screen-lg mx-auto p-2 rounded-lg bg-main-white shadow w-screen h-fit ">
+                        <div
+                            class="w-full flex p-2 border-b-2 border-main text-center text-xl    font-bold text-main max-w-screen-md mx-auto">
+                            <span class="w-full text-center">Perfil</span>
+                            @if (edit()) {
+                                <span
+                                    class="w-fit material-icons p-1 rounded-full flex items-center text-secondary hover:text-main-white hover:bg-secondary cursor-pointer transition-all"
+                                    (click)="edit.set(false)">cancel</span>
+                            } @else {
+                                <span
+                                    class="w-fit material-icons p-1 rounded-full flex items-center text-main hover:text-main-white hover:bg-main cursor-pointer transition-all"
+                                    (click)="edit.set(true)">edit</span>
+                            }
+                        </div>
+                        <form [formGroup]="editForm" (submit)="putStudent($event)">
+                            <div class="flex gap-2 max-w-screen-md w-screen text-lg mx-auto">
+                                <div class="flex flex-col gap-8 p-10 w-fit">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-main">Full name :</span>
+                                        @if (edit()) {
+                                            <input formControlName="full_name" type="text"
+                                                   class="p-1 bg-main-grey shadow"
+                                                   >
+                                        } @else {
+                                            <span>{{ teacher().full_name }}</span>
+                                        }
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-main">Apellidos :</span>
+                                        @if (edit()) {
+                                            <input type="text" formControlName="surname"
+                                                   class="p-1 bg-main-grey shadow" >
+                                        } @else {
+                                            <span>{{ teacher().surname }}</span>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                            @if (edit()) {
+                                <div class="w-full flex justify-center">
+                                    <button
+                                        [disabled]="this.editForm.invalid"
+                                        type="submit"
+                                        class="px-4 mb-10 gap-2 py-2 rounded-lg border-2 border-main text-main text-xl font-bold {{editForm.invalid?'cursor-not-allowed': 'hover:bg-main hover:scale-110 hover:text-main-white hover:shadow-button-hover'}} transition-all duration-200 ease-in-out flex items-center">
+                                        @if (isLoadingPut()) {
+                                            <app-loading-wheel></app-loading-wheel> Cargando...
+                                        } @else {
+                                            <span class="material-icons">save</span> Guardar
+                                        }
+                                    </button>
+                                </div>
+                            }
+                        </form>
+
+                    </div>
+            </div>
+        }
+    </div>
+</section>
+
+@if (showCropper()) {
+    <app-dialog>
+        <div
+            class="max-w-screen-xl max-h-[80vh] items-center relative justify-center w-screen p-16 rounded-lg flex flex-col gap-10 overflow-scroll">
+            <div class="h-1/2 w-auto mt-[75%]">
+                <image-cropper
+                    [imageChangedEvent]="originalImage"
+                    [roundCropper]="true"
+                    [aspectRatio]="1"
+                    (imageCropped)="croppedImage = $event"
+                >
+                </image-cropper>
+            </div>
+            <div class="h-1/2 w-auto">
+                <img class="rounded-full" [src]="croppedImage.objectUrl" alt="">
+            </div>
+            <div>
+                <button (click)="getImage();"
+                        class="flex gap-2 border-2 border-main px-4 py-2 rounded-lg text-xl text-main font-bold hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover transition-all ease-in-out">
+                    @if (isLoadingPutImage()) {
+                        <app-loading-wheel></app-loading-wheel> Cargando...
+                    } @else {
+                        <span class="material-icons">upload</span> Subir imagen
+                    }
+                </button>
+            </div>
+            <span
+                class="material-icons p-1 flex items-center rounded-full text-secondary transition-all ease-in-out hover:bg-secondary hover:text-main-white absolute top-0 right-0 cursor-pointer"
+                (click)="showCropper.set(false)">close</span>
+        </div>
+    </app-dialog>
+}
+
+

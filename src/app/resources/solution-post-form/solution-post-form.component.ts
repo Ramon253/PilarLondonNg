@@ -47,11 +47,10 @@ export class SolutionPostFormComponent {
                 }
             }
 
-            this.solutionSvc.postSolution(this.assignment(), this.solution(), formData).subscribe(
+            this.solutionSvc.postSolution(this.assignment(), this.solution(), formData).then(
                 res => {
-                    console.log(res.solution)
                     this.isLoading.set(false)
-                    this.newSolution.emit(res.solution)
+                    this.newSolution.emit(res.data.solution)
                 },
                 err => {
                     this.isLoading.set(false)
@@ -62,10 +61,10 @@ export class SolutionPostFormComponent {
         this.solution().links = this.links().length === 0 ? undefined : this.links()
         this.solution().description = this.solutionForm.get('description')?.value ?? ''
 
-        this.solutionSvc.postSolution(this.assignment(), this.solution()).subscribe(
+        this.solutionSvc.postSolution(this.assignment(), this.solution()).then(
             res => {
                 this.isLoading.set(false)
-                this.newSolution.emit(res.solution)
+                this.newSolution.emit(res.data.solution)
             },
             err => {
                 this.isLoading.set(false)

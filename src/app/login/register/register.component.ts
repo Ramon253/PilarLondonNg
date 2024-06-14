@@ -52,9 +52,10 @@ export class RegisterComponent {
             this.loginSvc.loginFront()
             this.loginSvc.user.set(res.data.user)
             this.flashMessageSvc.messages().push({
-                message : 'Usuario creado con exito',
+                message : 'Usuario creado con exito, si eres estudiante y quieres activar tu cuenta haz click aqui',
                 type : 'message',
-                duration : 5
+                duration : 20,
+                link : 'create-student'
             })
             this.router.navigate([this.routingSvc.intended()]).then(() => this.routingSvc.intended.set(''))
         }).catch((err) => {

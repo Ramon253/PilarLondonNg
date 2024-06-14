@@ -56,7 +56,7 @@ export class CommentComponent {
     deleteComment(){
 		this.isLoadingDelete.set(true)
 
-        this.commentSvc.deleteComment(this.comment()?.id ?? '', this.parent()).subscribe(
+        this.commentSvc.deleteComment(this.comment()?.id ?? '', this.parent()).then(
             res => {
 				this.isLoadingDelete.set(false)
                 this.delete.emit(this.comment()?.id ?? '')

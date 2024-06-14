@@ -1,0 +1,43 @@
+<div class="mt[10vh] h-fit w-full bg-main-grey">
+    <div class="max-w-screen-2xl pt-10 mx-auto ">
+        <div
+            #view
+            class="min-h-[90vh] overflow-hidden  h-fit flex flex-col items-center justify-center gap-20 p-20">
+            <h4 class="text-main  text-4xl nav:text-6xl font-bold flex items-center justify-center gap-2">
+                <div class="relative h-fit w-fit p-2">
+                    <svg
+                        #svgLocation
+                        class=" border-b-2 border-transparent transition-all duration-[400ms] ease-in-out"
+                        xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 20 20">
+                        <path fill="#C8102E"
+                              d="M10 20S3 10.87 3 7a7 7 0 1 1 14 0c0 3.87-7 13-7 13m0-11a2 2 0 1 0 0-4a2 2 0 0 0 0 4"/>
+                    </svg>
+                    <div class="h-fit px-4 absolute bottom-0 w-full right-0">
+                        <div #locationShadow
+                             class="h-[3px] bg-dark-grey transition-all duration-[400ms] ease-in-out w-full"></div>
+                    </div>
+                </div>
+                Ubicacion
+            </h4>
+            <div class="text-xl font-bold max-w-[90vw]">
+                <div #timetable
+                     class="p-2 font-medium shadow-soft rounded-t-lg bg-main-white text-main w-full flex transition-all duration-[400ms] items-center justify-center">
+                <span>Abiertos de <span class="font-bold text-secondary">Lunes</span> a <span
+                    class="text-secondary font-bold">Viernes</span> de <span class="font-bold">16:30</span> a <span
+                    class="font-bold">21:00</span> </span>
+                </div>
+                <div #street
+                     class="p-2 shadow-card rounded-b-lg  bg-main text-main-white w-full flex transition-all duration-[400ms] items-center justify-center">
+                    <span>Calle 5 C. Antonio de Ulloa</span>
+                </div>
+                <div class="bg-main-grey  shadow-card">
+                    <iframe
+                        class="max-w-[90vw]"
+                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1601.6303630943617!2d-6.247002461101953!3d36.596029146512926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDM1JzQ1LjciTiA2wrAxNCc0NC42Ilc!5e0!3m2!1ses!2ses!4v1717138959081!5m2!1ses!2ses"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

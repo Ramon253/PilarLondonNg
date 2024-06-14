@@ -34,7 +34,7 @@ export class GroupCreationFormComponent {
         lesson_days: ['', Validators.required],
         lessons_time: ['', Validators.required],
         capacity: ['', Validators.required],
-        level: ['', Validators.required, Validators.pattern('^(A[12]|B[12]|C1)$')],
+        level: ['', [Validators.required, Validators.pattern('^(A[12]|B[12]|C1)$')]],
     })
 
     constructor(
@@ -94,6 +94,11 @@ export class GroupCreationFormComponent {
 
         }).finally(() => this.isLoading.set(false))
 
+    }
+    inputLevel(level : HTMLSelectElement){
+        this.form.get('level')?.setValue(level.value);
+
+        level.classList.remove('border-secondary')
     }
     endCrop(){
         this.showCropper.set(false)

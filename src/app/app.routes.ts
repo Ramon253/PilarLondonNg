@@ -14,6 +14,10 @@ import {StudentsComponent} from "./students/students.component";
 import {StudentComponent} from "./students/student/student.component";
 import {CreateStudentFormComponent} from "./students/create-student-form/create-student-form.component";
 import {SnoopyDogComponent} from "./index/resources/easter-egg/snoopy-dog/snoopy-dog.component";
+import {JoinComponent} from "./join/join.component";
+import {ContactComponent} from "./index/contact/contact.component";
+import {LocationComponent} from "./index/location/location.component";
+import {ProfileComponent} from "./profile/profile.component";
 
 
 export const routes: Routes = [
@@ -67,14 +71,27 @@ export const routes: Routes = [
     }
     ,{
         path:'profile',
-        component : StudentComponent
+        component : ProfileComponent
+    },
+    {
+        path : 'join',
+        component : JoinComponent,
     },
     {
         path : 'create-student',
         component : CreateStudentFormComponent
     },
     {
+        path : 'contact',
+        component : ContactComponent
+    },
+    {
+        path : 'location',
+        component : LocationComponent
+    },
+    {
         path : 'snoop-dog',
         component: SnoopyDogComponent
-    }
+    },
+
 ];

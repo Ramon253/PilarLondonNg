@@ -1,12 +1,14 @@
 import {Component, ElementRef, input, Renderer2, signal, viewChild} from '@angular/core';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {FlashMessage} from "../../models/flash-message";
 import {FlashMessageService} from "../../services/flash-message.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-flash-message',
     standalone: true,
-    imports: [],
+    imports: [
+        RouterLink
+    ],
     templateUrl: './flash-message.component.html',
     styleUrl: './flash-message.component.css'
 })
@@ -14,11 +16,13 @@ export class FlashMessageComponent {
 
     message = input.required<FlashMessage>()
     duration = input<number>(10)
+
     messageElement = viewChild<ElementRef>('messageElement')
     timeBar = viewChild<ElementRef>('timeBar')
 
     constructor(
         private renderer : Renderer2,
+        private router : Router
     ) {
     }
 
@@ -39,5 +43,11 @@ export class FlashMessageComponent {
         setTimeout(() => {
             this.messageElement()?.nativeElement.classList.add('hidden')
         }, 100)
+    }
+
+    onClick(){
+        if (this.message().link){
+            this.router.navigate(['/' + this.message().link])
+        }
     }
 }

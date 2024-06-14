@@ -23,6 +23,7 @@ export class LoginService {
     public isLogged = signal<boolean>(JSON.parse(localStorage.getItem('isLogged') ?? 'false'))
     user = signal<User | null>(null)
     userReady = output<User>()
+
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -30,8 +31,10 @@ export class LoginService {
         private routingSvc : RoutingService
     ) {
         if (this.isLogged())
+            console.log('????')
             this.getUser().subscribe(
                 user => {
+                    console.log(user.user)
                     this.user.set(user.user)
                     this.loginFront()
                     this.userReady.emit(user.user)

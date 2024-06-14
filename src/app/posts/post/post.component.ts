@@ -85,9 +85,27 @@ export class PostComponent {
                         this.isLoading.set(false)
                     },
                     error => {
+
                         if (error.status === 401) {
+                            let message = {
+                                message: '',
+                                type: 'error',
+                                duration: 10
+                            }
+                            if (error.error.code === 2) {
+                                this.router.navigate(['/posts'])
+                                message.message = 'Necesitas ser estudiante para acceder a este post'
+                                this.flashMessageService.messages().push(message)
+                                return
+                            }
+                            if (error.error.code === 3) {
+                                this.router.navigate(['/posts'])
+                                message.message = 'Necesitas ser parte del mismo grupo para acceder a este post'
+                                this.flashMessageService.messages().push(message)
+                                return
+                            }
+                            this.loginSvc.logoutFront();
                             this.router.navigate(['/login'])
-                            this.loginSvc.isLogged.set(false)
                         }
                     }
                 )
@@ -135,12 +153,11 @@ export class PostComponent {
         if (this.update().group_id) {
             post.group_id = this.groupInput()?.nativeElement.value
             post.group_name = this.groups().find((group) => this.post().group_id == group.id)?.name
-        } else
-            if (this.post().group_id === null) post.group_id = 'public'
-         else
-             post.group_id = this.post().group_id
+        } else if (this.post().group_id === null) post.group_id = 'public'
+        else
+            post.group_id = this.post().group_id
 
-            if (this.update().description) {
+        if (this.update().description) {
             post.description = (this.descriptionInput()?.nativeElement.value.replaceAll(' ', '') === '') ? '--@undefined' : this.descriptionInput()?.nativeElement.value
         }
 

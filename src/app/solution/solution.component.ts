@@ -38,7 +38,7 @@ export class SolutionComponent {
     grade(ev: SubmitEvent, grade: HTMLInputElement) {
         ev.preventDefault()
         let note: number = parseFloat(grade.value)
-        this.solutionSvc.grade(this.solution().id ?? '', note).subscribe(
+        this.solutionSvc.grade(this.solution().id ?? '', note).then(
             res => {
                 this.close.emit(true)
             }

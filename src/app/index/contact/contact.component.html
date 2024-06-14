@@ -1,0 +1,161 @@
+<div class="mt-[10vh] bg-main-grey h-fit w-full pt-20">
+    <div class="max-w-screen-2xl mx-auto">
+        <h5 #header class="text-6xl font-bold w-full text-center text-secondary">Contacto</h5>
+        <div id="contact"
+             class="min-h-[90vh] h-full w-full flex-col lg:flex-row lg:items-start items-center flex p-10 gap-10">
+            <div class="rounded-lg gap-2 lg:w-fit w-full p-4 flex flex-col items-center h-fit ">
+                <span class="text-3xl font-bold py-4 text-main">Informacion de contacto</span>
+                <div
+                    class="w-full flex flex-col nav:flex-row items-center gap-2 text-font-grey justify-between bg-main-white p-2 shadow rounded-md">
+                    <div class="flex flex-col nav:flex-row items-center gap-2">
+                        <span class="text-secondary font-bold">Telefono :</span>
+                        601 14 80 31
+                    </div>
+                    <button class="" (click)="
+                    navigator.clipboard.writeText('601148031');
+                    flashMessageSvc.messages().push({message : 'Copiado en el portapapeles', type : '', duration : 5});
+                    checkNumber.classList.remove('hidden');
+                    copyNumber.classList.add('hidden');
+">
+                        <span #copyNumber class="material-icons">content_copy</span>
+                        <span #checkNumber class="material-icons hidden">check</span>
+                    </button>
+                </div>
+                <div
+                    class="w-full flex-col nav:flex-row flex items-center gap-2 justify-between text-font-grey bg-main-white p-2 rounded-md shadow">
+                    <div class="flex-col nav:flex-row flex gap-2 items-center">
+                        <span class="text-secondary font-bold">Email :</span>
+                        {{ ' pilarlondon@gmail.com' }}
+                    </div>
+                    <button class="" (click)="
+                navigator.clipboard.writeText('pilarlondon@gmail.com');
+                flashMessageSvc.messages().push({message : 'Copiado en el portapapeles', type : '', duration : 5});
+                check.classList.remove('hidden');
+                copy.classList.add('hidden');
+">
+                        <span #copy class="material-icons">content_copy</span>
+                        <span #check class="material-icons hidden">check</span>
+                    </button>
+                </div>
+            </div>
+            <div class="max-w-screen-md w-screen ">
+                <!--Contact form-->
+                <form
+                    (submit)="sendEmail($event)"
+                    class="max-w-[90vw] nav:max-w-screen-md overflow-hidden w-screen rounded-lg bg-main-white shadow-card flex flex-col gap-10 p-10 mx-auto"
+                    [formGroup]="contactForm">
+
+                    <div class="flex flex-col ">
+                        <span class="text-4xl font-bold w-full text-center py-4 text-main ">Contactanos</span>
+                        <span class="w-full text-center text-secondary-grey text-md font-medium">Inserte sus datos de contacto y contacte con nosotros</span>
+                        <div #from
+                             class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                            <app-validation-error
+                                class="order-3 peer"
+                                field="name" [errors]="['required','max']"
+                                [form]="contactForm"
+                                [input]="nameInput"
+                            ></app-validation-error>
+                            <input #nameInput formControlName="name" id="from" type="text"
+                                   class="order-2 border-b-2 border-main peer-invalid: peer p-2 bg-transparent cursor-text"
+                                   placeholder=" ">
+                            <label for="from"
+                                   class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out cursor-text">Tu
+                                nombre</label>
+
+                        </div>
+                        <div class="w-full flex-col sm:flex-row flex items-center gap-2">
+                            <div #email
+                                 class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                                <input #emailInput formControlName="email" id="email" type="email"
+                                       class="order-2 border-b-2 border-main peer p-2 bg-transparent cursor-text"
+                                       placeholder=" ">
+                                <label for="email"
+                                       class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out cursor-text">
+                                    Tu email</label>
+                                <app-validation-error
+                                    class="order-3"
+                                    field="email"
+                                    [errors]="['required', 'email']"
+                                    [form]="contactForm"
+                                    [input]="emailInput"
+                                ></app-validation-error>
+                            </div>
+                            <div #phone
+                                 class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                                <input
+                                    #phoneInput
+                                    (focusout)="focusLabel.classList.add('focusOut');focusLabel.classList.remove('focus');phoneInput.placeholder = ' ';validationSvc.checkPhoneNumber(phoneInput, contactForm)"
+                                    (input)="validationSvc.checkPhoneNumber(phoneInput, contactForm) "
+                                    (focus)="phoneInput.placeholder = '+34 000 000 000';focusLabel.classList.remove('focusOut');focusLabel.classList.add('focus')"
+                                    formControlName="phone" id="phone" type="number"
+                                    class="order-2 border-b-2 border-secondary-grey peer p-2 bg-transparent cursor-text"
+                                    placeholder=" ">
+                                <label
+                                    #focusLabel
+                                    for="phone"
+                                    class="focusOut order-1 transition-all ease-in-out cursor-text">
+                                    Numero de telefono
+                                </label>
+                                <app-validation-error [input]="phoneInput" class="order-3" field="phone"
+                                                      [errors]="['phone']"
+                                                      [form]="contactForm"></app-validation-error>
+                            </div>
+                        </div>
+                        <div #subject
+                             class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                            <input #subjectInput formControlName="subject" id="subject" type="text"
+                                   class="order-2 border-b-2 border-main peer p-2 bg-transparent cursor-text"
+                                   placeholder=" ">
+                            <label for="subject"
+                                   class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out cursor-text">subject</label>
+                            <app-validation-error
+                                class="order-3"
+                                field="subject"
+                                [input]="subjectInput"
+                                [errors]="['maxLength']"
+                                [form]="contactForm"
+                            ></app-validation-error>
+                        </div>
+                        <div #message
+                             class="h-fit w-full overflow-hidden flex flex-col gap-2 transition-all duration-[400ms] ease-in-out">
+                    <textarea
+                        #messageInput
+                        formControlName="message" id="message"
+                        rows="10"
+                        class="order-2 text-font-grey border-b-2 border-main peer p-2 bg-transparent w-full cursor-text"
+                        placeholder=" "></textarea>
+                            <label for="message"
+                                   class="cursor-text peer-placeholder-shown:translate-x-2 group peer-placeholder-shown:font-medium text-dark-font font-bold peer-placeholder-shown:translate-y-10 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                        <span class="peer-placeholder-shown:hidden">
+                            Escriba aqui su
+                        </span>
+                                mensaje
+                            </label>
+                            <app-validation-error
+                                [input]="messageInput"
+                                class="order-3"
+                                field="message"
+                                [errors]="['required', 'max']"
+                                [form]="contactForm"></app-validation-error>
+                        </div>
+
+                    </div>
+                    <div #submit class="w-full items-center flex justify-center">
+                        <button [disabled]="contactForm.invalid"
+                                class="px-4 py-2 text-main w-fit flex gap-2 items-center rounded-lg border-2 border-main text-xl font-bold {{contactForm.invalid? 'cursor-not-allowed' : 'hover:scale-110 hover:bg-main hover:text-main-white hover:shadow-button-hover transition-all duration-200 ease-in-out' }}">
+                            @if (isLoadingMail()) {
+                                <div class="flex-col items-center gap-2">
+                                    <app-loading-wheel></app-loading-wheel>
+                                    Cargando...
+                                </div>
+                            } @else {
+                                <span class="material-icons-outlined">mail</span> Enviar
+                            }
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

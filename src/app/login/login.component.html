@@ -3,6 +3,12 @@
         <div class="drop-shadow w-full text-center">
             <h1 class="text-5xl font-bold text-secondary drop-shadow-2xl p-10">Inicio de sesion</h1>
         </div>
+        @if (routingSvc.intended().includes('post')){
+        <div class="w-full text-md font-medium text-font-grey p-5 bg-main-white shadow border-main m-5 border-l-2">
+            Necesita iniciar sesion para acceder a los las publicaciones, si no tiene cuenta se la puede crear de forma sencilla <a
+            routerLink="/register" class="text-main font-bold">aquí</a> para poder ver y comentar en las publicaciones o contactar con nosotros parfa unirse
+        </div>
+        }
         <div class="bg-main-white w-full rounded-3xl border-2 border-secondary shadow py-10 px-5 nav:px-20">
             <form [formGroup]="loginForm" (submit)="login($event)"
                   class="flex flex-col gap-7 items-center justify-center mt-10 font-medium text-font-grey">

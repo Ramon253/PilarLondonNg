@@ -4,10 +4,13 @@ import {FileService} from './resources/file.service';
 import {LinkService} from './resources/link.service';
 import {Observable} from 'rxjs';
 import {Solution} from '../models/solution';
-import {FileR} from "../models/properties/file";
 import {ValidationsService} from "./validations.service";
 import {environment} from "../../environments/environment.development";
 import axios from "axios";
+
+axios.defaults.baseURL = environment.baseUrl
+axios.defaults.withCredentials = true
+axios.defaults.withXSRFToken = true;
 
 @Injectable({
     providedIn: 'root'
@@ -28,24 +31,26 @@ export class SolutionService {
         return this.http.get<Solution>(`${this.path}solution/${id}`, {withCredentials: true})
     }
 
-    grade(id: string, note: number): Observable<any> {
-        return this.http.put<any>(this.path + `solution/${id}/grade`, {note: note}, {withCredentials: true})
+    async grade(id: string, note: number): Promise<any> {
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.put<any>( `/api/solution/${id}/grade`, {note: note})
     }
 
-    postSolution(id: string, solution: Solution, formData ?: FormData): Observable<{
+    async postSolution(id: string, solution: Solution, formData ?: FormData): Promise<{
         success: string,
         solution: Solution
-    }> {
+    } | any> {
+        await axios.get('/sanctum/csrf-cookie')
         if (formData) {
-            return this.http.post<{
+            return axios.post<{
                 success: string,
                 solution: Solution
-            }>(this.path + `assignment/${id}/response`, formData, {withCredentials: true})
+            }>(`/api/assignment/${id}/response`, formData)
         }
-        return this.http.post<{
+        return axios.post<{
             success: string,
             solution: Solution
-        }>(this.path + `assignment/${id}/response`, solution, {withCredentials: true})
+        }>(`/api/assignment/${id}/response`, solution)
     }
 
 }

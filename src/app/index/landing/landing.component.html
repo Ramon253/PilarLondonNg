@@ -21,17 +21,29 @@
                 </button>
             </div>
         </div>
-        <div class="basis-1/2 flex justify-center items-center h-full">
-            <div class="w-full relative aspect-[13/10] p-2 pr-5">
-                <img class="aspect-[13/10] w-full rounded-lg shadow-xl" src="assets/img/landingEjem.png"
-                     alt="Academy Photo">
-                <div class="w-full h-fit flex justify-center items-center absolute bottom-2">
+        <div class="basis-1/2  p-10 nav:p-0 flex justify-center items-center h-full">
+            <div class="w-full relative aspect-[7/5] mr-5 overflow-hidden ">
+                <div #slider class=" h-full min-w-full w-fit flex transition-all ease-in-out duration-200">
+                    <img class="aspect-[7/5] w-full h-full rounded-lg shadow-xl"
+                         src="assets/img/slider/landingEjem1.png"
+                         alt="Academy Photo">
+                    <img class="aspect-[7/5] w-full h-full rounded-lg shadow-xl"
+                         src="assets/img/slider/LandingEjem2.png"
+                         alt="Academy Photo">
+                    <img class="aspect-[7/5] w-full h-full rounded-lg shadow-xl"
+                         src="assets/img/slider/landingEjem3.png"
+                         alt="Academy Photo">
+                    <img class="aspect-[7/5] w-full h-full rounded-lg shadow-xl"
+                         src="assets/img/slider/landingEjem4.png"
+                         alt="Academy Photo">
+                </div>
+                <div class="w-full h-fit flex justify-center items-center absolute bottom-4">
                     <div
                         class=" h-3 p-1 rounded-full gap-2 w-fit items-center max-w-[20%] shadow bg-main-grey flex justify-evenly">
-                        <div class="rounded-full bg-main h-1.5 aspect-square shadow"></div>
-                        <div class="rounded-full h-1.5 aspect-square bg-dark-grey shadow"></div>
-                        <div class="rounded-full h-1.5 aspect-square bg-dark-grey shadow"></div>
-                        <div class="rounded-full h-1.5 aspect-square bg-dark-grey shadow"></div>
+                        <div (click)="sliderPosition = -1;slideImage();" class="rounded-full {{sliderPosition === 0 ? 'bg-main': 'bg-dark-grey'}} h-1.5 aspect-square shadow cursor-pointer"></div>
+                        <div (click)="sliderPosition = 0;slideImage();" class="rounded-full h-1.5 aspect-square {{sliderPosition === 1 ? 'bg-main': 'bg-dark-grey'}} shadow cursor-pointer"></div>
+                        <div (click)="sliderPosition = 1;slideImage();" class="rounded-full h-1.5 aspect-square {{sliderPosition === 2 ? 'bg-main': 'bg-dark-grey'}} shadow cursor-pointer"></div>
+                        <div (click)="sliderPosition = 2;slideImage();" class="rounded-full h-1.5 aspect-square {{sliderPosition === 3 ? 'bg-main': 'bg-dark-grey'}} shadow cursor-pointer"></div>
                     </div>
                 </div>
             </div>
@@ -39,16 +51,17 @@
     </div>
 </section>
 <div class="max-w-screen-2xl  w-screen h-fit bg-main-white mx-auto">
-    <div class="min-h-[90vh] h-fit flex flex-col nav:flex-row gap-40 items-center  nav:snap-center  p-10">
+    <div #view class="min-h-[90vh] h-fit flex flex-col nav:flex-row gap-40 items-center  p-10">
         <div
-            class="order-2 nav:order-1 basis-1/2 max-h-full sm:h-[90%] nav:max-h-[80vh] flex items-center justify-end ">
-            <img #foto1 src="assets/img/landing2.webp"
-                 class="transition-all rounded-lg shadow-xl ease-in-out duration-[400ms] nav:max-h-[80vh] -translate-x-[150%]  h-full aspect-[4/6]"
+            class="order-2 nav:order-1 basis-1/2 max-h-full sm:h-[90%] nav:max-h-[60vh] flex items-center justify-end ">
+            <img #foto1 src="assets/img/landing1.png"
+                 class="transition-all rounded-lg shadow-xl ease-in-out duration-[400ms] nav:max-h-[60vh] -translate-x-[150%]  h-full aspect-[3/4]"
                  alt="landing image 2">
         </div>
         <div #text1
              class="flex order-1 nav:order-2 flex-col items-center nav:items-start justify-center gap-5 basis-1/2 transition-all duration-[400ms] ease-in-out">
-            <h2 class="nav:text-5xl text-4xl font-bold nav:w-full text-center nav:text-start text-secondary">Todas las edades</h2>
+            <h2 class="nav:text-5xl text-4xl font-bold nav:w-full text-center nav:text-start text-secondary">Todas las
+                edades</h2>
             <p class="text-dark-font text-lg  max-w-[300px]">
                 Ofrecemos clases de ingles a todas las edades y niveles, desde los más pequeños (4 años) los cuales
                 aprenderan ingles con ejercicios y muchos juegos de forma practica y divertida para ellos, hasta los mas
@@ -61,11 +74,11 @@
             </button>
         </div>
     </div>
-    <div class="min-h-[90vh] h-fit flex flex-col nav:flex-row items-center nav:snap-center gap-40 p-10">
+    <div #view class="min-h-[90vh] h-fit flex flex-col nav:flex-row items-center  gap-40 p-10">
         <div #text2
-             class="flex flex-col gap-8 items-center nav:items-end justify-center  basis-1/2 transition-all duration-[400ms] ease-in-out">
+             class="flex flex-col gap-8 items-center nav:items-start justify-center  basis-1/2 transition-all duration-[400ms] ease-in-out">
 
-            <h2 class="text-5xl  font-bold text-main w-fit">Cambridge</h2>
+            <h2 class="text-5xl  font-bold text-main w-fit nav:w-[300px]">Cambridge</h2>
             <p class="text-dark-font text-lg max-w-[300px]">
                 Ofrecemos una preparacion completa y fiable para conseguir una titulación de idiomas, la mas comun y
                 recomendable siendo cambridge. Ofrecemos preparacion desde <span class="text-secondary font-bold">A2 o KET hasta C1 o Advanced</span>.
@@ -81,15 +94,15 @@
         </div>
         <div #foto2
              class="basis-1/2 transition-all duration-[400ms] ease-in-out max-h-full justify-start flex items-center sm:h-[90%]">
-            <img src="assets/img/landing2.jpg"
-                 class="transition-all nav:max-h-[80vh] rounded-lg shadow-xl ease-in-out duration-[400ms]  w-auto h-full aspect-[4/6]"
+            <img src="assets/img/landing2.png"
+                 class="transition-all nav:max-h-[60vh] rounded-lg shadow-xl ease-in-out duration-[400ms]  w-auto h-full aspect-[3/4]"
                  alt="landing image 2">
         </div>
     </div>
 </div>
 
 <!--Hero-->
-<div class="w-full nav:snap-center text-main-white font-medium h-fit nav:h-[300px] bg-main py-20">
+<div class="w-full  text-main-white font-medium h-fit nav:h-[300px] bg-main py-20">
     <div class="max-w-screen-lg w-screen mx-auto h-full flex flex-col nav:flex-row items-center justify-between">
         <div
             class="basis-1/2 px-5 flex flex-col nav:flex-row items-center divide-main-white h-fit  divide-y nav:divide-y-0 nav:divide-x ">
@@ -128,12 +141,13 @@
         </div>
     </div>
 </div>
+<!--Plans-->
 <div class="max-w-screen-2xl  w-screen h-fit bg-main-white mx-auto">
-    <div class="min-h-[90vh] h-fit flex flex-col gap-20 nav:snap-center pt-20 nav:p-20 w-full overflow-hidden">
+    <div class="min-h-[90vh] h-fit flex flex-col gap-20  pt-20 nav:p-20 w-full overflow-hidden">
         <h3 #planHeader
             class="transition-all duration-[400ms] px-5 w-full text-center text-7xl text-secondary font-bold ">
             Planes y precios</h3>
-        <div class="flex h-full flex-col nav:flex-row items-center gap-10 justify-center nav:snap-center">
+        <div #view class="flex py-2 h-full flex-col nav:flex-row items-center gap-10 justify-center ">
             <div #plan1
                  class="max-w-[90vw] transition-all duration-[400ms] ease-in-out nav:basis-1/3 nav:aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-fit nav:h-auto p-10">
                 <div class="flex flex-col gap-5 w-full">
@@ -149,7 +163,7 @@
                 </button>
             </div>
             <div #plan2
-                 class="max-w-[90vw] transition-all duration-[400ms] ease-in-out  border-secondary border-t-[3px] rounded-t-none nav:basis-1/3 nav:aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-fit nav:h-auto p-10">
+                 class="max-w-[90vw]  transition-all duration-[400ms] ease-in-out  border-secondary border-t-[3px] rounded-t-none nav:basis-1/3 nav:aspect-[8/11] items-center flex justify-between flex-col rounded-md gap-5 bg-main-white shadow-card h-fit nav:h-auto p-10">
                 <div class="flex flex-col gap-5 w-full">
                     <span class="w-full font-bold text-5xl text-main text-center pb-4 border-b-2 border-secondary-grey">Plan familiar</span>
                     <span class="w-full font-bold text-4xl text-secondary text-center ">40€/mes</span></div>
@@ -181,9 +195,11 @@
 
         </div>
     </div>
+    <!--Location-->
     <div
-        class="min-h-[90vh] overflow-hidden nav:snap-center h-fit flex flex-col items-center justify-center gap-20 p-20">
-        <h4 class="text-main  text-4xl nav:text-6xl font-bold flex items-center justify-center gap-2">
+        #view
+        class="min-h-[90vh] overflow-hidden  h-fit flex flex-col items-center justify-center gap-20 p-20">
+        <h4 class="text-main  overflow-hidden text-4xl nav:text-6xl font-bold flex items-center justify-center gap-2">
             <div class="relative h-fit w-fit p-2">
                 <svg
                     #svgLocation
@@ -219,8 +235,10 @@
             </div>
         </div>
     </div>
+
     <h5 class="text-6xl font-bold w-full text-center text-secondary">Contacto</h5>
-    <div class="min-h-[90vh] h-full w-full flex-col lg:flex-row lg:items-start items-center flex p-10 gap-10">
+    <div id="contact"
+         class="min-h-[90vh] h-full w-full flex-col lg:flex-row lg:items-start items-center flex p-10 gap-10">
         <div class="rounded-lg gap-2 lg:w-fit w-full p-4 bg-main-grey shadow flex flex-col items-center h-fit ">
             <span class="text-3xl font-bold py-4 text-main">Informacion de contacto</span>
             <div

@@ -58,7 +58,7 @@
             </div>
             <div class="flex w-full nav:w-fit h-fit items-start flex-col gap-2 justify-center ">
                 <label for="level">Level</label>
-                <select name="" #level (input)="form.get('level')?.setValue(level.value);level.classList.add('border-secondary')" formControlName="level"
+                <select name="" #level (input)="inputLevel(level)" formControlName="level"
                         id="level" class="p-1 border-2 rounded-lg bg-main-white shadow">
                     <option value="A1">A1</option>
                     <option value="A2">A2</option>
