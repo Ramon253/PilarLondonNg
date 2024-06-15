@@ -15,6 +15,8 @@ export class MailService {
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/contact', mail)
     }
+    async sendCode(){
 
+    }
   constructor() { }
 }

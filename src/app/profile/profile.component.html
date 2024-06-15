@@ -1,5 +1,7 @@
 @if (isLoading()) {
-
+    <div class="w-full flex items-center justify-center">
+        <div class="h-96 rounded-full bg-gray-300 animate-pulse w-96"></div>
+    </div>
 } @else {
     @if (show().student) {
         <app-student/>

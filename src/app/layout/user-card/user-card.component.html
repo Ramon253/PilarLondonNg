@@ -28,13 +28,14 @@
                     <div class="w-full text-xl font-bold text-dark-font">{{ user()?.email }}</div>
                 </div>
 
-
-                <div (click)="showMenu.set(false)"
-                    routerLink="/profile"
-                    class="p-2 cursor-pointer text-xl rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-transparent text-dark-font hover:border-main hover:text-main hover:scale-110 transition-all">
-                    <span class="material-icons">face</span>
-                    Perfil
-                </div>
+                @if (loginSvc.user()?.role !== 'none') {
+                    <div (click)="showMenu.set(false)"
+                         routerLink="/profile"
+                         class="p-2 cursor-pointer text-xl rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-transparent text-dark-font hover:border-main hover:text-main hover:scale-110 transition-all">
+                        <span class="material-icons">face</span>
+                        Perfil
+                    </div>
+                }
                 <div
                     (click)="loginSvc.logout(); loginSvc.logoutFront(); showMenu.set(false)"
                     class="p-2 text-xl cursor-pointer rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition-all">
@@ -42,7 +43,9 @@
                     Cerrar sesion
                 </div>
 
-                <span class="absolute top-0 right-0 rounded-lg p-1 text-secondary flex items-center transition-all ease-in-out hover:bg-secondary hover:text-main-white material-icons cursor-pointer" (click)="showMenu.set(false)">close</span>
+                <span
+                    class="absolute top-0 right-0 rounded-lg p-1 text-secondary flex items-center transition-all ease-in-out hover:bg-secondary hover:text-main-white material-icons cursor-pointer"
+                    (click)="showMenu.set(false)">close</span>
             </div>
 
         </div>
