@@ -52,14 +52,33 @@
                 <h1 class="text-3xl font-bold w-full text-center">Codigo de activacion</h1>
                 <div class="p-2 rounded-lg flex bg-main-white items-center justify-between shadow">
                     <span class="w-full truncate">{{ code() }}</span>
-                    <button (click)="copyToClipboard()" class="p-2 border-2 border-transparent hover:border-main hover:text-main hover:scale-110 hover:bg-main-grey rounded-lg transition-all ease-in-out flex items-center gap-2">
-                        <span class="material-icons">{{isCopied()?'check' :  'content_copy' }}</span> Copy
+                    <button (click)="copyToClipboard()"
+                            class="p-2 border-2 border-transparent hover:border-main hover:text-main hover:scale-110 hover:bg-main-grey rounded-lg transition-all ease-in-out flex items-center gap-2">
+                        <span class="material-icons">{{ isCopied() ? 'check' : 'content_copy' }}</span> Copy
                     </button>
                 </div>
+            } @else if (showMailToDialog()) {
+                <h1 class="text-3xl font-bold w-full text-center">Enviar código de activación</h1>
+                <form class="flex gap-2 w-full flex-wrap items-end" (submit)="sendCode($event, email)">
+                    <div class="flex flex-col basis-2/3 cursor-text">
+                        <input id="email" class="p-4 rounded-lg bg-main-white shadow order-2 peer" placeholder=" " type="email" #email>
+                        <label for="email" class="order-1 peer-placeholder-shown:text-secondary-grey font-main peer-placeholder-shown:translate-y-11 translate-x-2 transition-all ease-in-out duration-200 peer-placeholder-shown:translate-x-4">Email</label>
+                    </div>
+                    <button   type="submit"
+                            class="p-4 h-fit border-2 border-main text-main hover:scale-110 rounded-lg transition-all ease-in-out flex items-center gap-2 hover:bg-main hover:text-main-white hover:shadow-button-hover">
+                        @if(isLoadingCode()){
+                            <app-loading-wheel></app-loading-wheel> Loading...
+                        } @else {
+                            <span class="material-icons">mail</span> Enviar email
+                        }
+                    </button>
+                </form>
+
             } @else {
                 <h1 class="text-3xl font-bold w-full text-center">Generar codigo de estudiante</h1>
                 <div class="w-full flex flex-wrap items-center justify-evenly">
                     <button
+                        (click)="showMailToDialog.set(true)"
                         class="px-4 py-2 rounded-lg border-2 text-main border-main hover:text-main-white hover:bg-main hover:scale-110 transition-all ease-in-out">
                         Enviar por correo
                     </button>
@@ -75,7 +94,7 @@
                 </div>
             }
             <span
-                (click)="showGenerateDialog.set(false) ; showCode.set(false)"
+                (click)="closeDialogs()"
                 class="material-icons absolute top-0 right-0 flex items-center p-1 rounded-full hover:bg-secondary hover:text-main-white text-secondary cursor-pointer transition-all ease-in-out">close</span>
         </div>
     </app-dialog>

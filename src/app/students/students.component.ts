@@ -6,17 +6,19 @@ import {StudentCardComponent} from "./student-card/student-card.component";
 import {DialogComponent} from "../dialog/dialog.component";
 import {LoadingWheelComponent} from "../svg/loading-wheel/loading-wheel.component";
 import {FlashMessageService} from "../services/flash-message.service";
+import {MailService} from "../services/resources/mail.service";
+import {FlashMessage} from "../models/flash-message";
 
 @Component({
-  selector: 'app-students',
-  standalone: true,
+    selector: 'app-students',
+    standalone: true,
     imports: [
         StudentCardComponent,
         DialogComponent,
         LoadingWheelComponent
     ],
-  templateUrl: './students.component.html',
-  styleUrl: './students.component.css'
+    templateUrl: './students.component.html',
+    styleUrl: './students.component.css'
 })
 export class StudentsComponent {
 
@@ -24,19 +26,22 @@ export class StudentsComponent {
     students = signal<Student[]>([])
     showGenerateDialog = signal<boolean>(false)
     isCopied = signal<boolean>(false)
+    showMailToDialog = signal<boolean>(false)
 
     showCode = signal<boolean>(false)
     isLoadingWaitList = signal<boolean>(false)
-    isLoadingCode =  signal<boolean>(false)
+    isLoadingCode = signal<boolean>(false)
     code = signal<string>('')
+
     constructor(
-        private studentSvc : StudentService,
-        public loginSvc : LoginService,
-        private flashMessageSvc : FlashMessageService
+        private studentSvc: StudentService,
+        public loginSvc: LoginService,
+        private flashMessageSvc: FlashMessageService,
+        private mailSvc: MailService
     ) {
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.studentSvc.getStudents().then(
             res => {
                 this.students.set(res.data)
@@ -45,10 +50,10 @@ export class StudentsComponent {
         )
     }
 
-    getCode(){
+    getCode() {
         this.isLoadingCode.set(true)
         this.studentSvc.generateCode().then(
-            res=> {
+            res => {
                 this.isLoadingCode.set(false)
                 this.code.set(res.data)
                 this.showCode.set(true)
@@ -56,16 +61,37 @@ export class StudentsComponent {
         )
     }
 
-    copyToClipboard(){
+    sendCode(event: SubmitEvent, email : HTMLInputElement) {
+        event.preventDefault()
+        this.isLoadingCode.set(true)
+        let mailTo = email.value
+        this.mailSvc.sendCode(mailTo).then((res) => {
+            this.isLoadingCode.set(false)
+            this.flashMessageSvc.messages().push({
+                message: 'Mail sended successfully.',
+                type : 'message',
+                duration : 10
+            } as FlashMessage)
+            this.closeDialogs()
+        })
+    }
+    closeDialogs(){
+        this.showGenerateDialog.set(false) ;
+        this.showCode.set(false)
+        this.showMailToDialog.set(false)
+    }
+    copyToClipboard() {
         navigator.clipboard.writeText(this.code()).then(
-            () =>{
+            () => {
                 this.flashMessageSvc.messages().push({
-                    message : 'Code copied successfully',
-                    type : '',
-                    duration : 5
+                    message: 'Code copied successfully',
+                    type: '',
+                    duration: 5
                 })
                 this.isCopied.set(true)
             }
         )
     }
+
+    protected readonly MailService = MailService;
 }
