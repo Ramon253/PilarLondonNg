@@ -71,8 +71,8 @@ export class AssignmentService {
     mapResources(assignment: Assignment): Assignment {
 
         const files = this.fileSvc.mapFiles(assignment.fileLinks ?? [])
+        console.log(files)
         assignment.fileLinks = files.files
-
         assignment.multimedia = files.multimedia
 
         const links = this.linkSvc.mapLinks(assignment.links ?? [])

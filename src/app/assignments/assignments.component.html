@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class=" px-6 font-medium cursor-pointer transition "
-                         (click)="resetTabs(); show.unmarked = true;changeFilter()">
+                         (click)="resetTabs(); show.unmarked = true;changeFilter(true)">
                         Tareas por calificar
                     </div>
                 </div>
@@ -28,14 +28,14 @@
                         </div>
                     </div>
                     <div class=" px-6 font-medium cursor-pointer transition "
-                         (click)="resetTabs(); show.toDo = true;changeFilter()">
+                         (click)="resetTabs(); show.toDo = true;changeFilter(true)">
                         Tareas sin hacer
                     </div>
                 </div>
             }
             <div class="flex items-center">
                     <span
-                        (click)="getAssignments(true);isLoading.set(true); refreshButton.classList.toggle('rotate-[360deg]')"
+                        (click)="getAssignments(false);isLoading.set(true); refreshButton.classList.toggle('rotate-[360deg]')"
                         #refreshButton
                         class="duration-300 p-1 material-icons flex items-center text-main hover:text-main-white hover:bg-main rounded-full transition cursor-pointer ">refresh
                     </span>
@@ -43,12 +43,12 @@
         </div>
 
         <div class="w-full flex gap-1 flex-wrap -translate-y-8 items-start justify-between">
-            <button (click)="showFilters.set(true)"
+<!--            <button (click)="showFilters.set(true)"
                     class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
                 <span class="material-icons-outlined">filter_alt</span> Filtrar por <span
                 class="material-icons-outlined">arrow_drop_up</span>
 
-            </button>
+            </button>-->
 
             @if (loginSvc.user()?.role === 'teacher') {
                 <button

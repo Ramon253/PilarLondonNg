@@ -79,9 +79,9 @@ export class AssignmentsComponent {
         )
     }
 
-    changeFilter() {
+    changeFilter(filter : boolean = false) {
         this.isLoading.set(true)
-        this.getAssignments(true)
+        this.getAssignments(filter)
     }
 
     changeTab() {

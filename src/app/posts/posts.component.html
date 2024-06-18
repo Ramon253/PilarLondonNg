@@ -24,12 +24,12 @@
         </div>
 
         <div class="w-full flex flex-wrap gap-1 -translate-y-8 items-start justify-betweens">
-            <button (click)="filter()"
+<!--            <button (click)="filter()"
                     class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
                 <span class="material-icons-outlined">filter_alt</span> Filtrar por <span
                 class="material-icons-outlined">arrow_drop_up</span>
 
-            </button>
+            </button>-->
             @if (loginSvc.user()?.role === 'teacher') {
                 <button (click)="openForm(formContainer)"
                         class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
