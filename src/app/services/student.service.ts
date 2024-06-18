@@ -32,6 +32,7 @@ export class StudentService {
         return axios.post('/api/student/generate')
     }
 
+
     async dashboard(){
         await axios.get('/sanctum/csrf-cookie')
         return axios.get('/api/dashboard')
@@ -44,6 +45,10 @@ export class StudentService {
     async activate(code : string){
         await axios.get('/sanctum/csrf-cookie')
         return axios.post('/api/activate', {join_code : code})
+    }
+    async verify(code : string){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post('/api/verify', {token : code})
     }
     async putStudent(student : Student){
         await axios.get('/sanctum/csrf-cookie')

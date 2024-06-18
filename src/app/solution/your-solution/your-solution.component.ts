@@ -30,6 +30,7 @@ export class YourSolutionComponent {
     showPostDialog = signal<boolean>(false)
     showNote = input<boolean>(true)
 
+
     isLoadingLink = false
     isLoadingFile = false
     isLoadingPostResource = signal<boolean>(false)
@@ -38,12 +39,13 @@ export class YourSolutionComponent {
 
     constructor(
         private datePipe: DatePipe,
-        private fileSvc : FileService,
-        private linkSvc : LinkService
+        private fileSvc: FileService,
+        private linkSvc: LinkService
     ) {
     }
 
-    postResource(){
+
+    postResource() {
         this.isLoadingPostResource.set(true)
 
         if (this.inputFiles().length !== 0) {
@@ -56,19 +58,19 @@ export class YourSolutionComponent {
     }
 
     getDelay() {
-        if (!this.dead_line())
-            return
+        let hours = this.solution().onTime ?? 60
+        hours = Math.floor(hours / 60)
 
-        let deadLine = this.dead_line() ? this.dead_line() as Date : new Date()
-        let delay = Math.abs(new Date(deadLine).getTime() - new Date(this.solution().updated_at).getTime()) / 60000
-        let minutes = Math.round(delay % 60)
-        let hours = Math.round(delay / 3600)
-        return ` ${hours} h y ${minutes} m `
+        let minutes = this.solution().onTime ?? 60
+        minutes = minutes % 60
+        return ` ${hours} horas y ${minutes} minutos`
     }
-    deleteFile(event : {id : string, isMultimedia : boolean}){
+
+    deleteFile(event: { id: string, isMultimedia: boolean }) {
         this.solution().fileLinks = this.solution().fileLinks?.filter(fileLink => fileLink.id.toString() !== event.id)
     }
-    deleteLink(event : {id: string, isVideo : boolean}){
+
+    deleteLink(event: { id: string, isVideo: boolean }) {
         this.solution().links = this.solution().links?.filter(link => link.id !== event.id)
     }
 

@@ -50,7 +50,8 @@ export class RegisterComponent {
         let credential = this.registerForm.getRawValue()
         this.loginSvc.register(credential as Credentials).then(res => {
             this.loginSvc.loginFront()
-            this.loginSvc.user.set(res.data.user)
+            console.log(res.data.user.user)
+            this.loginSvc.user.set(res.data.user.user)
             this.flashMessageSvc.messages().push({
                 message : 'Usuario creado con exito, si eres estudiante y quieres activar tu cuenta haz click aqui',
                 type : 'message',

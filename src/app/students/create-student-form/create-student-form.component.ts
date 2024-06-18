@@ -1,4 +1,4 @@
-import {Component, signal, viewChild} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {StudentService} from "../../services/student.service";
 import {LoginService} from "../../login.service";
 import {DialogComponent} from "../../dialog/dialog.component";
@@ -36,12 +36,14 @@ export class CreateStudentFormComponent {
     showActivateDialog = signal<boolean>(false)
     profilePicture = signal<File | boolean>(false)
     showCropper = signal<boolean>(false)
+    showVerifyEmail = signal<boolean>(false)
+    isLoadingVerify = signal(false)
 
     createForm = this.formBuilder.group({
         full_name: ['', Validators.required],
         surname: ['', Validators.required],
         level: ['', Validators.required],
-        phone_number: ['', Validators.pattern('^(?:(?:\\+34|0034)?\\s?(?:6\\d|7[1-9]|9[1-9]|8[1-9])\\d{7})$\n')],
+        phone_number: ['', Validators.minLength(9)],
         birth_date: [new Date(), Validators.required],
         parent: [],
     })
@@ -50,9 +52,9 @@ export class CreateStudentFormComponent {
         private studentSvc: StudentService,
         public loginSvc: LoginService,
         private formBuilder: FormBuilder,
-        private router : Router,
-        private routingSvc : RoutingService,
-        private flashMessageSvc : FlashMessageService
+        private router: Router,
+        private routingSvc: RoutingService,
+        private flashMessageSvc: FlashMessageService
     ) {
     }
 
@@ -92,7 +94,9 @@ export class CreateStudentFormComponent {
             this.studentSvc.postStudent(student).then(
                 res => {
                     this.isLoadingPost.set(false)
-                    this.loginSvc.user.set(res.data.user)
+                    let user = res.data.user
+                    user.role = 'student'
+                    this.loginSvc.user.set(user)
                     this.router.navigate(['/'])
                 }
             )
@@ -108,9 +112,31 @@ export class CreateStudentFormComponent {
 
         this.studentSvc.postStudent(formData).then(
             res => {
-                this.loginSvc.user.set(res.data.user)
+                let user = res.data.user
+                user.role = 'student'
+                this.loginSvc.user.set(user)
                 this.isLoadingPost.set(false)
                 this.router.navigate(['/'])
+            }
+        )
+    }
+
+    verifyEmail(codeInput: HTMLInputElement) {
+        this.isLoadingVerify.set(true)
+        this.studentSvc.verify(codeInput.value).then(
+            res => {
+                this.isLoading.set(false)
+                this.showVerifyEmail.set(false)
+                this.showActivateDialog.set(false)
+                this.studentSvc.isActivated().then(
+                    res => {
+                        this.isLoading.set(false)
+                    }
+                ).catch(
+                    err => {
+                        this.showActivateDialog.set(true)
+                    }
+                )
             }
         )
     }
@@ -120,22 +146,41 @@ export class CreateStudentFormComponent {
             this.routingSvc.intended.set('create-student')
             this.router.navigate(['/login']).then(() => {
                 this.flashMessageSvc.messages().push({
-                    message : 'Necesitas iniciar sesion para poder activar tu cuenta, si no tiene cuenta creese una aqui',
-                    type : 'error',
-                    duration : 20,
-                    link : 'register'
+                    message: 'Necesitas iniciar sesion para poder activar tu cuenta, si no tiene cuenta creese una aqui',
+                    type: 'error',
+                    duration: 20,
+                    link: 'register'
                 })
             })
             return
         }
-        this.studentSvc.isActivated().then(
-            res => {
-                this.isLoading.set(false)
+        this.loginSvc.isVerified().then(() => {
+            this.studentSvc.isActivated().then(
+                res => {
+                    this.isLoading.set(false)
+                }
+            ).catch(
+                err => {
+                    this.showActivateDialog.set(true)
+                }
+            )
+        }).catch((err) => {
+            if (err.response.status === 403) {
+                this.showVerifyEmail.set(true)
             }
-        ).catch(
-            err => {
-                this.showActivateDialog.set(true)
+            if (err.error.status === 401) {
+                this.routingSvc.intended.set('create-student')
+                this.router.navigate(['/login']).then(() => {
+                    this.flashMessageSvc.messages().push({
+                        message: 'Necesitas iniciar sesion para poder activar tu cuenta, si no tiene cuenta creese una aqui',
+                        type: 'error',
+                        duration: 20,
+                        link: 'register'
+                    })
+                })
+                return
             }
-        )
+        })
+
     }
 }

@@ -19,10 +19,86 @@
     @if (loginSvc.user()?.role === 'none' || !loginSvc.isLogged()) {
         <div
             class="absolute hidden top-0 left-0 w-full h-full bg-opacity-70 group-hover:flex transition-all items-center justify-center bg-gray-300">
-            <button
-                class="hover:text-main-white text-main border-2 border-main font-bold hover:bg-main rounded-lg hover:scale-110 transition px-4 py-2">
-                Unirse lista de espera
-            </button>
+            @if (group().inWaitlist) {
+                <div
+                    class="hover:text-main-white text-main border-2 border-main font-bold hover:bg-main rounded-lg hover:scale-110 transition px-4 py-2">
+                    Ya estas en la lista de espera de esta clase
+                </div>
+            } @else {
+                <button
+                    (click)="showJoinDialog.set(true)"
+                    class="hover:text-main-white text-main border-2 border-main font-bold hover:bg-main rounded-lg hover:scale-110 transition px-4 py-2 flex gap-2 items-center">
+                    Unirse a la lista de espera
+                </button>
+            }
         </div>
     }
 </div>
+@if (showJoinDialog()) {
+    <app-dialog>
+        <div class="max-w-screen-sm w-screen gap-2 p-4 flex flex-col relative">
+            <span
+                class="p-1 rounded-lg text-secondary hover:bg-secondary hover:text-main-white transition-all ease-in-out material-icons flex items-center absolute top-0 right-0 cursor-pointer"
+                (click)="showJoinDialog.set(false)">close</span>
+            <h2 class="w-full text-center text-main text-4xl font-bold">Datos de contacto</h2>
+            <form (submit)="joinWaitlist($event)" [formGroup]="joinWaitlistForm">
+                <div class="overflow-hidden h-fit flex flex-col w-full">
+                    <input (input)="phone_input.classList.replace('border-secondary', 'border-main')" #phone_input
+                           id="phoneNumber" formControlName="phone_number" type="number"
+                           class="w-full order-2 bg-transparent border-b-2 border-main p-2 peer" placeholder=" ">
+                    <label for="phoneNumber"
+                           class="peer-placeholder-shown:translate-y-9 order-1 transition-all ease-in-out peer-placeholder-shown:text-secondary-grey text-main text-md font-medium translate-x-2">Teléfono
+                        de contacto</label>
+                    <app-validation-error class="order-3" [errors]="['required', 'minLength', 'maxlength']"
+                                          field="phone_number" [form]="joinWaitlistForm"
+                                          (hasError)="phone_input.classList.replace('border-main', 'border-secondary')"></app-validation-error>
+                </div>
+                <div class="overflow-hidden h-fit flex flex-col w-full">
+                    <input (input)="places_input.classList.replace('border-secondary', 'border-main')" #places_input
+                           id="places" formControlName="places" type="number"
+                           class="w-full order-2 bg-transparent border-b-2 border-main p-2 peer" placeholder=" ">
+                    <label for="places"
+                           class="peer-placeholder-shown:translate-y-9 order-1 transition-all ease-in-out peer-placeholder-shown:text-secondary-grey text-main text-md font-medium translate-x-2">Plazas
+                        a solicitar</label>
+                    <app-validation-error class="order-3" [errors]="['required', 'minLength', 'maxlength']"
+                                          field="Places" [form]="joinWaitlistForm"
+                                          (hasError)="phone_input.classList.replace('border-main', 'border-secondary')"></app-validation-error>
+                </div>
+                <button
+                    type="submit"
+                    class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
+                    @if (isLoadingWait()) {
+                        <app-loading-wheel></app-loading-wheel> Loading...
+                    } @else {
+                        Solicitar unirse
+                    }
+                </button>
+            </form>
+        </div>
+    </app-dialog>
+}
+
+@if (showVerifyEmail()) {
+    <app-dialog>
+
+        <div class="max-w-screen-md w-screen rounded-lg flex flex-col gap-5 bg-main-grey p-10">
+            <span class="text-font-grey">Debes verificar tu email, te hemos enviado un email de verificación, para que te enviemos otro recargue la página</span>
+            <div class="flex items-center justify-center gap-4">
+                <input #emailVerifyInput type="text" class="p-2 rounded-lg bg-main-white shadow"
+                       placeholder="Codigo de verificación ...">
+                <button
+                    (click)="verifyEmail(emailVerifyInput)"
+                    class="px-4 py-2 rounded-lg text-main border-main border-2 hover:text-main-white hover:bg-main hover:scale-110 transition-all ease-in-out hover:shadow-button-hover">
+                    @if (isLoadingVerify()) {
+                        <div class="flex gap-2 items-center">
+                            <app-loading-wheel></app-loading-wheel>
+                            Cargando...
+                        </div>
+                    } @else {
+                        Verificar Email
+                    }
+                </button>
+            </div>
+        </div>
+    </app-dialog>
+}

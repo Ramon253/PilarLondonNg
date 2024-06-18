@@ -185,11 +185,12 @@
                                 class=" {{loginSvc.user()?.role === 'teacher' ? 'basis-5/6' : 'basis-1'}} {{selectedContent()=== 'general' ? 'border-secondary text-secondary hover:text-secondary hover:border-secondary stroke-secondary fill-secondary' : 'hover:border-main border-transparent' }}  hover:text-main hover:scale-105 hover:shadow-button-hover border-2 gap-2 basis-1 p-3 bg-main-white shadow-lg rounded flex items-center  w-full transition-all ease-in-out duration-300">
                                 <span class="material-icons-round">home</span> General
                             </div>
-                            @if (loginSvc.user()?.role === 'teacher'){
+                            @if (loginSvc.user()?.role === 'teacher') {
                                 <div
                                     (click)="selectedContent.set('settings');showTabMenu.set(false)"
                                     class="w-fit group p-4 cursor-pointer border-2 {{selectedContent() === 'settings'?'border-secondary text-secondary':'hover:text-main border-transparent hover:border-main hover:shadow-lg'}} transition-all ease-in-out rounded-lg bg-main-white shadow  flex items-center">
-                                    <span class="material-icons group-hover:rotate-180 transition-all ease-in-out cursor-pointer ">settings</span>
+                                    <span
+                                        class="material-icons group-hover:rotate-180 transition-all ease-in-out cursor-pointer ">settings</span>
                                 </div>
                             }
                         </div>
@@ -322,7 +323,8 @@
 
                         <div class="w-full mt-5 flex  p-3 flex-col gap-4">
                             @if (selectedContent() === 'general') {
-                                <div class="flex-col xl:hidden flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
+                                <div
+                                    class="flex-col xl:hidden flex gap-4 bg-main-white rounded-lg shadow p-4 items-center">
                                     <div>
                                         <h2 class="text-2xl font-bold text-font-grey ">Horario</h2>
                                     </div>
@@ -392,9 +394,15 @@
                                         <div><span class="text-font-grey">Horario :</span>
                                             <select #daysInput (change)="update().lesson_days = true"
                                                     class="p-1 rounded-lg bg-main-grey shadow">
-                                                <option value="l-m">Lunes y miercoles</option>
-                                                <option value="m-j">Martes y jueves</option>
-                                                <option value="v">Viernes</option>
+                                                <option [attr.selected]="group().lesson_days === 'l-m'? '': undefined"
+                                                        value="l-m">Lunes y miercoles
+                                                </option>
+                                                <option [attr.selected]="group().lesson_days === 'm-j' ? '':  undefined"
+                                                        value="m-j">Martes y jueves
+                                                </option>
+                                                <option [attr.selected]="group().lesson_days === 'v' ? '' : undefined"
+                                                        value="v">Viernes
+                                                </option>
                                             </select></div>
                                         <div>de
                                             <input type="time"
@@ -464,7 +472,9 @@
                     <label class="font-medium text-font-grey text-xl" for="student">Student</label>
                     <select #student_id id="student" class="p-1 rounded-lg shadow">
                         @for (student of students(); track $index) {
-                            <option [value]="student.id">{{ student.full_name }} {{ student.surname }}</option>
+                            <option
+                                [value]="student.id">{{ student.full_name }} {{ student.surname }} {{ student.level }}
+                            </option>
                         }
                     </select>
                     <div class="w-full pt-5 flex justify-center">

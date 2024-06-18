@@ -4,5 +4,6 @@ export interface User {
     name : string,
     password : string,
     role ?: string
-    profile_photo? : string
+    profile_photo? : string,
+    email_verified_at? : string,
 }

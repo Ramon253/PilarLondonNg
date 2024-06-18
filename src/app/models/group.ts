@@ -19,4 +19,5 @@ export interface Group {
     students ?: Student[],
     created_at ?: Date,
     updated_at ?: Date,
+    inWaitlist ?: boolean
 }

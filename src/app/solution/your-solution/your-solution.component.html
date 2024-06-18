@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-4 p-2 relative">
     <div class="h-fit  -translate-y-3">
-        @if (solution().updated_at >= dead_line()) {
+        @if (solution().onTime ?? 60 > 0) {
             <span class="text-secondary font-bold ">Entregado con retraso por : {{ getDelay() }}</span>
         } @else {
             <span class="text-secondary-grey">{{ showDate(solution().updated_at) }}</span>

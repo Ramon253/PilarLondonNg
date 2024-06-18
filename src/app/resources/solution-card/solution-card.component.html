@@ -17,10 +17,11 @@
         </div>
     </div>
     <div class="absolute top-1 right-1">
-        @if (checkDate()) {
-            <div class="rounded-full aspect-square size-5 bg-main "></div>
-        } @else {
+        @if (solution().onTime ?? 60 < 0) {
             <div class="rounded-full aspect-square size-5 bg-secondary animate "></div>
+        } @else {
+            <div class="rounded-full aspect-square size-5 bg-main "></div>
+
         }
     </div>
 

@@ -1,11 +1,22 @@
 @if (isLoading()) {
-    <div class="w-full mt-[10vh] gap-10 flex flex-col items-center justify-center p-10 max-w-screen-xl mx-auto">
+    <section class="w-full mt-[10vh] min-h-screen p-2 bg-main-grey h-fit">
+        <div class="max-w-screen-lg mx-auto flex flex-col gap-4">
+            <div class="w-full p-10 border-b-2 border-main">
+                <h1 class="w-full text-center text-5xl text-main font-bold">{{loginSvc.user()?.role === 'student' ? 'Tus clases' : 'Clases' }}</h1>
+            </div>
+            <div class="w-full flex flex-col gap-4">
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+                <div class="w-full rounded-lg bg-gray-300 animate-pulse h-[150px]"></div>
+            </div>
 
-        <div class="w-full rounded-2xl h-[100px] bg-gray-300 animate-pulse"></div>
-        <div class="w-full rounded-2xl h-[100px] bg-gray-300 animate-pulse"></div>
-        <div class="w-full rounded-2xl h-[100px] bg-gray-300 animate-pulse"></div>
-        <div class="w-full rounded-2xl h-[100px] bg-gray-300 animate-pulse"></div>
-    </div>
+        </div>
+    </section>
 } @else {
     <section class="w-full mt-[10vh] min-h-screen p-2 bg-main-grey h-fit">
         <div class="max-w-screen-lg mx-auto flex flex-col gap-4">

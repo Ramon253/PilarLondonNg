@@ -154,12 +154,12 @@
             </div>
 
 
-            <div (click)="showUserMenu.set(false);navigateTo('/profile')"
+            @if (loginSvc.user()?.role !== 'none'){            <div (click)="showUserMenu.set(false);navigateTo('/profile')"
                  routerLink="/profile"
                  class="p-2 cursor-pointer text-xl rounded-lg bg-main-white shadow flex items-center gap-2 border-2 border-transparent text-dark-font hover:border-main hover:text-main hover:scale-110 transition-all">
                 <span class="material-icons">face</span>
                 Perfil
-            </div>
+            </div>}
             <div
                 (click)="loginSvc.logout(); loginSvc.logoutFront(); showUserMenu.set(false);toggleMenu()"
                 class="p-2 text-xl cursor-pointer rounded-lg bg-main-grey shadow flex items-center gap-2 border-2 border-secondary text-secondary hover:bg-secondary hover:text-main-white hover:scale-110 transition-all">

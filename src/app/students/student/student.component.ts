@@ -17,6 +17,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {Parent} from "../../models/parent";
 import {YourSolutionCardComponent} from "../../solution/your-solution-card/your-solution-card.component";
 import {TeacherService} from "../../services/teacher.service";
+import {FlashMessageService} from "../../services/flash-message.service";
 
 @Component({
     selector: 'app-student',
@@ -73,7 +74,8 @@ export class StudentComponent {
         private router: Router,
         public datePipe: DatePipe,
         private formBuilder: FormBuilder,
-        private teacherSvc: TeacherService
+        private teacherSvc: TeacherService,
+        private messageSvc : FlashMessageService
     ) {
     }
 
@@ -135,7 +137,7 @@ export class StudentComponent {
             surname: [this.student().surname, Validators.required],
             birth_date: [this.student().birth_date, Validators.required],
             level: [this.student().level, Validators.required],
-            phone_number: [this.student().phone_number, Validators.pattern('^(?:(?:\\\\+34|0034)?\\\\s?(?:6\\\\d|7[1-9]|9[1-9]|8[1-9])\\\\d{7})$\\n\'')]
+            phone_number: [this.student().phone_number]
         })
     }
 
@@ -182,7 +184,18 @@ export class StudentComponent {
                 this.isLoadingPut.set(false)
                 this.student.set(res.data.student)
             }
-        )
+        ).catch((err)=>{
+
+            if(err.response.data.message.includes('phone')){
+               this.messageSvc.messages().push({
+                   message : 'El telefono debe ser valido',
+                   type : 'error',
+                   duration : 10
+               })
+            }
+            this.edit.set(false)
+            this.isLoadingPut.set(false)
+        })
     }
 
     getProfile(event: any) {

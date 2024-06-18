@@ -43,12 +43,13 @@
         </div>
 
         <div class="w-full flex gap-1 flex-wrap -translate-y-8 items-start justify-between">
-            <button (click)="filter()"
+            <button (click)="showFilters.set(true)"
                     class=" rounded-lg py-2 px-4 border-2 border-main font-medium text-main hover:text-main-white hover:bg-main hover:scale-110 transition ease-in-out flex items-center gap-2">
                 <span class="material-icons-outlined">filter_alt</span> Filtrar por <span
                 class="material-icons-outlined">arrow_drop_up</span>
 
             </button>
+
             @if (loginSvc.user()?.role === 'teacher') {
                 <button
                     (click)="showPostForm.set(true)"
@@ -79,4 +80,5 @@
             </app-assignment-form>
         </app-dialog>
     }
+
 </div>

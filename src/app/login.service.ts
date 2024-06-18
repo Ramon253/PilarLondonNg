@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {UserResponse} from './models/user/userResponse';
 import {Credentials} from './models/credentials';
 import {User} from './models/user/user';
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import {environment} from "../environments/environment.development";
 import {Router} from "@angular/router";
 import {FlashMessageService} from "./services/flash-message.service";
@@ -27,11 +27,10 @@ export class LoginService {
     constructor(
         private http: HttpClient,
         private router: Router,
-        private flashMessageSvc : FlashMessageService,
-        private routingSvc : RoutingService
+        private flashMessageSvc: FlashMessageService,
+        private routingSvc: RoutingService
     ) {
-        if (this.isLogged())
-            console.log('????')
+        if (this.isLogged()) {
             this.getUser().subscribe(
                 user => {
                     console.log(user.user)
@@ -43,11 +42,13 @@ export class LoginService {
                     if (error.status === 401) {
                         this.logoutFront()
                     }
+
                 }
             );
+        }
     }
 
-    ngOnInit(){
+    ngOnInit() {
     }
 
     private path = environment.baseUrl + 'api';
@@ -66,7 +67,9 @@ export class LoginService {
         return axios.post<UserResponse>('api/user', credentials)
     }
 
-
+    isVerified(){
+        return axios.get('/api/isVerified')
+    }
     getUser(): Observable<UserResponse> {
         return this.http.get<UserResponse>(`${this.path}/user`, {withCredentials: true})
     }
@@ -86,9 +89,9 @@ export class LoginService {
         this.isLogged.set(false)
         localStorage.removeItem('isLogged')
         this.flashMessageSvc.messages().push({
-            message : 'Sesion cerrada',
-            type : 'message',
-            duration : 5
+            message: 'Sesion cerrada',
+            type: 'message',
+            duration: 5
         })
         this.router.navigate(['/login'])
     }
@@ -99,10 +102,10 @@ export class LoginService {
         this.router.navigate([this.routingSvc.intended])
     }
 
-    serverErrorMessage : FlashMessage = {
+    serverErrorMessage: FlashMessage = {
         message: 'Estamos teniendo problemas con el servidor, pruebe a recargar la pagina o conectese de nuevo mas tarde',
         type: 'error',
-        duration : 20
+        duration: 20
     }
 
 }

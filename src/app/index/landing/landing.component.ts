@@ -199,7 +199,6 @@ export class LandingComponent {
         this.heroPercentage.set(90)
         this.heroCircle()?.nativeElement.classList.remove('heroAnimation')
     }
-
     secondView(scrollTop: number) {
         if (window.innerWidth > 850) {
             if (this.scrollSvc.isVisible(this.views().at(1)?.nativeElement)) {

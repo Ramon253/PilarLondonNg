@@ -42,6 +42,11 @@ export class GroupService {
         return axios.post('/api/group/' + id + '/banner', formData)
     }
 
+    async joinWaitList(groupId : string, body : any){
+        await axios.get('/sanctum/csrf-cookie')
+        return axios.post('/api/group/' + groupId + '/wait-list', body)
+    }
+
     async deleteGroup(id : string){
         await axios.get('/sanctum/csrf-cookie')
         return axios.delete(`/api/group/${id}`)

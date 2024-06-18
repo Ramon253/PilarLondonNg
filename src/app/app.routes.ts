@@ -92,6 +92,6 @@ export const routes: Routes = [
     {
         path : 'snoop-dog',
         component: SnoopyDogComponent
-    },
+    }
 
 ];

@@ -58,72 +58,69 @@
                             }
                         </div>
                         <form [formGroup]="editForm" (submit)="putStudent($event)">
-                            <div class="flex gap-2 max-w-screen-md w-screen text-lg mx-auto">
-                                <div class="flex flex-col gap-8 p-10 basis-1/2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-bold text-main">Full name :</span>
-                                        @if (edit()) {
-                                            <input formControlName="full_name" type="text"
-                                                   class="p-1 bg-main-grey shadow"
-                                                   [value]="student().full_name">
-                                        } @else {
-                                            <span>{{ student().full_name }}</span>
-                                        }
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-bold text-main">Apellidos :</span>
-                                        @if (edit()) {
-                                            <input type="text" formControlName="surname"
-                                                   class="p-1 bg-main-grey shadow">
-                                        } @else {
-                                            <span>{{ student().surname }}</span>
-                                        }
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-bold text-main">Phone number</span>
-                                        @if (edit()) {
-                                            <input type="text" formControlName="phone_number"
-                                                   class="p-1 bg-main-grey shadow">
-                                        } @else {
-                                            <span>{{ student().phone_number }}</span>
-                                        }
-                                    </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8  p-10 max-w-screen-md w-screen text-lg mx-auto">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="font-bold text-main">Full name :</span>
+                                    @if (edit()) {
+                                        <input formControlName="full_name" type="text"
+                                               class="p-1 bg-main-grey shadow"
+                                               [value]="student().full_name">
+                                    } @else {
+                                        <span>{{ student().full_name }}</span>
+                                    }
                                 </div>
-                                <div class=" flex flex-col gap-8 p-10">
-
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-bold text-main">Level :</span>
-                                        @if (edit()) {
-                                            <select class="p-1 bg-main-grey shadow" formControlName="level" #levelInput
-                                                    (change)="this.editForm.get('level')?.setValue(levelInput.value)">
-                                                <option value="A1">A1</option>
-                                                <option value="A2">A2</option>
-                                                <option value="B1">B1</option>
-                                                <option value="B2">B2</option>
-                                                <option value="C1">C1</option>
-                                            </select>
-                                        } @else {
-                                            <span>{{ student().level }}</span>
-                                        }
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        @if (edit()) {
-                                            <label class="font-bold text-main" for="birth_date">Fecha de
-                                                nacimiento</label>
-                                            <input id="birth_date" type="date" formControlName="birth_date"
-                                                   class="p-1 bg-main-grey shadow">
-                                        } @else {
-                                            <span class="font-bold text-main">Age :</span>
-                                            <span>{{ student().age }}</span>
-                                        }
-                                    </div>
-
-                                    <button
-                                        (click)="showTutors.set(true)"
-                                        class="px-4 bg-main-grey py-2 text-lg text-main rounded-lg font-bold border-2 border-transparent hover:scale-110 hover:bg-main hover:text-main-white  transition-all ease-in-out">
-                                        Tutores/padres
-                                    </button>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="font-bold text-main">Apellidos :</span>
+                                    @if (edit()) {
+                                        <input type="text" formControlName="surname"
+                                               class="p-1 bg-main-grey shadow">
+                                    } @else {
+                                        <span>{{ student().surname }}</span>
+                                    }
                                 </div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="font-bold text-main">Phone number</span>
+                                    @if (edit()) {
+                                        <input type="text" formControlName="phone_number"
+                                               class="p-1 bg-main-grey shadow">
+                                    } @else {
+                                        <span>{{ student().phone_number }}</span>
+                                    }
+                                </div>
+
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="font-bold text-main">Level :</span>
+                                    @if (edit()) {
+                                        <select class="p-1 bg-main-grey shadow" formControlName="level" #levelInput
+                                                (change)="this.editForm.get('level')?.setValue(levelInput.value)">
+                                            <option value="A1">A1</option>
+                                            <option value="A2">A2</option>
+                                            <option value="B1">B1</option>
+                                            <option value="B2">B2</option>
+                                            <option value="C1">C1</option>
+                                        </select>
+                                    } @else {
+                                        <span>{{ student().level }}</span>
+                                    }
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    @if (edit()) {
+                                        <label class="font-bold text-main" for="birth_date">Fecha de
+                                            nacimiento</label>
+                                        <input id="birth_date" type="date" formControlName="birth_date"
+                                               class="p-1 bg-main-grey shadow">
+                                    } @else {
+                                        <span class="font-bold text-main">Age :</span>
+                                        <span>{{ student().age }}</span>
+                                    }
+                                </div>
+
+                                <button
+                                    (click)="showTutors.set(true)"
+                                    class="px-4 bg-main-grey py-2 text-lg text-main rounded-lg font-bold border-2 border-transparent hover:scale-110 hover:bg-main hover:text-main-white  transition-all ease-in-out">
+                                    Tutores/padres
+                                </button>
+
                             </div>
                             @if (edit()) {
                                 <div class="w-full flex justify-center">
@@ -145,20 +142,20 @@
                             <span class="w-full text-center">Notas</span>
                         </div>
                         <div class="max-w-screen-md mx-auto flex flex-col p-10">
-                            <div class="w-full text-lg grid grid-rows-2 grid-cols-2 gap-10 gap-x-20 text">
-                                <div class=" font-medium flex items-center gap-2">
+                            <div class="w-full text-lg grid  sm:grid-cols-2 grid-cols-1 gap-10 gap-x-20 text">
+                                <div class=" font-medium flex flex-wrap items-center gap-2">
                                     <span class="text-main font-bold">Tareas enviadas : </span>
                                     <span>{{ submissions().length }}</span>
                                 </div>
-                                <div class=" font-medium flex items-center gap-2 ">
+                                <div class=" font-medium flex flex-wrap items-center gap-2 ">
                                     <span class="text-main font-bold"> Nota media : </span>
                                     <span>{{ getAvgNote() }}</span>
                                 </div>
-                                <div class=" font-medium flex items-center gap-2">
+                                <div class=" font-medium flex flex-wrap items-center gap-2">
                                     <span class="text-main font-bold">Tareas por calificar</span>
                                     <span>{{ this.unmarkedSolutions }}</span>
                                 </div>
-                                <div class=" font-medium flex items-center gap-2">
+                                <div class=" font-medium flex flex-wrap items-center gap-2">
                                     <span class="text-main font-bold">Tareas por calificadas</span>
                                     <span>{{ this.submissions().length }}</span>
                                 </div>
@@ -174,7 +171,7 @@
                 } @else if (show().solutions) {
                     <div class="max-w-screen-lg w-screen grid grid-cols-2 flex-col gap-5 p-3">
                         @for (solution of submissions(); track $index) {
-                            <app-your-solution-card  [solution]="solution"></app-your-solution-card>
+                            <app-your-solution-card [solution]="solution"></app-your-solution-card>
                         }
                     </div>
                 }

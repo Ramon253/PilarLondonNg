@@ -5,8 +5,8 @@
         } @else {
             <h1 class="w-full text-5xl font-bold text-secondary text-center">Crea tu perfil</h1>
             <form (submit)="createStudent($event)" [formGroup]="createForm"
-                  class="max-w-screen-md w-screen rounded-lg mx-auto bg-main-white shadow p-20 gap-10 flex flex-col">
-                @if(profilePicture()){
+                  class="max-w-screen-md w-screen rounded-lg mx-auto bg-main-white shadow p-10 nav:p-20 gap-10 flex flex-col">
+                @if (profilePicture()) {
                     <div class="h-24 w-full flex items-center justify-center">
                         <img [src]="croppedImage.objectUrl" alt="Profile picture" class="rounded-full h-full">
                     </div>
@@ -40,16 +40,32 @@
                     <app-validation-error class="order-3" [form]="createForm" field="surname"
                                           [errors]="['required']"></app-validation-error>
                 </div>
-                <div class="w-full flex items-center justify-center">
-                    <button
-                        type="button"
-                        (click)="inputFile.click()"
-                        class="flex items-center gap-2 text-main border-2 rounded-lg px-4 py-2 bg-main-grey shadow border-transparent hover:scale-110 hover:border-main transition-all ease-in-out">
-                        <span class="material-icons">image</span>Profile picture
-                    </button>
-                    <input type="file" (change)="getProfilePic($event)" class="hidden" #inputFile >
+                <div class=" flex flex-col sm:flex-row gap-4">
+                    <div class="h-fit  w-full flex flex-col">
+                        <input
+                            class="peer order-2 border-b-2 w-full border-main bg-transparent p-2 drop-shadow target:border-secondary accent-main"
+                            formControlName="phone_number" #name type="number" name="phone_number" id="phone" placeholder=" ">
+
+                        <div
+                            class="peer-placeholder-shown:translate-x-2 peer-placeholder-shown:translate-y-8 peer-placeholder-shown:text-dark-grey order-1 transition-all ease-in-out">
+                            <label class="" for="phone">
+                                Telefono
+                            </label>
+                        </div>
+                        <app-validation-error class="order-3" [form]="createForm" field="surname"
+                                              [errors]="['required']"></app-validation-error>
+                    </div>
+                    <div class="w-full flex flex-wrap items-center justify-center">
+                        <button
+                            type="button"
+                            (click)="inputFile.click()"
+                            class="flex items-center gap-2 text-main border-2 rounded-lg px-4 py-2 bg-main-grey shadow border-transparent hover:scale-110 hover:border-main transition-all ease-in-out">
+                            <span class="material-icons">image</span>Profile picture
+                        </button>
+                        <input type="file" (change)="getProfilePic($event)" class="hidden" #inputFile>
+                    </div>
                 </div>
-                <div class=" flex gap-4">
+                <div class=" flex flex-col sm:flex-row gap-4">
                     <div
                         class="h-fit basis-1/2  w-full flex flex-col gap-2 {{createForm.get('birth_date')?.invalid ? 'text-secondary-grey': 'text-dark-font'  }}">
                         <label for="birthdate" class="text-md font-medium text-dark-font">Fecha de nacimiento</label>
@@ -64,7 +80,8 @@
                                 (change)="createForm.get('level')?.setValue(level.value)" #level>
                             <option value="" [defaultSelected]="true" [disabled]="true"></option>
                             <option value="A1">A1</option>
-                            <option value="A2">A2</option>0
+                            <option value="A2">A2</option>
+                            0
                             <option value="B1">B1</option>
                             <option value="B2">B2</option>
                             <option value="C1">C1</option>
@@ -80,7 +97,7 @@
                             class="px-4 flex items-center gap-2 py-2 border-2 border-main w-fit rounded-lg text-main text-xl font-bold transition-all ease-in-out duration-200 {{
                 createForm.invalid ? 'cursor-not-allowed' : 'hover:scale-110 hover:bg-main hover:text-main-white hover:shadow-button-hover'
                 }}">
-                        @if (isLoadingPost()){
+                        @if (isLoadingPost()) {
                             <app-loading-wheel></app-loading-wheel> Cargando...
                         } @else {
                             Unirse <span class="material-icons">group</span>
@@ -91,48 +108,79 @@
         }
     </div>
 </section>
-
-@if (showActivateDialog()) {
+@if (showVerifyEmail()) {
     <app-dialog>
-        <div class="max-w-screen-md w-screen flex items-center justify-center gap-4 rounded-lg bg-main-grey p-10">
-            <input #codeInput type="text" class="p-2 rounded-lg bg-main-white shadow"
-                   placeholder="Codigo de activacion ...">
-            <button
-                (click)="activate(codeInput)"
-                class="px-4 py-2 rounded-lg text-main border-main border-2 hover:text-main-white hover:bg-main hover:scale-110 transition-all ease-in-out hover:shadow-button-hover">
-                @if (isLoadingCode()) {
-                    <div class="flex gap-2 items-center">
-                        <app-loading-wheel></app-loading-wheel>
-                        Cargando...
-                    </div>
-                } @else {
-                    Activar cuenta
-                }
-            </button>
+
+        <div class="max-w-screen-md w-screen rounded-lg flex flex-col gap-5 bg-main-grey p-10">
+            <span class="text-font-grey">Debes verificar tu email, te hemos enviado un email de verificación, para que te enviemos otro recargue la página</span>
+            <div class="flex items-center justify-center gap-4">
+                <input #emailVerifyInput type="text" class="p-2 rounded-lg bg-main-white shadow"
+                       placeholder="Codigo de verificación ...">
+                <button
+                    (click)="verifyEmail(emailVerifyInput)"
+                    class="px-4 py-2 rounded-lg text-main border-main border-2 hover:text-main-white hover:bg-main hover:scale-110 transition-all ease-in-out hover:shadow-button-hover">
+                    @if (isLoadingVerify()) {
+                        <div class="flex gap-2 items-center">
+                            <app-loading-wheel></app-loading-wheel>
+                            Cargando...
+                        </div>
+                    } @else {
+                        Verificar Email
+                    }
+                </button>
+            </div>
         </div>
     </app-dialog>
 }
-@if (showCropper()){
+
+@if (showActivateDialog()) {
     <app-dialog>
-        <div class="max-w-screen-xl max-h-[80vh] items-center relative justify-center w-screen p-16 rounded-lg flex flex-col gap-10 overflow-scroll">
+        <div class="max-w-screen-md w-screen rounded-lg flex flex-col gap-5 bg-main-grey p-10">
+            <span class="text-font-grey">Para unirte como estudiante debes tener un código de activación, que se te ha dado en persona o se ta ha enviado email</span>
+            <div class="flex items-center justify-center gap-4">
+                <input #codeInput type="text" class="p-2 rounded-lg bg-main-white shadow"
+                       placeholder="Codigo de activacion ...">
+                <button
+                    (click)="activate(codeInput)"
+                    class="px-4 py-2 rounded-lg text-main border-main border-2 hover:text-main-white hover:bg-main hover:scale-110 transition-all ease-in-out hover:shadow-button-hover">
+                    @if (isLoadingCode()) {
+                        <div class="flex gap-2 items-center">
+                            <app-loading-wheel></app-loading-wheel>
+                            Cargando...
+                        </div>
+                    } @else {
+                        Activar cuenta
+                    }
+                </button>
+            </div>
+        </div>
+    </app-dialog>
+}
+@if (showCropper()) {
+    <app-dialog>
+        <div
+            class="max-w-screen-xl max-h-[80vh] items-center relative justify-center w-screen p-16 rounded-lg flex flex-col gap-10 overflow-scroll">
             <div class="h-1/2 w-auto mt-[75%]">
-            <image-cropper
-                [imageChangedEvent]="originalImage"
-                [roundCropper]="true"
-                [aspectRatio]="1"
-                (imageCropped)="getImage($event)"
-            >
-            </image-cropper>
+                <image-cropper
+                    [imageChangedEvent]="originalImage"
+                    [roundCropper]="true"
+                    [aspectRatio]="1"
+                    (imageCropped)="getImage($event)"
+                >
+                </image-cropper>
             </div>
             <div class="h-1/2 w-auto">
                 <img class="rounded-full" [src]="croppedImage.objectUrl" alt="">
             </div>
             <div>
-                <button (click)="this.profilePicture.set(croppedImage.blob);showCropper.set(false)" class="flex gap-2 border-2 border-main px-4 py-2 rounded-lg text-xl text-main font-bold hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover transition-all ease-in-out">
-                     <span class="material-icons">upload</span> Subir imagen
+                <button (click)="this.profilePicture.set(croppedImage.blob);showCropper.set(false)"
+                        class="flex gap-2 border-2 border-main px-4 py-2 rounded-lg text-xl text-main font-bold hover:text-main-white hover:bg-main hover:scale-110 hover:shadow-button-hover transition-all ease-in-out">
+                    <span class="material-icons">upload</span> Subir imagen
                 </button>
             </div>
-            <span class="material-icons p-1 flex items-center rounded-full text-secondary transition-all ease-in-out hover:bg-secondary hover:text-main-white absolute top-0 right-0 cursor-pointer" (click)="showCropper.set(false)">close</span>
+            <span
+                class="material-icons p-1 flex items-center rounded-full text-secondary transition-all ease-in-out hover:bg-secondary hover:text-main-white absolute top-0 right-0 cursor-pointer"
+                (click)="showCropper.set(false)">close</span>
         </div>
     </app-dialog>
 }

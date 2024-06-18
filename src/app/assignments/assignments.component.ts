@@ -31,13 +31,16 @@ export class AssignmentsComponent {
     isLoading = signal<boolean>(true)
     showPostForm = signal<boolean>(false)
     groups = signal<any[]>([])
+    showFilters = signal<boolean>(false)
     show = {
         all: true,
         answered: false,
         toDo: false,
         unmarked: false
     }
-
+    filters = signal([
+        'group', 'dead_line', 'created_at'
+    ])
     constructor(
         private assignmentSvc: AssignmentService,
         public loginSvc: LoginService,
@@ -105,9 +108,7 @@ export class AssignmentsComponent {
         }
     }
 
-    filter() {
 
-    }
 
     ngOnInit() {
         this.getAssignments(false)

@@ -82,16 +82,17 @@
                         } @else {
                             <span class="flex items-center gap-2 w-full text-secondary-grey translate-y-3 pl-2">
                         <span class="font-bold">Fecha de entrega :
-                        </span>
+                         </span>
                         <span>
                             {{ assignment().show_dead_line }}
                         </span>
-                    </span>
-                            <button class="flex items-center translate-y-3"
+                            </span>
+                            @if (loginSvc.user()?.role === 'teacher'){<button class="flex items-center translate-y-3"
                                     (click)="updateAny.set(true);update().dead_line = true">
                         <span class=" material-icons p-1 flex items-center justify-center rounded-lg text-main
                         hover:bg-main hover:text-main-white transition">edit</span>
                             </button>
+                            }
                         }
                     </div>
                 </div>
@@ -151,7 +152,8 @@
                                     </div>
                                     <div class="flex flex-wrap items-center justify-start pt-4 gap-2">
                                         @for (link of assignment().links; track $index) {
-                                            <app-link parent="assignment" class="max-w-full" (delete)="deleteLink($event.id, false)"
+                                            <app-link parent="assignment" class="max-w-full"
+                                                      (delete)="deleteLink($event.id, false)"
                                                       [link]="link"></app-link>
                                         }
                                     </div>
@@ -315,7 +317,7 @@
          class="rounded-t-lg shadow-card h-[4rem] text-main-white text-xl font-bold bg-secondary  flex justify-evenly items-center gap-3">
         <span
             class="material-icons p-2 rounded-full bg-main-white text-main transition-all ease-in-out {{showSolutionMenu()? 'rotate-180' : 'rotate-0'}}">keyboard_double_arrow_up</span>
-        <span>{{loginSvc.user()?.role === 'teacher' ? 'Entregas': 'Tu entrega'}}</span>
+        <span>{{ loginSvc.user()?.role === 'teacher' ? 'Entregas' : 'Tu entrega' }}</span>
         @if (assignment().solution) {
 
             @if (assignment().solution?.note === null) {
@@ -361,7 +363,7 @@
                                     [dead_line]="assignment().dead_line"
                                     [solution]="solution"
                                     class="w-full"
-                                    ></app-solution-card>
+                                ></app-solution-card>
                             }
                         </div>
                     }

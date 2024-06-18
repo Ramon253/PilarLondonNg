@@ -17,5 +17,6 @@ export interface Solution {
     assignment_name?: string,
     assignment_id?: string,
     group_name?: string
-    group_id?: string
+    group_id?: string,
+    onTime ?: number
 }
