@@ -1,13 +1,13 @@
-#FROM node:latest as build
+FROM node:latest as build
 #
-#WORKDIR /app
+WORKDIR /app
 #
-#COPY package*.json ./
-#RUN npm ci
-#RUN npm install -g @angular/cli
+COPY package*.json ./
+RUN npm ci
+RUN npm install -g @angular/cli
 #
-#COPY . .
-#RUN npm run build --configuration=production
+COPY . .
+RUN npm run build --configuration=production
 
 FROM nginx:latest
 
@@ -22,7 +22,7 @@ COPY certs/privkey.pem /etc/nginx/certs/privkey.pem
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copiar la salida de la construcción de Angular a la imagen de Docker
-COPY /dist/pilar-london-ng/browser /usr/share/nginx/html
+COPY --from=build /app/dist/pilar-london-ng/browser /usr/share/nginx/html
 
 EXPOSE 80
 EXPOSE 443
